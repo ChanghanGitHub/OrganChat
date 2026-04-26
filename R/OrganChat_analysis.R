@@ -11,6 +11,7 @@
 #' If the input is "mean", then the arithmetic mean will be calculated.
 #'
 #' @importFrom forcats fct_drop
+#' @importFrom stats quantile
 #'
 #' @return a data frame
 #' @export
@@ -934,6 +935,7 @@ cal_netchat_prob <- function(object, K = 0.5, N = 2,
 #'
 #' @importFrom forcats fct_drop
 #' @importFrom boot boot
+#' @importFrom stats sd quantile
 #'
 #' @return a list
 #' @export
@@ -995,8 +997,8 @@ cal_singlechat_bootstrap <- function(object, R = 5, dir = NULL, CI = 0.95){
 
       # calculate the CI
       q = c(0+(1-CI)/2 , 1-(1-CI)/2)
-      CI_min = apply(bs.results$t, 2, quantile,q[1])
-      CI_max = apply(bs.results$t, 2, quantile,q[2])
+      CI_min = apply(bs.results$t, 2, quantile, q[1])
+      CI_max = apply(bs.results$t, 2, quantile, q[2])
       bs.results_CI = (bs.results$t0 - CI_min)*(CI_max - bs.results$t0)
       bs.results_CI[ bs.results_CI>0 ] = TRUE
       bs.results_CI[ bs.results_CI<=0 ] = FALSE

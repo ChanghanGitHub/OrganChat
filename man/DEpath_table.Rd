@@ -11,7 +11,7 @@ DEpath_table(
   Direction = NULL,
   p_cutoff = NULL,
   sd_cutoff = NULL,
-  RI_cutoff = NULL,
+  DI_cutoff = NULL,
   top = NULL
 )
 }
@@ -30,7 +30,7 @@ The default value is NULL.}
 \item{sd_cutoff}{LS-T pathways with a standard deviation (calculated based on bootstrap results) higher than this cutoff value under at least one condition will be removed.
 The default value is NULL.}
 
-\item{RI_cutoff}{keep the LS-T pathways which the absolute RI value is higher then this cutoff value. The default value is NULL.}
+\item{DI_cutoff}{keep the LS-T pathways which the absolute RI value is higher then this cutoff value. The default value is NULL.}
 
 \item{top}{keep the top pathways based on the positive and negative RI, respectively. The default value is NULL.}
 }

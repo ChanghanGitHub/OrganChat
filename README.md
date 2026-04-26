@@ -3,17 +3,20 @@
 
 # OrganChat
 
-Organ-organ communication through single cells
+<!-- badges: start -->
+
+<!-- badges: end -->
 
 The goal of OrganChat is to …
 
 ## Installation
 
-Packge installation can be done directly by calling:
-`devtools::install_github(ChanghanGitHub/OrganChat)`
+You can install the development version of OrganChat from
+[GitHub](https://github.com/) with:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+# install.packages("pak")
+pak::pak("ChanghanGitHub/OrganChat")
 ```
 
 ## Example
@@ -32,24 +35,35 @@ library(OrganChat)
 #> The following objects are masked from 'package:base':
 #> 
 #>     intersect, setdiff, setequal, union
-#> Loading required package: forcats
 #> Loading required package: data.table
 #> 
 #> Attaching package: 'data.table'
 #> The following objects are masked from 'package:dplyr':
 #> 
 #>     between, first, last
-#> Loading required package: limma
-#> Loading required package: Seurat
-#> Loading required package: SeuratObject
-#> Loading required package: sp
-#> 'SeuratObject' was built under R 4.5.0 but the current version is
-#> 4.5.1; it is recomended that you reinstall 'SeuratObject' as the ABI
-#> for R may have changed
-#> 
-#> Attaching package: 'SeuratObject'
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, t
 ## basic example code
 ```
+
+What is special about using `README.Rmd` instead of just `README.md`?
+You can include R chunks like so:
+
+``` r
+summary(cars)
+#>      speed           dist       
+#>  Min.   : 4.0   Min.   :  2.00  
+#>  1st Qu.:12.0   1st Qu.: 26.00  
+#>  Median :15.0   Median : 36.00  
+#>  Mean   :15.4   Mean   : 42.98  
+#>  3rd Qu.:19.0   3rd Qu.: 56.00  
+#>  Max.   :25.0   Max.   :120.00
+```
+
+You’ll still need to render `README.Rmd` regularly, to keep `README.md`
+up-to-date. `devtools::build_readme()` is handy for this.
+
+You can also embed plots, for example:
+
+<img src="man/figures/README-pressure-1.png" width="100%" />
+
+In that case, don’t forget to commit and push the resulting figure
+files, so they display on GitHub and CRAN.

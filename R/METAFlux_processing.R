@@ -4,7 +4,7 @@
 #' generate_boots: Generate bootstrap index data
 #' @param celltype colnames of single cell data.Colnames should be labeled as cell type or cluster.
 #' @param n  number of bootstrap
-#' @import dplyr
+#'
 #'
 #' @return a data frame
 #'
@@ -34,6 +34,7 @@ return(index)
 #' @return a data frame
 #'
 #' @import Seurat
+#' @import dplyr
 #' @importFrom SeuratObject CreateAssay5Object
 #'
 get_ave_exp_Updated <- function(i, myseurat, samples, myident) {
@@ -48,7 +49,7 @@ get_ave_exp_Updated <- function(i, myseurat, samples, myident) {
   sample <- CreateAssay5Object(sample)
   options(Seurat.object.assay.version = "v5")
   SeuratObject <- suppressWarnings(
-    CreateSeuratObject(count=sample, meta.data = meta.data))
+    CreateSeuratObject(counts=sample, meta.data = meta.data))
   SeuratObject <- NormalizeData(SeuratObject, verbose = FALSE)
   ave <- GetAssayData(AverageExpression(SeuratObject, group.by = myident,return.seurat = T), assay = "RNA") %>% as.data.frame()
   return(ave)
@@ -68,7 +69,6 @@ get_ave_exp_Updated <- function(i, myseurat, samples, myident) {
 #' @return mean expression data
 #'
 #' @import Seurat
-#' @importFrom simEd set.seed
 #'
 #' @export
 #'
@@ -94,7 +94,11 @@ calculate_avg_exp_Updated <- function(myseurat, myident, n_bootstrap, seed) {
 #' @return mean expression data
 #'
 #' @import Seurat
-#' @import METAFlux
+#'
+#'
+#'
+#'
+#'
 #' @export
 #'
 run_METAFlux <- function(Data.input,
@@ -103,7 +107,7 @@ run_METAFlux <- function(Data.input,
                          seed=1,
                          medium = human_blood){
 
-  library(METAFlux)
+  # library(METAFlux)
 
   if(class(Data.input) != "Seurat"){
     stop("The input data should be a Seurat object.")
@@ -141,10 +145,13 @@ run_METAFlux <- function(Data.input,
 #'
 #' @return a data frame
 #'
-#' @importFrom gdata startsWith
 #' @importFrom stringr str_split
 #' @importFrom forcats fct_drop
-#' @import METAFlux
+#'
+#'
+#'
+#'
+#'
 #' @import dplyr
 #'
 #' @export
@@ -291,7 +298,6 @@ METAFlux_reformat <- function(flux,
 #' @importFrom stats aggregate
 #' @importFrom stringr str_split
 #' @importFrom forcats fct_drop
-#' @import METAFlux
 #' @import dplyr
 #'
 #' @export
@@ -327,7 +333,7 @@ METAFlux_convert_OrganChat <- function(cell.types,
     warning("Number of metabolites in each cluster is not equal.")
     n.keep = min(table(flux_output$Cluster))
     flux_output %>%
-      group_by(Cluster) %>%
+      group_by(flux_output$Cluster) %>%
       slice_head(n = n.keep) %>%
       ungroup() -> flux_output
   }
@@ -336,7 +342,7 @@ METAFlux_convert_OrganChat <- function(cell.types,
     warning("Number of clusters in each metabolite is not equal.")
     n.keep = min(table(flux_output$Metabolite))
     flux_output %>%
-      group_by(Metabolite) %>%
+      group_by(flux_output$Metabolite) %>%
       slice_head(n = n.keep) %>%
       ungroup() -> flux_output
   }

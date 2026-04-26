@@ -559,7 +559,7 @@ quant_vector <- function(x){
 #' The default value is NULL.
 #' @param sd_cutoff LS-T pathways with a standard deviation (calculated based on bootstrap results) higher than this cutoff value under at least one condition will be removed.
 #' The default value is NULL.
-#' @param RI_cutoff keep the LS-T pathways which the absolute RI value is higher then this cutoff value. The default value is NULL.
+#' @param DI_cutoff keep the LS-T pathways which the absolute RI value is higher then this cutoff value. The default value is NULL.
 #' @param top keep the top pathways based on the positive and negative RI, respectively. The default value is NULL.
 #'
 #' @importFrom forcats fct_drop
@@ -573,7 +573,7 @@ DEpath_table <- function(object,
                          Direction = NULL,
                          p_cutoff = NULL,
                          sd_cutoff = NULL,
-                         RI_cutoff = NULL,
+                         DI_cutoff = NULL,
                          top = NULL){
 
   # get the list of two tables for two conditions
@@ -614,7 +614,7 @@ DEpath_table <- function(object,
   Fy = -0.75*( (quant_vector(df[ ,3]) + quant_vector(df[ ,4]))/2 )^2 +1
   adjlog2FC = log2((df$chatP_1 + min(x))/(df$chatP_2 + min(x)))*Fx*Fy
   # calculate the RI
-  DEpath.table$RI = 2/(1+exp(-2*adjlog2FC))-1
+  DEpath.table$DI = 2/(1+exp(-2*adjlog2FC))-1
 
   if(!is.null(Sender.group)){
     DEpath.table = DEpath.table[DEpath.table$Sender.group %in% intersect(unique(DEpath.table$Sender.group), Sender.group), ]
@@ -637,16 +637,16 @@ DEpath_table <- function(object,
   }
 
   if(!is.null(RI_cutoff)){
-    DEpath.table = DEpath.table[ abs(DEpath.table$RI) >= RI_cutoff, ]
+    DEpath.table = DEpath.table[ abs(DEpath.table$RI) >= DI_cutoff, ]
   }
 
   if(!is.null(top)){
     DEpath.table %>%
-      arrange(desc(RI)) %>%
+      arrange(desc(DEpath.table$DI)) %>%
       slice_head(n = top) -> DEpath.1
 
     DEpath.table %>%
-      arrange(RI) %>%
+      arrange(DEpath.table$DI) %>%
       slice_head(n = top) -> DEpath.2
 
     DEpath.table <- rbind(DEpath.1, DEpath.2)
