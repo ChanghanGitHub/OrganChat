@@ -19,7 +19,7 @@ devtools::install_github("ChanghanGitHub/OrganChat")
 
 ## Overview
 
-```{r, include = FALSE}
+```{r}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
