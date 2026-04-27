@@ -20,14 +20,7 @@ devtools::install_github("ChanghanGitHub/OrganChat")
 
 ## Overview
 
-``` r
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/github_Overview.png",
-  out.width = "100%"
-)
-```
+<img width="536" alt="image" src="man/figures/github_Overview.png" />
 
 OrganChatDB integrates LS-receptor signaling, receptor-SE interactions,
 and SE-target regulations for both human and mouse, as well as a
