@@ -1,13 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# OrganChat
+# OrganChat: inferring organ-organ communication through single-cell data
 
-<!-- badges: start -->
-
-<!-- badges: end -->
-
-The goal of OrganChat is to …
+OrganChat is a computational method that uses single-cell multi-modal
+data together with a newly constructed long-range signal (LS)-mediated
+communication database (OrganChatDB) to infer organ-organ
+communications.
 
 ## Installation
 
@@ -15,55 +14,19 @@ You can install the development version of OrganChat from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-pak::pak("ChanghanGitHub/OrganChat")
+# install.packages("devtools")
+devtools::install_github("ChanghanGitHub/OrganChat")
 ```
 
-## Example
+## Overview
 
-This is a basic example which shows you how to solve a common problem:
+OrganChatDB integrates LS-receptor signaling, receptor-SE interactions,
+and SE-target regulations for both human and mouse, as well as a
+dictionary linking HMDB IDs to metabolite synonyms. In total, the
+database catalogs 777 and 801 distinct LS molecules – encompassing
+metabolites, peptide and nonpeptide hormones, and cytokines – for human
+and mouse, respectively (Fig. 1a-b). The standard OrganChat workflow
+consists of three key modules: (1) Data processing module; (2) OOC
+inference module; (3) Multi-scale analysis module.
 
-``` r
-library(OrganChat)
-#> Loading required package: Matrix
-#> Loading required package: dplyr
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
-#> Loading required package: data.table
-#> 
-#> Attaching package: 'data.table'
-#> The following objects are masked from 'package:dplyr':
-#> 
-#>     between, first, last
-## basic example code
-```
-
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
-
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+## Tutorial
