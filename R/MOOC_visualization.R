@@ -403,7 +403,7 @@ MO_networkconstruct <- function(object,
 #' @param network.input output (a list) of the MO_networkconstruct function.
 #' @param style style select which metric to showcase using the edge width, the input should be one of the following:
 #' "ave.weight", "total.counts", "total.chatP", "ave.sd", or NULL (default, meaning "total.counts" will be used).
-#' @param color.platte = brewer.pal(8, "Set2"),
+#' @param color.platte select the color for  brewer.pal(8, "Set2"),
 #' @param scale.edge.width a multiplier to scale the edge width, the default value is 5.
 #' @param scale.vertex.size a multiplier to scale the vertex size, the default value is 30.
 #' @param vertex.frame.color argument of the plot function, the default value is "white".
@@ -447,7 +447,7 @@ MO_networkplot <- function(network.input,
   }
 
   if(is.null(color.platte)){
-    color.platte = brewer.pal(8, "Set2")
+    color.platte = RColorBrewer::brewer.pal(8, "Set2")
   }
 
   # function for label location
