@@ -636,7 +636,7 @@ DEpath_table <- function(object,
     DEpath.table = DEpath.table[unlist(DEpath.table[ , 14]) <= sd_cutoff & unlist(DEpath.table[ , 16]) <= sd_cutoff, ]
   }
 
-  if(!is.null(RI_cutoff)){
+  if(!is.null(DI_cutoff)){
     DEpath.table = DEpath.table[ abs(DEpath.table$RI) >= DI_cutoff, ]
   }
 
