@@ -20,7 +20,7 @@ devtools::install_github("ChanghanGitHub/OrganChat")
 
 ## Overview
 
-<img width="536" alt="image" src="man/figures/github_Overview.png" />
+<img width="536" alt="image" src="man/figures/github_Overview.png" align="center"/>
 
 OrganChatDB integrates LS-receptor signaling, receptor-SE interactions,
 and SE-target regulations for both human and mouse, as well as a
@@ -33,7 +33,7 @@ inference module; (3) Multi-scale analysis module.
 
 ## Examples
 
-### Application to a five-organ communication system for immune-mediated diseases:[link to the folder](Example/Sandra_CellRepMed_2023)
+### Application to a five-organ communication system for immune-mediated diseases: [link to the folder](Example/Sandra_CellRepMed_2023)
 
 1)  [Processing the original data and inferring metabolite
     flux.](Example/Sandra_CellRepMed_2023/HSandra_CellRepMed_2023_DataProcessing_MetaboliteAnalysis.Rmd)

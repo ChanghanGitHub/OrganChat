@@ -19,13 +19,13 @@ devtools::install_github("ChanghanGitHub/OrganChat")
 
 ## Overview
 
-<img width="536" alt="image" src="man/figures/github_Overview.png" />
+<img width="536" alt="image" src="man/figures/github_Overview.png" align="center"/>
 
 OrganChatDB integrates LS-receptor signaling, receptor-SE interactions, and SE-target regulations for both human and mouse, as well as a dictionary linking HMDB IDs to metabolite synonyms. In total, the database catalogs 777 and 801 distinct LS molecules -- encompassing metabolites, peptide and nonpeptide hormones, and cytokines -- for human and mouse, respectively (Fig. 1a-b). The standard OrganChat workflow consists of three key modules: (1) Data processing module; (2) OOC inference module; (3) Multi-scale analysis module.
 
 ## Examples
 
-### Application to a five-organ communication system for immune-mediated diseases:[link to the folder](Example/Sandra_CellRepMed_2023)
+### Application to a five-organ communication system for immune-mediated diseases: [link to the folder](Example/Sandra_CellRepMed_2023)
 
 (1) [Processing the original data and inferring metabolite flux.](Example/Sandra_CellRepMed_2023/HSandra_CellRepMed_2023_DataProcessing_MetaboliteAnalysis.Rmd)
 
