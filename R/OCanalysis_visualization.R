@@ -853,7 +853,7 @@ construct_MTmaxflow_df <- function(df){
 #' @importFrom graphics legend par strwidth title
 #' @importFrom RColorBrewer brewer.pal
 #' @import dplyr
-#' @importFrom igraph graph_from_data_frame
+#' @importFrom igraph graph_from_data_frame V E layout_as_tree
 #'
 #' @export
 #'
@@ -878,21 +878,21 @@ network_treeplot <- function(df,
                        size=df[[1]]$node$size/max(df[[1]]$node$size)*node.size.scalemax)
 
   net.plot <- graph_from_data_frame(d=links, vertices=nodes, directed=T)
-  net.plot$layout <- layout_as_tree
-  V(net.plot)$carac <- factor(V(net.plot)$carac, levels = c("LS", "Receptor", "TF", "Target"))
+  net.plot$layout <- igraph::layout_as_tree
+  igraph::V(net.plot)$carac <- factor(igraph::V(net.plot)$carac, levels = c("LS", "Receptor", "TF", "Target"))
 
   # Make a palette of 4 colors
   coul  <- brewer.pal(4, "Set1")
 
   # Create a vector of color
-  my_color <- coul[as.numeric(as.factor(V(net.plot)$carac))]
+  my_color <- coul[as.numeric(as.factor(igraph::V(net.plot)$carac))]
 
   plot(net.plot, vertex.color = my_color,
-       edge.width = E(net.plot)$importance,
+       edge.width = igraph::E(net.plot)$importance,
        edge.color = edge.color,
        edge.arrow.size = edge.arrow.size,                           # Arrow size, defaults to 1
        edge.arrow.width = edge.arrow.width,
-       vertex.size = V(net.plot)$size,
+       vertex.size = igraph::V(net.plot)$size,
        vertex.frame.color = vertex.frame.color,
        vertex.label.color = vertex.label.color,
        vertex.label.cex = vertex.label.cex,
@@ -900,7 +900,7 @@ network_treeplot <- function(df,
        vertex.label.degree = vertex.label.degree) # A simple plot of the network - we'll talk more about plots later
 
   # Add a legend
-  legend("topright", legend=levels(V(net.plot)$carac)  , col = coul , bty = "n", pch=20 , pt.cex = 1.5, cex = 0.75, text.col=coul , horiz = FALSE, inset = c(0.1, 0.1))
+  legend("topright", legend=levels(igraph::V(net.plot)$carac)  , col = coul , bty = "n", pch=20 , pt.cex = 1.5, cex = 0.75, text.col=coul , horiz = FALSE, inset = c(0.1, 0.1))
 }
 
 
