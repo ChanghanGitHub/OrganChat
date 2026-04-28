@@ -55,7 +55,7 @@ CAOC_DI_barplot <- function(df,
   ggplot(df, aes(x=ID, y=DI, fill=pair)) +
     geom_bar(stat="identity", colour="white") +
     guides(fill=guide_legend(reverse=TRUE)) +
-    scale_x_discrete(label = Path) +
+    scale_x_discrete(label = df$Path) +
     labs(y = "Differential index (DI)",
          x = "Pathway") +
     theme(axis.text=element_text(size=axis.text.size)) +
