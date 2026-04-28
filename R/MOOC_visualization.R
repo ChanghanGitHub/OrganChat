@@ -416,9 +416,9 @@ MO_networkconstruct <- function(object,
 #' @param edge.max scale the edge width using the maximum in "condition1" or "condition2" or NULL (default, meaning using the maximum of both conditions).
 #'
 #' @importFrom graphics legend par strwidth title
-#' @importFrom RColorBrewer brewer.pal
+#' @import RColorBrewer
 #' @importFrom scales rescale
-#' @importFrom igraph graph_from_data_frame
+#' @importFrom igraph graph_from_data_frame V E
 #' @import dplyr
 #' @import ggplot2
 #' @import stringr
