@@ -7,7 +7,7 @@
 MO_networkplot(
   network.input,
   style = "total.counts",
-  color.platte = brewer.pal(8, "Set2"),
+  color.platte = NULL,
   scale.edge.width = 5,
   scale.vertex.size = 30,
   vertex.frame.color = "white",
@@ -26,7 +26,7 @@ MO_networkplot(
 \item{style}{style select which metric to showcase using the edge width, the input should be one of the following:
 "ave.weight", "total.counts", "total.chatP", "ave.sd", or NULL (default, meaning "total.counts" will be used).}
 
-\item{color.platte}{select the color for  brewer.pal(8, "Set2"),}
+\item{color.platte}{select the colors, the default selection is brewer.pal(8, "Set2").}
 
 \item{scale.edge.width}{a multiplier to scale the edge width, the default value is 5.}
 

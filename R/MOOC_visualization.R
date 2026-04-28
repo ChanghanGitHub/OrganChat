@@ -403,7 +403,7 @@ MO_networkconstruct <- function(object,
 #' @param network.input output (a list) of the MO_networkconstruct function.
 #' @param style style select which metric to showcase using the edge width, the input should be one of the following:
 #' "ave.weight", "total.counts", "total.chatP", "ave.sd", or NULL (default, meaning "total.counts" will be used).
-#' @param color.platte select the color for  brewer.pal(8, "Set2"),
+#' @param color.platte select the colors, the default selection is brewer.pal(8, "Set2").
 #' @param scale.edge.width a multiplier to scale the edge width, the default value is 5.
 #' @param scale.vertex.size a multiplier to scale the vertex size, the default value is 30.
 #' @param vertex.frame.color argument of the plot function, the default value is "white".
@@ -427,7 +427,7 @@ MO_networkconstruct <- function(object,
 #'
 MO_networkplot <- function(network.input,
                            style = "total.counts",
-                           color.platte = brewer.pal(8, "Set2"),
+                           color.platte = NULL,
                            scale.edge.width = 5,
                            scale.vertex.size = 30,
                            vertex.frame.color = "white",
@@ -471,8 +471,8 @@ MO_networkplot <- function(network.input,
     # constrict network object
     network <- graph_from_data_frame(d = links, vertices = nodes, directed = TRUE)
 
-    Vmax = c(Vmax, max(V(network)$population))
-    Emax = c(Emax, max(E(network)$value))
+    Vmax = c(Vmax, max(igraph::V(network)$population))
+    Emax = c(Emax, max(igraph::E(network)$value))
   }
 
   if(!is.null(vertex.max)){
@@ -508,8 +508,8 @@ MO_networkplot <- function(network.input,
     network <- graph_from_data_frame(d = links, vertices = nodes, directed = TRUE)
 
     vcolor <- color.platte[1:nrow(nodes)]
-    V(network)$color <- vcolor[factor(V(network)$name)]
-    V(network)$size <- V(network)$population/max(Vmax)
+    igraph::V(network)$color <- vcolor[factor(igraph::V(network)$name)]
+    igraph::V(network)$size <- igraph::V(network)$population/max(Vmax)
     E(network)$width <- E(network)$value/max(Emax)
     # for edge color
     edge.start <- ends(network, es=E(network), names=F)[,1]
