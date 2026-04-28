@@ -418,7 +418,7 @@ MO_networkconstruct <- function(object,
 #' @importFrom graphics legend par strwidth title
 #' @import RColorBrewer
 #' @importFrom scales rescale
-#' @importFrom igraph graph_from_data_frame V E
+#' @importFrom igraph graph_from_data_frame V E ends
 #' @import dplyr
 #' @import ggplot2
 #' @import stringr
@@ -512,13 +512,13 @@ MO_networkplot <- function(network.input,
     igraph::V(network)$size <- igraph::V(network)$population/max(Vmax)
     igraph::E(network)$width <- igraph::E(network)$value/max(Emax)
     # for edge color
-    edge.start <- ends(network, es=igraph::E(network), names=F)[,1]
+    edge.start <- igraph::ends(network, es=igraph::E(network), names=F)[,1]
     edge.col <- igraph::V(network)$color[edge.start]
     # for label location
     lab.locs <- radian.rescale(x=1:nrow(nodes), direction=-1, start=0)
 
     # for self-loop angle
-    myMatrix = ends(network, es=igraph::E(network), names=F)
+    myMatrix = igraph::ends(network, es=igraph::E(network), names=F)
     selfloopAngles <- numeric(nrow(myMatrix))
     M <- nrow(myMatrix)
     for(j in 1:nrow(myMatrix)) {
