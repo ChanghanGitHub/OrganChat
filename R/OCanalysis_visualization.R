@@ -139,6 +139,7 @@ select_paths <- function(df,
 #' @param palette argument of the scale_color_distiller function, the default value is "RdPu".
 #'
 #' @importFrom reshape2 melt
+#' @importFrom ggalluvial geom_flow
 #' @import ggplot2
 #'
 #' @return a ggplot2 object
