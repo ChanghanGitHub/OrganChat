@@ -510,15 +510,15 @@ MO_networkplot <- function(network.input,
     vcolor <- color.platte[1:nrow(nodes)]
     igraph::V(network)$color <- vcolor[factor(igraph::V(network)$name)]
     igraph::V(network)$size <- igraph::V(network)$population/max(Vmax)
-    E(network)$width <- E(network)$value/max(Emax)
+    igraph::E(network)$width <- igraph::E(network)$value/max(Emax)
     # for edge color
-    edge.start <- ends(network, es=E(network), names=F)[,1]
-    edge.col <- V(network)$color[edge.start]
+    edge.start <- ends(network, es=igraph::E(network), names=F)[,1]
+    edge.col <- igraph::V(network)$color[edge.start]
     # for label location
     lab.locs <- radian.rescale(x=1:nrow(nodes), direction=-1, start=0)
 
     # for self-loop angle
-    myMatrix = ends(network, es=E(network), names=F)
+    myMatrix = ends(network, es=igraph::E(network), names=F)
     selfloopAngles <- numeric(nrow(myMatrix))
     M <- nrow(myMatrix)
     for(j in 1:nrow(myMatrix)) {
@@ -530,8 +530,8 @@ MO_networkplot <- function(network.input,
     title = paste0(names(network.input)[i]," - ", style)
 
     plot(network,
-         edge.width = E(network)$width*scale.edge.width,
-         vertex.size = V(network)$size*scale.vertex.size,
+         edge.width = igraph::E(network)$width*scale.edge.width,
+         vertex.size = igraph::V(network)$size*scale.vertex.size,
          vertex.frame.color = vertex.frame.color,
          vertex.label.color = vertex.label.color,
          vertex.label.dist = vertex.label.dist,
