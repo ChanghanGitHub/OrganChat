@@ -22,15 +22,15 @@ CAOC_DI_barplot <- function(df,
 
   df1 = df[df$DI <=0, ]
   df1 %>%
-    group_by(df1$pair) %>%
-    arrange( df1$DI ) %>%
+    group_by(pair) %>%
+    arrange( DI ) %>%
     slice_head(n = n) %>%
     ungroup() -> df1
 
   df2 = df[df$DI >=0, ]
   df2 %>%
-    group_by(df2$pair) %>%
-    arrange( desc(df2$DI) ) %>%
+    group_by(pair) %>%
+    arrange( desc(DI) ) %>%
     slice_head(n = n) %>%
     ungroup() -> df2
 
@@ -45,17 +45,17 @@ CAOC_DI_barplot <- function(df,
   df$ID = paste0(df$Path, "_", df$Sender.group, "_", df$Receiver.group)
 
   df %>%
-    arrange(df$DI) %>%
-    group_by(df$pair) -> df
+    arrange(DI) %>%
+    group_by(pair) -> df
 
   df$ID = factor(df$ID, levels = unique(df$ID) )
 
   # make.title = paste0("DI>0: up-regulated in the first condition.")
 
-  ggplot(df, aes(x=df$ID, y=df$DI, fill=df$pair)) +
+  ggplot(df, aes(x=ID, y=DI, fill=pair)) +
     geom_bar(stat="identity", colour="white") +
     guides(fill=guide_legend(reverse=TRUE)) +
-    scale_x_discrete(label = df$Path) +
+    scale_x_discrete(label = Path) +
     labs(y = "Differential index (DI)",
          x = "Pathway") +
     theme(axis.text=element_text(size=axis.text.size)) +
