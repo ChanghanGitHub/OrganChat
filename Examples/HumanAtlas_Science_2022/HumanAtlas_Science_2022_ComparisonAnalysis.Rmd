@@ -1,0 +1,886 @@
+---
+title: "HumanAtlas_Science_2022_ComparisonAnalysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{HumanAtlas_Science_2022_ComparisonAnalysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Perform comparison analysis via organchat (CAOC) between Small_Intestine and Vasculature, Lung and Vasculature, Lymph node and Vasculature, respectively.
+
+```{r setup}
+library(OrganChat)
+library(readr)
+library(forcats)
+```
+
+
+# Preparation
+
+Please set your paths to the necessary files below
+```{r}
+data.path = "~/Documents/OrganChat_v3/HumanAtlas_Science_2022/Data/"
+DB.path = "~/Documents/OrganChat_v3/Database/"
+Dictionary.path = "~/Documents/OrganChat_v3/Metabolite_Dictionary/"
+output.dir = "~/Documents/OrganChat_v3/HumanAtlas_Science_2022/Outputs/"
+```
+
+
+Load metabolite dictionary data
+```{r, include=FALSE}
+hmdb_dictionary <- read_csv(paste0(Dictionary.path, "hmdb_dictionary_20240129.csv"))
+METAFlux_lookup <- read_csv(paste0(Dictionary.path, "METAFlux_lookup_20240131.csv"))
+```
+
+
+Load OCDB
+```{r}
+load(paste0(DB.path, "LSR_layer1_human.rda")) # set your path load the LS-R database for human
+load(paste0(DB.path, "RSE_layer2_human.rda")) # set your path load the R-SE database for human
+load(paste0(DB.path, "SET_layer3_human.rda")) # set your path load the SE-T database for human
+
+OrganChatDB <- list()
+OrganChatDB[[1]] <- LSR_layer1_human
+OrganChatDB[[2]] <- RSE_layer2_human
+OrganChatDB[[3]] <- SET_layer3_human
+```
+
+
+Load the Seurat object
+c("Spleen", "Small_Intestine", "Lymph_Node", "Bladder", "Lung", "Vasculature")
+```{r}
+CAOC.organ.list <- c("Spleen", "Small_Intestine", "Lymph_Node", "Lung", "Vasculature")
+
+TS_Data_list <- list()
+
+for (i in 1:length(CAOC.organ.list)) {
+  TS_Data_list[[i]] = readRDS(paste0(data.path, "TS_", CAOC.organ.list[i], "_downsampled.rds")) # set your path load the downsampled data for each organ
+}
+
+names(TS_Data_list) = CAOC.organ.list
+```
+
+
+# Comparative analysis (Small_Intestine, Vasculature)
+
+## Create data inputs
+```{r, include=FALSE}
+data.list = list()
+idents.list = list()
+conditions.list = list()
+
+organs = c("Small_Intestine", "Vasculature")
+conditions = c("female", "male")
+
+for (i in 1:length(organs)) {
+  organ.select = organs[i]
+
+  Data.input_organ <- TS_Data_list[[organ.select]]
+  data.list[[i]] = Data.input_organ@assays$RNA@data
+  # ident.list
+  Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+  idents.list[[i]] = Data.input_organ@active.ident
+  # condition.list
+  Idents(Data.input_organ) = Data.input_organ@meta.data$condition
+  conditions.list[[i]] = Data.input_organ@active.ident
+}
+
+
+metalist.1 = list()
+metalist.2 = list()
+
+# load flux data
+for (i in 1:length(organs)) {
+  organ.select = organs[i]
+  metalist.1[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[1],".csv") ) # set your path load the metabolite flux data for each organ, condition 1
+  metalist.1[[i]] <- as.data.frame(metalist.1[[i]])
+  rownames(metalist.1[[i]]) <- metalist.1[[i]][, 1]
+  metalist.1[[i]] <- metalist.1[[i]][, -1]
+  
+  metalist.2[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[2],".csv")) # set your path load the metabolite flux data for each organ, condition 2
+  metalist.2[[i]] <- as.data.frame(metalist.2[[i]])
+  rownames(metalist.2[[i]]) <- metalist.2[[i]][, 1]
+  metalist.2[[i]] <- metalist.2[[i]][, -1]
+}
+```
+
+
+select top 15 markers if each cluster as the targets (from both organs)
+```{r}
+markergenes = read_csv(paste0(data.path, "humanatlas_markergenes_5organs.csv") ) # set your path load the list of marker genes
+
+N = 15
+targets = c()
+for (i in 1:length(organs)) {
+  
+  markergenes.organ = markergenes[markergenes$organ == organs[i], ]
+  markergenes.organ %>%
+    group_by(marker_ID) %>%
+    dplyr::filter(avg_log2FC > 1) %>%
+    slice_head(n = N) %>%
+    ungroup() -> top.markers
+  
+  targets = c(targets, top.markers$gene)
+}
+
+targets = unique(targets)
+```
+
+
+## OrganChat comparison analysis (CAOC)
+Create OC object
+```{r}
+CAOC = create_OrganChat(object = data.list, 
+                          organs = organs, 
+                          idents.list = idents.list,
+                          ComparisonAnalysis = TRUE,
+                          conditions = conditions,
+                          conditions.list = conditions.list,
+                          assay = NULL, 
+                          do.sparse = T)
+```
+
+
+Integrate metabolite data
+```{r}
+CAOC = CA_merge_metabolite.bygroup(object = CAOC,
+                                   metabolitedata.list.condition1 = metalist.1,
+                                   metabolitedata.list.condition2 = metalist.2,
+                                   type = "flux",
+                                   scale.max = 10)
+```
+
+
+Calculate the expression level using the scRNA-seq data
+```{r}
+CAOC = CA_cal_scRNA.bygroup(object = CAOC,
+                            DB = OrganChatDB,
+                            mean_method = NULL,
+                            scale.max = 10)
+```
+
+Infer signaling paths
+```{r}
+CAOC = CA_net0_infer(object = CAOC,
+                     DB = OrganChatDB, 
+                     LS = NULL, 
+                     receptor = NULL, 
+                     tf = NULL,
+                     target = targets)
+```
+
+Analysis
+```{r}
+CAOC = CA_net_analysis(object = CAOC,
+                       K = 0.1, 
+                       N = 1,
+                       R = 100,
+                       CI = 0.95,
+                       CA_cutoff_value = c(0, 0.2, 0.2, 0.2),
+                       CA_cutoff_chatP = 0.2,
+                       CA_cutoff_sd = NULL,
+                       CA_cutoff_CI = 0)
+```
+
+
+Infer DEpath
+```{r}
+CAOC = DEpath_table(object = CAOC,
+                    Sender.group = NULL,
+                    Receiver.group = NULL,
+                    Direction = NULL,
+                    p_cutoff = NULL,
+                    sd_cutoff = NULL,
+                    DI_cutoff = NULL,
+                    top = NULL)
+```
+
+Save the object
+```{r}
+CAOC_SiVa = CAOC
+
+# saveRDS(CAOC_SiVa, file = paste0(data.path, "CAOC_SiVa.rds"))
+```
+
+
+
+## Visualization
+
+Chord diagram: Small intestine -> Vasculature, total counts of LS-T pathways with communication probability > 0.75, female vs. male.
+```{r}
+CAOC_chorddiagram(object = CAOC_SiVa,
+                  dir = "forward",
+                  category = "All",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+```
+
+Chord diagram: Small intestine <- Vasculature, total counts of LS-T pathways with communication probability > 0.75, female vs. male.
+```{r}
+CAOC_chorddiagram(object = CAOC_SiVa,
+                  dir = "backward",
+                  category = "All",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+```
+
+Chord diagram: Small intestine -> Vasculature, total counts of LS-T pathways with communication probability > 0.75 and LS is metabolite, female vs. male.
+```{r}
+CAOC_chorddiagram(object = CAOC_SiVa,
+                  dir = "forward",
+                  category = "metabolite",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+```
+
+
+
+river plot:  Small intestine (epithelial) -> Vasculature (stromal), female
+```{r}
+df.plot = CAOC_SiVa@net$female$forward$epithelial_to_stromal
+
+OC_riverplot_test(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20)
+```
+
+
+river plot:  Small intestine (stromal) -> Vasculature (stromal), female
+```{r}
+df.plot = CAOC_SiVa@net$female$forward$stromal_to_endothelial
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+river plot:  Small intestine (immune) -> Vasculature (stromal), male
+```{r}
+df.plot = CAOC_SiVa@net$male$forward$immune_to_stromal
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+rose diagram: Small intestine (stromal) <- Vasculature (immune), metabolite-driven, male
+```{r}
+df.plot = CAOC_SiVa@net$male$backward$immune_to_stromal
+
+components_rosediagram(df = df.plot, 
+                       category = "metabolite",
+                       n = 5)
+```
+
+
+rose diagram: Small intestine (endothelial) <- Vasculature (immune), female
+```{r}
+df.plot = CAOC_SiVa@net$female$backward$immune_to_endothelial
+
+components_rosediagram(df = df.plot, 
+                       category = "All",
+                       n = 5)
+```
+
+
+rose diagram & river plot: Small intestine (immune) -> Vasculature (stromal), male
+```{r}
+df.plot = CAOC_SiVa@net$male$forward$immune_to_stromal
+
+components_rosediagram(df = df.plot, 
+                       category = "All",
+                       n = 5)
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+rose diagram & river plot: Small intestine (immune) -> Vasculature (stromal), metabolite-driven, female
+```{r}
+df.plot = CAOC_SiVa@net$female$forward$immune_to_stromal
+
+components_rosediagram(df = df.plot, 
+                       category = "metabolite",
+                       n = 5)
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+# Comparative analysis (Lung, Vasculature)
+
+## Create data inputs
+```{r, include=FALSE}
+data.list = list()
+idents.list = list()
+conditions.list = list()
+
+organs = c("Lung", "Vasculature")
+conditions = c("female", "male")
+
+for (i in 1:length(organs)) {
+  
+  organ.select = organs[i]
+  
+  Data.input_organ <- TS_Data_list[[organ.select]]
+  data.list[[i]] = Data.input_organ@assays$RNA@data
+
+  Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+  idents.list[[i]] = Data.input_organ@active.ident
+  
+  Idents(Data.input_organ) = Data.input_organ@meta.data$condition
+  conditions.list[[i]] = Data.input_organ@active.ident
+}
+
+
+metalist.1 = list()
+metalist.2 = list()
+
+for (i in 1:length(organs)) {
+  organ.select = organs[i]
+  metalist.1[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[1],".csv") )
+  metalist.1[[i]] <- as.data.frame(metalist.1[[i]])
+  rownames(metalist.1[[i]]) <- metalist.1[[i]][, 1]
+  metalist.1[[i]] <- metalist.1[[i]][, -1]
+  
+  metalist.2[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[2],".csv"))
+  metalist.2[[i]] <- as.data.frame(metalist.2[[i]])
+  rownames(metalist.2[[i]]) <- metalist.2[[i]][, 1]
+  metalist.2[[i]] <- metalist.2[[i]][, -1]
+}
+```
+
+
+select top 15 markers if each cluster as the targets (from both organs)
+```{r}
+markergenes = read_csv(paste0(data.path, "humanatlas_markergenes_5organs.csv") )
+
+N = 15
+
+targets = c()
+
+for (i in 1:length(organs)) {
+  
+  markergenes.organ = markergenes[markergenes$organ == organs[i], ]
+  markergenes.organ %>%
+    group_by(marker_ID) %>%
+    dplyr::filter(avg_log2FC > 1) %>%
+    slice_head(n = N) %>%
+    ungroup() -> top.markers
+  
+  targets = c(targets, top.markers$gene)
+}
+
+targets = unique(targets)
+```
+
+## Analysis
+Create OC object
+```{r}
+CAOC = create_OrganChat(object = data.list, 
+                          organs = organs, 
+                          idents.list = idents.list,
+                          ComparisonAnalysis = TRUE,
+                          conditions = conditions,
+                          conditions.list = conditions.list,
+                          assay = NULL, 
+                          do.sparse = T)
+```
+
+
+Integrate metabolite data
+```{r}
+CAOC = CA_merge_metabolite.bygroup(object = CAOC,
+                                   metabolitedata.list.condition1 = metalist.1,
+                                   metabolitedata.list.condition2 = metalist.2,
+                                   type = "flux",
+                                   scale.max = 10)
+```
+
+
+Calculate the expression level using the scRNA-seq data
+```{r}
+CAOC = CA_cal_scRNA.bygroup(object = CAOC,
+                            DB = OrganChatDB,
+                            mean_method = NULL,
+                            scale.max = 10)
+```
+
+Infer signaling paths
+```{r}
+CAOC = CA_net0_infer(object = CAOC,
+                         DB = OrganChatDB, 
+                         LS = NULL, 
+                         receptor = NULL, 
+                         tf = NULL,
+                         target = targets)
+```
+
+Analysis
+```{r}
+CAOC = CA_net_analysis(object = CAOC,
+                       K = 0.1, 
+                       N = 1,
+                       R = 100,
+                       CI = 0.95,
+                       CA_cutoff_value = c(0, 0.2, 0.2, 0.2),
+                       CA_cutoff_chatP = 0.2,
+                       CA_cutoff_sd = NULL,
+                       CA_cutoff_CI = 0)
+```
+
+
+Infer DEpath
+```{r}
+CAOC = DEpath_table(object = CAOC,
+                        Sender.group = NULL,
+                        Receiver.group = NULL,
+                        Direction = NULL,
+                        p_cutoff = NULL,
+                        sd_cutoff = NULL,
+                        DI_cutoff = NULL,
+                        top = NULL)
+```
+
+save the object
+```{r}
+CAOC_LuVa = CAOC
+
+# saveRDS(CAOC_LuVa, file = paste0(data.path, "CAOC_LuVa.rds"))
+```
+
+
+## Visualization
+
+Chord diagram: Lung -> Vasculature, total counts of metabolite-driven LS-T pathways with communication probability > 0.75, female vs. male.
+```{r}
+CAOC_chorddiagram(object = CAOC_LuVa,
+                  dir = "forward",
+                  category = "metabolite",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+```
+
+
+Chord diagram: Lung <- Vasculature, total counts of LS-T pathways with communication probability > 0.75, female vs. male.
+```{r}
+CAOC_chorddiagram(object = CAOC_LuVa,
+                  dir = "backward",
+                  category = "All",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+```
+
+
+rose diagram & river plot: Lung (epithelial) <- Vasculature (stromal), male
+```{r}
+df.plot = CAOC_LuVa@net$male$backward$stromal_to_epithelial
+
+components_rosediagram(df = df.plot, 
+                       category = "All",
+                       n = 5)
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+rose diagram & river plot: Lung (epithelial) <- Vasculature (stromal), female
+```{r}
+df.plot = CAOC_LuVa@net$female$backward$stromal_to_epithelial
+
+components_rosediagram(df = df.plot, 
+                       category = "All",
+                       n = 5)
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+
+Bubble plot of Small intestine -> Vasculature, total counts of pathways between conditions (female vs male) with communication probability > 0.6.
+```{r}
+LS.name = c()
+female.size = c()
+male.size = c()
+
+for (i in c(17, 12, 4, 31, 15, 14)) {
+  
+  df.plot = CAOC_SiVa@DEpath[CAOC_SiVa@DEpath$Direction == "forward" & 
+                        CAOC_SiVa@DEpath$LS_name == unique(CAOC_SiVa@DEpath[CAOC_SiVa@DEpath$Direction == "forward", ]$LS_name)[i] , ]
+  
+  LS.name = c(LS.name, unique(df.plot$LS_name))
+  
+  female.size = c(female.size, nrow(df.plot[df.plot$chatP_female > 0.6, ]))
+  male.size = c(male.size, nrow(df.plot[df.plot$chatP_male > 0.6, ]))
+}
+
+df1 = data.frame(LS.name = LS.name, size = female.size, sex = "female")
+df2 = data.frame(LS.name = LS.name, size = male.size, sex = "male")
+df = rbind(df1, df2)
+
+# pdf(paste0(output.dir, "CAOC_bubble_SiVa_forward_LS_pathwaynumbers.pdf"), width = 12, height = 8)
+
+ggplot(df, aes(sex, LS.name, size = size, color = factor(LS.name))) +
+  geom_point(alpha = 0.7) +
+  scale_size(range = c(1, 12), name = "Number of pathway") +
+  scale_color_brewer(palette = "Set1") +
+  xlab("Receiver group") + ylab("Sender group") +
+  theme_bw() +
+  theme(panel.grid = element_blank()) +
+  theme(axis.text.x = element_text(hjust = 1))
+
+# dev.off()
+```
+
+
+Bubble plot of Lung <- Vasculature, total counts of pathways between conditions (female vs male) with communication probability > 0.6.
+```{r}
+LS.name = c()
+female.size = c()
+male.size = c()
+
+for (i in c(3, 16, 30, 17, 21, 32, 9)) {
+  
+  df.plot = CAOC_LuVa@DEpath[CAOC_LuVa@DEpath$Direction == "backward" & 
+                        CAOC_LuVa@DEpath$LS_name == unique(CAOC_LuVa@DEpath[CAOC_LuVa@DEpath$Direction == "backward", ]$LS_name)[i] , ]
+  
+  LS.name = c(LS.name, unique(df.plot$LS_name))
+  
+  female.size = c(female.size, nrow(df.plot[df.plot$chatP_female > 0.6, ]))
+  male.size = c(male.size, nrow(df.plot[df.plot$chatP_male > 0.6, ]))
+}
+
+df1 = data.frame(LS.name = LS.name, size = female.size, sex = "female")
+df2 = data.frame(LS.name = LS.name, size = male.size, sex = "male")
+df = rbind(df1, df2)
+
+# pdf(paste0(output.dir, "CAOC_bubble_LuVa_backward_LS_pathwaynumbers.pdf"), width = 12, height = 8)
+
+ggplot(df, aes(sex, LS.name, size = size, color = factor(LS.name))) +
+  geom_point(alpha = 0.7) +
+  scale_size(range = c(1, 12), name = "Number of pathway") +
+  scale_color_brewer(palette = "Dark2") +
+  xlab("Receiver group") + ylab("Sender group") +
+  theme_bw() +
+  theme(panel.grid = element_blank()) +
+  theme(axis.text.x = element_text(hjust = 1))
+
+# dev.off()
+```
+
+
+Tree plot of GRN connecting LTB4 and IGFBP5 in Small intestine -> Vasculature communication in male.
+```{r}
+df.plot = CAOC_SiVa@net$male$forward$immune_to_stromal
+df.plot = df.plot[df.plot$LS_name == unique(CAOC_SiVa@DEpath[CAOC_SiVa@DEpath$Direction == "forward", ]$LS_name)[17] &
+                    df.plot$Target %in% c("IGFBP5"), ]
+df.plot %>%
+  group_by(Target) %>%
+  dplyr::arrange(desc(chatP), by_group = TRUE) %>%
+  slice_head(n = 5) %>%
+  ungroup() -> df.plot
+
+x = construct_Network_df(df = df.plot,
+                         category = "All",
+                         restrict.by = "Both")
+
+# pdf(paste0(output.dir, "CAOC_treeplot_SiVa_forward_male_LTB4_IGFBP5.pdf"), width = 12, height = 8)
+
+network_treeplot(x)
+
+# dev.off()
+```
+
+
+
+```{r}
+df.plot = CAOC_SiVa@net$male$forward$immune_to_stromal
+df.plot = df.plot[df.plot$LS_name %in% unique(CAOC_SiVa@DEpath[CAOC_SiVa@DEpath$Direction == "forward", ]$LS_name)[c(17, 12, 4, 31)] &
+                    df.plot$Target %in% c("IGFBP5", "MMP2", "COL1A2", "PODXL", "SRGN"), ]
+
+# pdf(paste0(output.dir, "CAOC_rosediagram_SiVa_forward_male_immune_stromal.pdf"), width = 12, height = 8)
+
+components_rosediagram(df = df.plot, 
+                       category = "All",
+                       n = 5)
+
+# dev.off()
+```
+
+
+```{r}
+# pdf(paste0(output.dir, "SL_CAOC_riverplot_SiVa_male_forward_imm_to_stromal.pdf"), width = 12, height = 6)
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+
+# dev.off()
+```
+
+
+# Comparative analysis (Lymph node, Vasculature)
+
+## Create data inputs
+```{r, include=FALSE}
+data.list = list()
+idents.list = list()
+conditions.list = list()
+
+organs = c("Lymph_Node", "Vasculature")
+conditions = c("female", "male")
+
+for (i in 1:length(organs)) {
+  
+  organ.select = organs[i]
+  
+  Data.input_organ <- TS_Data_list[[organ.select]]
+  data.list[[i]] = Data.input_organ@assays$RNA@data
+
+  Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+  idents.list[[i]] = Data.input_organ@active.ident
+  
+  Idents(Data.input_organ) = Data.input_organ@meta.data$condition
+  conditions.list[[i]] = Data.input_organ@active.ident
+}
+
+
+metalist.1 = list()
+metalist.2 = list()
+
+for (i in 1:length(organs)) {
+  organ.select = organs[i]
+  metalist.1[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[1],".csv") )
+  metalist.1[[i]] <- as.data.frame(metalist.1[[i]])
+  rownames(metalist.1[[i]]) <- metalist.1[[i]][, 1]
+  metalist.1[[i]] <- metalist.1[[i]][, -1]
+  
+  metalist.2[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[2],".csv"))
+  metalist.2[[i]] <- as.data.frame(metalist.2[[i]])
+  rownames(metalist.2[[i]]) <- metalist.2[[i]][, 1]
+  metalist.2[[i]] <- metalist.2[[i]][, -1]
+}
+```
+
+
+
+```{r}
+markergenes = read_csv(paste0(data.path, "humanatlas_markergenes_5organs.csv") )
+
+N = 15
+
+targets = c()
+
+for (i in 1:length(organs)) {
+  
+  markergenes.organ = markergenes[markergenes$organ == organs[i], ]
+  markergenes.organ %>%
+    group_by(marker_ID) %>%
+    dplyr::filter(avg_log2FC > 1) %>%
+    slice_head(n = N) %>%
+    ungroup() -> top.markers
+  
+  targets = c(targets, top.markers$gene)
+}
+
+targets = unique(targets)
+```
+
+## Analysis
+Create OC object
+```{r}
+CAOC = create_OrganChat(object = data.list, 
+                          organs = organs, 
+                          idents.list = idents.list,
+                          ComparisonAnalysis = TRUE,
+                          conditions = conditions,
+                          conditions.list = conditions.list,
+                          assay = NULL, 
+                          do.sparse = T)
+```
+
+
+Integrate metabolite data
+```{r}
+CAOC = CA_merge_metabolite.bygroup(object = CAOC,
+                                   metabolitedata.list.condition1 = metalist.1,
+                                   metabolitedata.list.condition2 = metalist.2,
+                                   type = "flux",
+                                   scale.max = 10)
+```
+
+
+Calculate the expression level using the scRNA-seq data
+```{r}
+CAOC = CA_cal_scRNA.bygroup(object = CAOC,
+                            DB = OrganChatDB,
+                            mean_method = NULL,
+                            scale.max = 10)
+```
+
+Infer signaling paths
+```{r}
+CAOC = CA_net0_infer(object = CAOC,
+                         DB = OrganChatDB, 
+                         LS = NULL, 
+                         receptor = NULL, 
+                         tf = NULL,
+                         target = targets)
+```
+
+Analysis
+```{r}
+CAOC = CA_net_analysis(object = CAOC,
+                       K = 0.1, 
+                       N = 1,
+                       R = 100,
+                       CI = 0.95,
+                       CA_cutoff_value = c(0, 0.2, 0.2, 0.2),
+                       CA_cutoff_chatP = 0.2,
+                       CA_cutoff_sd = NULL,
+                       CA_cutoff_CI = 0)
+```
+
+
+Infer DEpath
+```{r}
+CAOC = DEpath_table(object = CAOC,
+                        Sender.group = NULL,
+                        Receiver.group = NULL,
+                        Direction = NULL,
+                        p_cutoff = NULL,
+                        sd_cutoff = NULL,
+                        DI_cutoff = NULL,
+                        top = NULL)
+```
+
+
+```{r}
+CAOC_LnVa = CAOC
+
+# saveRDS(CAOC_LnVa, file = paste0(data.path, "CAOC_LnVa.rds"))
+```
+
+
+## Visualization
+Chorddiagram
+```{r}
+CAOC_chorddiagram(object = CAOC_LnVa,
+                  dir = "forward",
+                  category = "All",
+                  style = "ave.weight",
+                  chatP_cutoff = 0.75)
+
+```
+
+
+```{r}
+df.plot = CAOC_LnVa@net$female$forward$immune_to_stromal
+df.plot = df.plot[df.plot$chatP > 0.5, ]
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 10,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+
+```{r}
+df.plot = CAOC_LnVa@net$female$forward$endothelial_to_endothelial
+df.plot = df.plot[df.plot$chatP > 0.5, ]
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 10,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+```{r}
+df.plot = df.plot[df.plot$LS_name == "L-Lactic acid" & df.plot$Target == "VWF" & df.plot$chatP > 0.75, ]
+
+# pdf(paste0(output.dir, "CAOC_treeplot_LnVa_female_forward_LLacticacid_VWF.pdf"), width=12, height = 8)
+
+x = construct_Network_df(df = df.plot,
+                         category = "All",
+                         restrict.by = "Both")
+network_treeplot(x)
+
+# dev.off()
+```
+
+
+
+```{r}
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 3,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+```{r}
+CAOC_bubbleheatmap(object = CAOC_LnVa,
+                   dir = "backward",
+                   category = "All",
+                   chatP_cutoff = 0.1,
+                   size = "total.counts",
+                   color = "total.chatP")
+```
+
+
+```{r}
+OC_bubbleheatmap(object = CAOC_LnVa,
+                net = CAOC_LnVa@net$female$backward,
+                dir = "backward",
+                category = "All",
+                size = "total.counts",
+                color = "total.chatP")
+```

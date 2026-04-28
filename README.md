@@ -31,4 +31,9 @@ and mouse, respectively (Fig. 1a-b). The standard OrganChat workflow
 consists of three key modules: (1) Data processing module; (2) OOC
 inference module; (3) Multi-scale analysis module.
 
-## Tutorial
+## Examples
+
+OrganChat reveals cross-organ communication for human multiple-disease
+systems – the [files](Examples/HumanAtlas_Science_2022) include (1)
+[Processing the original
+data](Examples/HumanAtlas_Science_2022/HumanAtlas_Science_2022_DataProcessing.Rmd)

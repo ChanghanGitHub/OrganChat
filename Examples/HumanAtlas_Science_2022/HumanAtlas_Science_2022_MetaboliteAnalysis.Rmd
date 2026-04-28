@@ -1,0 +1,104 @@
+---
+title: "HumanAtlas_Science_2022_MetaboliteAnalysis"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{HumanAtlas_Science_2022_MetaboliteAnalysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Inferring metabolite flux level through OrganChat (based on METAFlux).
+
+All processed metabolite flux data at the following Zenodo repository: https://doi.org/10.5281/zenodo.19042679.
+
+# Load the required libraries
+```{r setup}
+library(OrganChat)
+library(readr)
+library(forcats)
+library(METAFlux)
+```
+
+Please set your paths to the necessary files below
+```{r}
+data.path = "~/Documents/OrganChat_v3/HumanAtlas_Science_2022/Data/"
+DB.path = "~/Documents/OrganChat_v3/Database/"
+Dictionary.path = "~/Documents/OrganChat_v3/Metabolite_Dictionary/"
+output.dir = "~/Documents/OrganChat_v3/Sandra_CellRepMed_2023/Outputs/"
+```
+
+# Data preparation
+
+Load the Seurat objects as a list
+```{r}
+CAOC.organ.list <- c("Spleen", "Small_Intestine", "Lymph_Node", "Bladder", "Lung", "Vasculature")
+
+TS_Data_list <- list()
+
+for (i in 1:length(CAOC.organ.list)) {
+  TS_Data_list[[i]] = readRDS(paste0(data.path, "TS_", CAOC.organ.list[i], "_downsampled.rds"))
+}
+
+names(TS_Data_list) = CAOC.organ.list
+```
+
+
+Load metabolite dictionary data and METAFlux_lookup file
+```{r, include=FALSE}
+hmdb_dictionary <- read_csv(paste0(Dictionary.path, "hmdb_dictionary_20240129.csv") )
+METAFlux_lookup <- read_csv(paste0(Dictionary.path, "METAFlux_lookup_20240131.csv") )
+```
+
+
+# Metabolite analysis
+
+```{r, include=FALSE}
+conditions = c("female", "male")
+
+for (i in 1:length(TS_Data_list)) {
+  # Prepare the input RNA data 
+  organ.select = names(TS_Data_list)[i]
+  Data.input_condition1 <- subset(TS_Data_list[[organ.select]], subset = condition == conditions[1])
+  
+  Data.input_condition2 <- subset(TS_Data_list[[organ.select]], subset = condition == conditions[2])
+  
+  Data.input_condition1$Type <- fct_drop(Data.input_condition1$Type)
+  Data.input_condition2$Type <- fct_drop(Data.input_condition2$Type)
+  # Update the Active Identity
+  Data.input_condition1 <- SetIdent(Data.input_condition1, value = Data.input_condition1$Type)
+  Data.input_condition2 <- SetIdent(Data.input_condition2, value = Data.input_condition2$Type)
+  
+  # METAFlux analysis
+  Data.list = list(Condition1 = Data.input_condition1, Condition2 = Data.input_condition2)
+  names(Data.list) = conditions
+  
+  for (j in 1:length(Data.list)) {
+    flux = run_METAFlux(Data.input = Data.list[[j]],
+                        myident = 'Type',
+                        n_bootstrap=100, 
+                        seed=1,
+                        medium = human_blood)
+    
+    flux = METAFlux_reformat(flux = flux,
+                             cell.types = levels(Data.list[[j]]@meta.data$Type),
+                             exclude = "None",
+                             METAFlux_lookup = METAFlux_lookup,
+                             scale.byflux = TRUE)
+    
+    output = METAFlux_convert_OrganChat(cell.types = levels(Data.list[[j]]$Type),
+                                       flux = flux,
+                                       METAFlux_lookup = METAFlux_lookup,
+                                       hmdb_dictionary = hmdb_dictionary)
+    
+    # write.csv(output , file = paste0(data.path, organ.select, "_flux_", names(Data.list[j]), ".csv"), 
+    #           row.names = TRUE, col.names = TRUE)
+  }
+}
+```

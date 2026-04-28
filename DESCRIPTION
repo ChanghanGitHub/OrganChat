@@ -37,3 +37,4 @@ Suggests:
     roxygen2
 URL: https://github.com/ChanghanGitHub/OrganChat
 BugReports: https://github.com/ChanghanGitHub/OrganChat/issues
+VignetteBuilder: knitr

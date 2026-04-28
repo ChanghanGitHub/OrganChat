@@ -1,0 +1,158 @@
+---
+title: "HumanAtlas_Science_2022_DataProcessing"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{HumanAtlas_Science_2022_DataProcessing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Data processing includes: (1) converting the h5ad files into Seurat objects; (2) separating the data by gender and down-sampling.
+
+All processed data at the following Zenodo repository: https://doi.org/10.5281/zenodo.19042679.
+
+The original data comes from the following paper: Claire L. Walsh et al. ,The Human Organ Atlas.Sci. Adv.12,eadz2240(2026).DOI:10.1126/sciadv.adz2240.
+
+```{r setup}
+library(OrganChat)
+
+library(scCustomize)
+library(sceasy)
+```
+
+
+Convert the h5ad files into Seurat objects
+```{r}
+organ.list <- c("Thymus", "Spleen", "Small_Intestine", "Prostate", "Lymph_Node", "Bladder", "Liver")
+CAOC.organ.list <- c("Lung", "Vasculature", "Blood", "Spleen", "Small_Intestine", "Lymph_Node", "Bladder")
+
+for (i in 1:length(CAOC.organ.list)) {
+  ad_path <- paste0("/Volumes/Samsung_T5/OrganChat/Examples/HumanAtlas_Science_2022/OriginalData/TS_", organ.list[i], ".h5ad")
+  rds_path <- paste0("/Volumes/Samsung_T5/OrganChat/Examples/HumanAtlas_Science_2022/OriginalData/TS_", organ.list[i], ".rds")
+  
+  sceasy::convertFormat(ad_path, from="anndata", to="seurat", outFile=rds_path)
+}
+```
+
+Load and scale the seurat objects
+```{r}
+TS_Data_list = list()
+
+for (i in 1:length(CAOC.organ.list)) {
+  TS_Data_list[[i]] <- readRDS(paste0("/Volumes/Samsung_T5/OrganChat/Examples/HumanAtlas_Science_2022/OriginalData/TS_", organ.list[i], ".rds"))
+}
+
+names(TS_Data_list) = CAOC.organ.list
+```
+
+Select data from donor 2 (F) and 14 (M)
+```{r}
+for (i in 1:length(TS_Data_list)) {
+  TS_Data_list[[i]] <- subset(TS_Data_list[[i]], subset = donor %in% c("TSP2", "TSP14"))
+}
+```
+
+Construct a list of gender-specific data
+```{r}
+# c(2,3,5,6)
+TS_genderData_list <- list()
+
+for (i in 1:length(CAOC.organ.list)) {
+  df.list = list(female = list(), male = list())
+  
+  seurat.object = TS_Data_list[[CAOC.organ.list[i]]]
+  
+  df.list[["female"]] = subset(seurat.object, subset = gender == "female")
+  df.list[["male"]] = subset(seurat.object, subset = gender == "male")
+  
+  TS_genderData_list[[i]] = df.list
+}
+names(TS_genderData_list) = CAOC.organ.list
+```
+
+
+
+```{r}
+for (i in 1:length(TS_genderData_list)) {
+
+  print(table(TS_genderData_list[[i]]$female$compartment))
+  print(table(TS_genderData_list[[i]]$male$compartment))
+}
+```
+
+
+Down-sampling
+```{r}
+TS_subset_genderData_list = TS_genderData_list
+
+downsample.rate = 0.25
+mincells = 200
+
+for (i in 1:length(TS_genderData_list)) {
+  for (j in 1:2) {
+    # select the seurat object
+    datause <- TS_genderData_list[[i]][[j]]
+    metause <- TS_genderData_list[[i]][[j]]@meta.data
+    # select clusters with >200 cells
+    cluster = names(table(datause$compartment)[table(datause$compartment)>mincells])
+    # down-sampling
+    cellbarcodes = colnames(datause@assays$RNA@data)
+    rownames(metause) = cellbarcodes
+    remove_cells <- c()
+    for (k in 1:length(cluster)) {
+      # cell barcodes of the down-sampled cluster
+      metause_downsample = metause[metause$compartment == cluster[k], ]
+      # cells that need to be removed
+      if(nrow(metause_downsample)>6000){
+        cellbarcodes_downsample = rownames( metause_downsample[sample( nrow(metause_downsample), floor(nrow(metause_downsample)*(1-downsample.rate*0.6)) ), ] )
+      }else{
+        cellbarcodes_downsample = rownames( metause_downsample[sample( nrow(metause_downsample), floor(nrow(metause_downsample)*(1-downsample.rate)) ), ] )
+      }
+      # barcodes of the cells to be removed
+      remove_cells <- c(remove_cells, cellbarcodes_downsample)
+    }
+    cellbarcodes = cellbarcodes[!(cellbarcodes %in% remove_cells)]
+    data.output = subset(datause, cells = cellbarcodes)
+    # add cell type label
+    data.output@meta.data$Type = as.factor(data.output@meta.data$compartment)
+    data.output@meta.data$Type = fct_drop(data.output@meta.data$Type)
+    # remove cluster with <200 cells
+    # cluster.table = table(data.output@meta.data$Type)
+    # Type.select = names(cluster.table[cluster.table>mincells])
+    # data.output = subset(data.output, subset = Type %in% Type.select)
+    # data.output@meta.data$Type = fct_drop(data.output@meta.data$Type)
+    # add condition label
+    data.output@meta.data$condition = names(TS_subset_genderData_list[[i]][j])
+      
+    TS_subset_genderData_list[[i]][[j]] = data.output
+  }
+}
+```
+
+
+
+```{r}
+for (i in 1:length(TS_subset_genderData_list)) {
+
+  print(table(TS_subset_genderData_list[[i]]$female$Type))
+  print(table(TS_subset_genderData_list[[i]]$male$Type))
+}
+```
+
+
+Merge and save
+```{r}
+path = yourpath
+for (i in 1:length(TS_subset_genderData_list)) {
+  merged_object <- Merge_Seurat_List(list_seurat = TS_subset_genderData_list[[i]])
+  
+  # saveRDS(merged_object, paste0(path, "TS_", names(TS_subset_genderData_list[i]), "_downsampled.rds"))
+}
+```
