@@ -25,5 +25,12 @@ OrganChatDB integrates LS-receptor signaling, receptor-SE interactions, and SE-t
 
 ## Examples
 
-OrganChat reveals cross-organ communication for human multiple-disease systems -- the [files](Examples/HumanAtlas_Science_2022) include
-(1) [Processing the original data](Examples/HumanAtlas_Science_2022/HumanAtlas_Science_2022_DataProcessing.Rmd)
+OrganChat reveals cross-organ communication for human multiple-disease systems -- the [files](Example/HumanAtlas_Science_2022) include:
+
+(1) [Processing the original data](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_DataProcessing.Rmd)
+
+(2) [Inferring metabolite flux data](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_MetaboliteAnalysis.Rmd)
+
+(3) [Multi-organ OrganChat analysis](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_Multi-OrganAnalysis.Rmd)
+
+(4) [Comparison analysis between two donors](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_ComparisonAnalysis.Rmd)
