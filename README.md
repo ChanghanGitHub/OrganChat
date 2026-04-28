@@ -33,10 +33,10 @@ inference module; (3) Multi-scale analysis module.
 
 ## Examples
 
-### [Application to a five-organ communication system for immune-mediated diseases](Example/Sandra_CellRepMed_2023):
+### Application to a five-organ communication system for immune-mediated diseases:[link to the folder](Example/Sandra_CellRepMed_2023)
 
 1)  [Processing the original data and inferring metabolite
-    flux](Example/Sandra_CellRepMed_2023/HSandra_CellRepMed_2023_DataProcessing_MetaboliteAnalysis.Rmd)
+    flux.](Example/Sandra_CellRepMed_2023/HSandra_CellRepMed_2023_DataProcessing_MetaboliteAnalysis.Rmd)
 
 2)  [Comparison analysis via OrganChat between conditions for: joint and
     muscle; joint and spleen; muscle and spleen; skin and
@@ -46,13 +46,13 @@ inference module; (3) Multi-scale analysis module.
     conditions for: joint, muscle, lung, skin,
     spleen.](Example/Sandra_CellRepMed_2023/HumanAtlas_Science_2022_Multi-OrganAnalysis.Rmd)
 
-### [OrganChat reveals cross-organ communication for human multiple-disease systems](Example/HumanAtlas_Science_2022):
+### OrganChat reveals cross-organ communication for human multiple-disease systems: [link to the folder](Example/HumanAtlas_Science_2022)
 
 1)  [Processing the original
-    data](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_DataProcessing.Rmd)
+    data.](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_DataProcessing.Rmd)
 
 2)  [Inferring metabolite flux
-    data](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_MetaboliteAnalysis.Rmd)
+    data.](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_MetaboliteAnalysis.Rmd)
 
 3)  [Multi-organ OrganChat analysis between spleen, small intestine,
     lymph node, lung, and
