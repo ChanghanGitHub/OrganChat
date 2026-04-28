@@ -539,7 +539,7 @@ MO_networkplot <- function(network.input,
          edge.color = edge.col,
          edge.arrow.size = edge.arrow.size,
          edge.loop.angle = selfloopAngles,
-         layout = layout.circle,
+         layout = igraph::layout.circle,
          main = title,
          edge.curved = edge.curved,
          margin = margin)
