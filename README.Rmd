@@ -25,12 +25,20 @@ OrganChatDB integrates LS-receptor signaling, receptor-SE interactions, and SE-t
 
 ## Examples
 
-OrganChat reveals cross-organ communication for human multiple-disease systems -- the [files](Example/HumanAtlas_Science_2022) include:
+### [Application to a five-organ communication system for immune-mediated diseases](Example/Sandra_CellRepMed_2023):
+
+(1) [Processing the original data and inferring metabolite flux](Example/Sandra_CellRepMed_2023/HSandra_CellRepMed_2023_DataProcessing_MetaboliteAnalysis.Rmd)
+
+(2) [Comparison analysis via OrganChat between conditions for: joint and muscle; joint and spleen; muscle and spleen; skin and muscle.](Example/Sandra_CellRepMed_2023/HumanAtlas_Science_2022_MetaboliteAnalysis.Rmd)
+
+(3) [Multi-organ OrganChat (MOOC) Analysis of OrganChat between conditions for: joint, muscle, lung, skin, spleen.](Example/Sandra_CellRepMed_2023/HumanAtlas_Science_2022_Multi-OrganAnalysis.Rmd)
+
+### [OrganChat reveals cross-organ communication for human multiple-disease systems](Example/HumanAtlas_Science_2022):
 
 (1) [Processing the original data](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_DataProcessing.Rmd)
 
 (2) [Inferring metabolite flux data](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_MetaboliteAnalysis.Rmd)
 
-(3) [Multi-organ OrganChat analysis](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_Multi-OrganAnalysis.Rmd)
+(3) [Multi-organ OrganChat analysis between spleen, small intestine, lymph node, lung, and vasculature.](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_Multi-OrganAnalysis.Rmd)
 
-(4) [Comparison analysis between two donors](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_ComparisonAnalysis.Rmd)
+(4) [Comparison analysis between two donors for: small intestine and vasculature, lung and vasculature, lymph node and vasculature, respectively.](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_ComparisonAnalysis.Rmd)

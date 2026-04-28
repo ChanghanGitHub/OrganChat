@@ -1,0 +1,950 @@
+---
+title: "Sandra_CellRepMed_2023_CAOC"
+author: "Changhan"
+date: "2024-08-11"
+output: html_document
+---
+
+Perform Comparison analysis of OrganChat between conditions for: joint and muscle; joint and spleen; muscle and spleen; skin and muscle.
+
+```{r message=FALSE,warning=FALSE}
+library(OrganChat)
+library(readr)
+library(forcats)
+```
+
+
+# Preparation
+
+```{r}
+data.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Sandra_2023_mouse/"     # your path to the data
+DB.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/OrganChatDB/"                   # your path to the OrganChatDB
+Dictionary.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Metabolite_Dictionary/" # your path to the files "hmdb_dictionary" and "METAFlux_lookup"
+output.dir = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Sandra_2023_mouse/"    # your path to the ouput folder
+```
+
+
+Load metabolite dictionary data
+```{r, include=FALSE}
+hmdb_dictionary <- read_csv(paste0(Dictionary.path, "hmdb_dictionary_20240129.csv"))
+METAFlux_lookup <- read_csv(paste0(Dictionary.path, "METAFlux_lookup_20240131.csv"))
+```
+
+# Load OCDB
+```{r}
+# load database
+load(paste0(DB.path, "LSR_layer1_mouse.rda"))
+load(paste0(DB.path, "RSE_layer2_mouse.rda"))
+load(paste0(DB.path, "SET_layer3_mouse.rda"))
+
+OrganChatDB <- list()
+OrganChatDB[[1]] <- LSR_layer1_mouse
+OrganChatDB[[2]] <- RSE_layer2_mouse
+OrganChatDB[[3]] <- SET_layer3_mouse
+```
+
+
+Load the scRNA-seq data and the targets
+```{r, include=FALSE}
+Sandra_2023_RNA <- readRDS(paste0(data.path, "Sandra_2023_mouse_filtered.rds") )
+targets <- read_csv(paste0(data.path, "targets_highexpression.csv") )
+```
+
+
+################################################################################
+# Comparative analysis (joint, muscle)
+
+## Create data inputs
+```{r, include=FALSE}
+data.list = list()
+idents.list = list()
+conditions.list = list()
+
+organs = c("joint", "muscle")
+conditions = c("Sick", "Healthy")
+
+for (i in 1:length(organs)) {
+  
+  organ.select = organs[i]
+  
+  Data.input_organ <- subset(Sandra_2023_RNA, subset = organ == organ.select)
+  data.list[[i]] = Data.input_organ@assays$RNA@data
+
+  Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+  idents.list[[i]] = Data.input_organ@active.ident
+  
+  Idents(Data.input_organ) = Data.input_organ@meta.data$condition
+  conditions.list[[i]] = Data.input_organ@active.ident
+}
+
+
+metalist.1 = list()
+metalist.2 = list()
+
+for (i in 1:length(organs)) {
+  organ.select = organs[i]
+  metalist.1[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[1],".csv") )
+  metalist.1[[i]] <- as.data.frame(metalist.1[[i]])
+  rownames(metalist.1[[i]]) <- metalist.1[[i]][, 1]
+  metalist.1[[i]] <- metalist.1[[i]][, -1]
+  
+  metalist.2[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[2],".csv"))
+  metalist.2[[i]] <- as.data.frame(metalist.2[[i]])
+  rownames(metalist.2[[i]]) <- metalist.2[[i]][, 1]
+  metalist.2[[i]] <- metalist.2[[i]][, -1]
+}
+```
+
+## Analysis
+Create OC object
+```{r}
+CAOC = create_OrganChat(object = data.list, 
+                          organs = organs, 
+                          idents.list = idents.list,
+                          ComparisonAnalysis = TRUE,
+                          conditions = conditions,
+                          conditions.list = conditions.list,
+                          assay = NULL, 
+                          do.sparse = T)
+```
+
+
+Integrate metabolite data
+```{r}
+CAOC = CA_merge_metabolite.bygroup(object = CAOC,
+                                   metabolitedata.list.condition1 = metalist.1,
+                                   metabolitedata.list.condition2 = metalist.2,
+                                   type = "flux",
+                                   scale.max = 10)
+```
+
+
+Calculate the expression level using the scRNA-seq data
+```{r}
+CAOC = CA_cal_scRNA.bygroup(object = CAOC,
+                            DB = OrganChatDB,
+                            mean_method = NULL,
+                            scale.max = 10)
+```
+
+Infer signaling paths
+```{r}
+target = targets$targets
+
+CAOC = CA_net0_infer(object = CAOC,
+                     DB = OrganChatDB, 
+                     LS = NULL, 
+                     receptor = NULL, 
+                     tf = NULL,
+                     target = target)
+```
+
+
+Analysis
+```{r}
+CAOC = CA_net_analysis(object = CAOC,
+                       K = 0.1, 
+                       N = 1,
+                       R = 100,
+                       CI = 0.95,
+                       CA_cutoff_value = c(0, 0.2, 0.2, 0.2),
+                       CA_cutoff_chatP = 0.2,
+                       CA_cutoff_sd = NULL,
+                       CA_cutoff_CI = 0)
+```
+
+
+Infer DEpath
+```{r}
+CAOC = DEpath_table(object = CAOC)
+```
+
+OrganChat object for joint & muscle
+```{r}
+CAOC_jm = CAOC
+```
+
+
+
+## Visualization
+
+Chord diagram: joint -> muscle, total counts of LS-T pathways with communication probability > 0.3, sick vs. healthy
+```{r}
+CAOC_chorddiagram(object = CAOC_jm,
+                  dir = "forward",
+                  category = "All",
+                  style = "total.counts",
+                  chatP_cutoff = 0.3)
+```
+
+
+Chord diagram: joint <- muscle, total counts of LS-T pathways with communication probability > 0.3, sick vs. healthy
+```{r}
+CAOC_chorddiagram(object = CAOC_jm,
+                  dir = "backward",
+                  category = "All",
+                  style = "total.counts",
+                  chatP_cutoff = 0.3)
+```
+
+
+river plot:  joint (Fibroblasts) -> muscle (Neutrophils), sick condition
+```{r}
+df.plot = CAOC_jm@net$Sick$forward$Fibroblasts_to_Neutrophils
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+rose diagram: joint (Fibroblasts) -> muscle (Neutrophils), sick condition
+```{r}
+components_rosediagram(df = df.plot, 
+                       category = "All",
+                       n = 5)
+```
+
+
+bubble heatmap:  joint -> muscle, all inferred LS-T Pathways, sick vs. healthy 
+```{r}
+CAOC_bubbleheatmap(object = CAOC_jm,
+                  dir = "forward",
+                  category = "All",
+                  size = "total.counts",
+                  color = "ave.weight",
+                  ncol = 2)
+```
+
+
+Bar plot of the LS-T pathways with the highest differential index (DI), from joint (Neutrophils) to muscle, driven by Adenine.
+```{r}
+df.plot = CAOC_jm@DEpath[CAOC_jm@DEpath$Direction == "forward" & 
+                           CAOC_jm@DEpath$Receiver.group == "Neutrophils" & 
+                           CAOC_jm@DEpath$LS_name %in% c("Adenine"), ]
+
+CAOC_DI_barplot(df = df.plot,
+                n = 5,
+                axis.text.size = 50)
+```
+
+
+GO enrichment analysis of the targets in joint (Neutrophils) to muscle (NK) communication under sick condition
+```{r}
+x = OC_GOanalysis(df =CAOC_jm@net$Sick$forward$`Endothelial cells_to_NK cells`,
+                  LS = NULL,
+                  layer = "Target")
+
+# plot top 10 GO terms
+GOanalysis_scatterplot(df = x$result,
+                       n = 10,
+                       size=6)
+```
+
+
+GO enrichment analysis of the targets in joint (Fibroblasts) to muscle (Endothelial) communication under sick condition
+```{r}
+x = OC_GOanalysis(df =CAOC_jm@net$Sick$forward$`Fibroblasts_to_Endothelial cells`,
+                  LS = NULL,
+                  layer = "Target")
+
+# plot top 10 GO terms
+GOanalysis_scatterplot(df = x$result,
+                       n = 10,
+                       size=6)
+```
+
+
+################################################################################
+# Comparative analysis (joint, spleen)
+
+## Create data inputs
+```{r, include=FALSE}
+data.list = list()
+idents.list = list()
+conditions.list = list()
+
+organs = c("joint", "spleen")
+conditions = c("Sick", "Healthy")
+
+for (i in 1:length(organs)) {
+  
+  organ.select = organs[i]
+  
+  Data.input_organ <- subset(Sandra_2023_RNA, subset = organ == organ.select)
+  data.list[[i]] = Data.input_organ@assays$RNA@data
+
+  Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+  idents.list[[i]] = Data.input_organ@active.ident
+  
+  Idents(Data.input_organ) = Data.input_organ@meta.data$condition
+  conditions.list[[i]] = Data.input_organ@active.ident
+}
+
+
+metalist.1 = list()
+metalist.2 = list()
+
+for (i in 1:length(organs)) {
+  organ.select = organs[i]
+  metalist.1[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[1],".csv") )
+  metalist.1[[i]] <- as.data.frame(metalist.1[[i]])
+  rownames(metalist.1[[i]]) <- metalist.1[[i]][, 1]
+  metalist.1[[i]] <- metalist.1[[i]][, -1]
+  
+  metalist.2[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[2],".csv"))
+  metalist.2[[i]] <- as.data.frame(metalist.2[[i]])
+  rownames(metalist.2[[i]]) <- metalist.2[[i]][, 1]
+  metalist.2[[i]] <- metalist.2[[i]][, -1]
+}
+```
+
+## Analysis
+Create OC object
+```{r}
+CAOC = create_OrganChat(object = data.list, 
+                          organs = organs, 
+                          idents.list = idents.list,
+                          ComparisonAnalysis = TRUE,
+                          conditions = conditions,
+                          conditions.list = conditions.list,
+                          assay = NULL, 
+                          do.sparse = T)
+```
+
+
+Integrate metabolite data
+```{r}
+CAOC = CA_merge_metabolite.bygroup(object = CAOC,
+                                   metabolitedata.list.condition1 = metalist.1,
+                                   metabolitedata.list.condition2 = metalist.2,
+                                   type = "flux",
+                                   scale.max = 10)
+```
+
+
+Calculate the expression level using the scRNA-seq data
+```{r}
+CAOC = CA_cal_scRNA.bygroup(object = CAOC,
+                            DB = OrganChatDB,
+                            mean_method = NULL,
+                            scale.max = 10)
+```
+
+Infer signaling paths
+```{r}
+target = targets$targets
+
+CAOC = CA_net0_infer(object = CAOC,
+                         DB = OrganChatDB, 
+                         LS = NULL, 
+                         receptor = NULL, 
+                         tf = NULL,
+                         target = target)
+```
+
+Analysis
+```{r}
+CAOC = CA_net_analysis(object = CAOC,
+                       K = 0.1, 
+                       N = 1,
+                       R = 100,
+                       CI = 0.95,
+                       CA_cutoff_value = c(0, 0.2, 0.2, 0.2),
+                       CA_cutoff_chatP = 0.2,
+                       CA_cutoff_sd = NULL,
+                       CA_cutoff_CI = 0)
+```
+
+
+Infer DEpath
+```{r}
+CAOC = DEpath_table(object = CAOC,
+                        Sender.group = NULL,
+                        Receiver.group = NULL,
+                        Direction = NULL,
+                        p_cutoff = NULL,
+                        sd_cutoff = NULL,
+                        DI_cutoff = NULL,
+                        top = NULL)
+```
+
+
+```{r}
+CAOC_js = CAOC
+```
+
+
+
+## Visualization
+
+Chorddiagram
+```{r}
+CAOC_chorddiagram(object = CAOC_js,
+                  dir = "forward",
+                  category = "metabolite",
+                  style = "total.counts",
+                  chatP_cutoff = 0.3)
+```
+
+
+```{r}
+CAOC_chorddiagram(object = CAOC_js,
+                  dir = "backward",
+                  category = "All",
+                  style = "total.counts",
+                  chatP_cutoff = 0.3)
+```
+
+
+```{r}
+CAOC_chorddiagram(object = CAOC_js,
+                  dir = "backward",
+                  category = "All",
+                  style = "ave.weight",
+                  chatP_cutoff = 0.3)
+```
+
+
+```{r}
+CAOC_chorddiagram(object = CAOC_js,
+                  dir = "backward",
+                  category = "metabolite",
+                  style = "total.counts",
+                  chatP_cutoff = 0.3)
+```
+
+
+```{r}
+CAOC_chorddiagram(object = CAOC_js,
+                  dir = "backward",
+                  category = "metabolite",
+                  style = "ave.weight",
+                  chatP_cutoff = 0.3)
+
+```
+
+
+riverplot
+```{r}
+df.plot = CAOC_js@net$Sick$backward$`Dendritic cells_to_Fibroblasts`
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+bubbleheatmap
+```{r}
+CAOC_bubbleheatmap(object = CAOC_js,
+                  dir = "backward",
+                  category = "All",
+                  size = "total.counts",
+                  color = "ave.weight")
+```
+
+
+RI_barplot
+```{r}
+df.plot = CAOC_js@DEpath[CAOC_js@DEpath$Direction == "backward", ]
+
+CAOC_DI_barplot(df = df.plot,
+                n = 5,
+                axis.text.size = 50)
+```
+
+
+
+```{r}
+df.plot = CAOC_js@DEpath[CAOC_js@DEpath$Direction == "backward" & 
+                        CAOC_js@DEpath$category == "metabolite" & 
+                        # CAOC_js@DEpath$Sender.group %in% c("B cells", "T cells") &
+                        CAOC_js@DEpath$Receiver.group == "Fibroblasts", ]
+
+CAOC_DI_barplot(df = df.plot,
+                n = 5,
+                axis.text.size = 50)
+```
+
+
+```{r}
+x = OC_GOanalysis(df =CAOC_js@net$Sick$backward$`Dendritic cells_to_Fibroblasts`,
+                  LS = NULL,
+                  layer = "Target")
+
+GOanalysis_scatterplot(df = x$result,
+                       n = 10,
+                       size=6)
+```
+
+
+
+################################################################################
+# Comparative analysis (muscle, spleen)
+
+## Create data inputs
+```{r, include=FALSE}
+data.list = list()
+idents.list = list()
+conditions.list = list()
+
+organs = c("muscle", "spleen")
+conditions = c("Sick", "Healthy")
+
+for (i in 1:length(organs)) {
+  
+  organ.select = organs[i]
+  
+  Data.input_organ <- subset(Sandra_2023_RNA, subset = organ == organ.select)
+  data.list[[i]] = Data.input_organ@assays$RNA@data
+
+  Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+  idents.list[[i]] = Data.input_organ@active.ident
+  
+  Idents(Data.input_organ) = Data.input_organ@meta.data$condition
+  conditions.list[[i]] = Data.input_organ@active.ident
+}
+
+
+metalist.1 = list()
+metalist.2 = list()
+
+for (i in 1:length(organs)) {
+  organ.select = organs[i]
+  metalist.1[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[1],".csv") )
+  metalist.1[[i]] <- as.data.frame(metalist.1[[i]])
+  rownames(metalist.1[[i]]) <- metalist.1[[i]][, 1]
+  metalist.1[[i]] <- metalist.1[[i]][, -1]
+  
+  metalist.2[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[2],".csv"))
+  metalist.2[[i]] <- as.data.frame(metalist.2[[i]])
+  rownames(metalist.2[[i]]) <- metalist.2[[i]][, 1]
+  metalist.2[[i]] <- metalist.2[[i]][, -1]
+}
+```
+
+## Analysis
+Create OC object
+```{r}
+CAOC = create_OrganChat(object = data.list, 
+                          organs = organs, 
+                          idents.list = idents.list,
+                          ComparisonAnalysis = TRUE,
+                          conditions = conditions,
+                          conditions.list = conditions.list,
+                          assay = NULL, 
+                          do.sparse = T)
+```
+
+
+Integrate metabolite data
+```{r}
+CAOC = CA_merge_metabolite.bygroup(object = CAOC,
+                                   metabolitedata.list.condition1 = metalist.1,
+                                   metabolitedata.list.condition2 = metalist.2,
+                                   type = "flux",
+                                   scale.max = 10)
+```
+
+
+Calculate the expression level using the scRNA-seq data
+```{r}
+CAOC = CA_cal_scRNA.bygroup(object = CAOC,
+                            DB = OrganChatDB,
+                            mean_method = NULL,
+                            scale.max = 10)
+```
+
+Infer signaling paths
+```{r}
+target = targets$targets
+
+CAOC = CA_net0_infer(object = CAOC,
+                     DB = OrganChatDB, 
+                     LS = NULL, 
+                     receptor = NULL, 
+                     tf = NULL,
+                     target = target)
+```
+
+Analysis
+```{r}
+CAOC = CA_net_analysis(object = CAOC,
+                       K = 0.1, 
+                       N = 1,
+                       R = 100,
+                       CI = 0.95,
+                       CA_cutoff_value = c(0, 0.2, 0.2, 0.2),
+                       CA_cutoff_chatP = 0.2,
+                       CA_cutoff_sd = NULL,
+                       CA_cutoff_CI = 0)
+```
+
+
+Infer DEpath
+```{r}
+CAOC = DEpath_table(object = CAOC,
+                        Sender.group = NULL,
+                        Receiver.group = NULL,
+                        Direction = NULL,
+                        p_cutoff = NULL,
+                        sd_cutoff = NULL,
+                        DI_cutoff = NULL,
+                        top = NULL)
+```
+
+
+```{r}
+CAOC_ms = CAOC
+```
+
+
+
+## Visualization
+
+```{r}
+CAOC_chorddiagram(object = CAOC_ms,
+                  dir = "backward",
+                  category = "All",
+                  style = "ave.weight",
+                  chatP_cutoff = 0.3)
+```
+
+
+
+```{r}
+CAOC_chorddiagram(object = CAOC_ms,
+                  dir = "backward",
+                  category = "All",
+                  style = "total.counts",
+                  chatP_cutoff = 0.3)
+```
+
+
+```{r}
+CAOC_chorddiagram(object = CAOC_ms,
+                  dir = "backward",
+                  category = "metabolite",
+                  style = "ave.weight",
+                  chatP_cutoff = 0.3)
+```
+
+
+```{r}
+
+CAOC_chorddiagram(object = CAOC_ms,
+                  dir = "backward",
+                  category = "metabolite",
+                  style = "total.counts",
+                  chatP_cutoff = 0.3)
+```
+
+DI_barplot
+```{r}
+df.plot = CAOC_ms@DEpath[CAOC_ms@DEpath$Direction == "backward" & 
+                        CAOC_ms@DEpath$Sender.group %in% c("T cells") , ]
+
+CAOC_DI_barplot(df = df.plot,
+                n = 5,
+                axis.text.size = 50)
+```
+
+
+################################################################################
+# Comparative analysis (skin, muscle)
+
+## Create data inputs
+```{r, include=FALSE}
+data.list = list()
+idents.list = list()
+conditions.list = list()
+
+organs = c("skin", "muscle")
+conditions = c("Sick", "Healthy")
+
+for (i in 1:length(organs)) {
+  
+  organ.select = organs[i]
+  
+  Data.input_organ <- subset(Sandra_2023_RNA, subset = organ == organ.select)
+  data.list[[i]] = Data.input_organ@assays$RNA@data
+
+  Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+  idents.list[[i]] = Data.input_organ@active.ident
+  
+  Idents(Data.input_organ) = Data.input_organ@meta.data$condition
+  conditions.list[[i]] = Data.input_organ@active.ident
+}
+
+
+metalist.1 = list()
+metalist.2 = list()
+
+for (i in 1:length(organs)) {
+  organ.select = organs[i]
+  metalist.1[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[1],".csv") )
+  metalist.1[[i]] <- as.data.frame(metalist.1[[i]])
+  rownames(metalist.1[[i]]) <- metalist.1[[i]][, 1]
+  metalist.1[[i]] <- metalist.1[[i]][, -1]
+  
+  metalist.2[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[2],".csv"))
+  metalist.2[[i]] <- as.data.frame(metalist.2[[i]])
+  rownames(metalist.2[[i]]) <- metalist.2[[i]][, 1]
+  metalist.2[[i]] <- metalist.2[[i]][, -1]
+}
+```
+
+## Analysis
+Create OC object
+```{r}
+CAOC = create_OrganChat(object = data.list, 
+                          organs = organs, 
+                          idents.list = idents.list,
+                          ComparisonAnalysis = TRUE,
+                          conditions = conditions,
+                          conditions.list = conditions.list,
+                          assay = NULL, 
+                          do.sparse = T)
+```
+
+
+Integrate metabolite data
+```{r}
+CAOC = CA_merge_metabolite.bygroup(object = CAOC,
+                                   metabolitedata.list.condition1 = metalist.1,
+                                   metabolitedata.list.condition2 = metalist.2,
+                                   type = "flux",
+                                   scale.max = 10)
+```
+
+
+Calculate the expression level using the scRNA-seq data
+```{r}
+CAOC = CA_cal_scRNA.bygroup(object = CAOC,
+                            DB = OrganChatDB,
+                            mean_method = NULL,
+                            scale.max = 10)
+```
+
+Infer signaling paths
+```{r}
+target = targets$targets
+
+CAOC = CA_net0_infer(object = CAOC,
+                     DB = OrganChatDB, 
+                     LS = NULL, 
+                     receptor = NULL, 
+                     tf = NULL,
+                     target = target)
+```
+
+Analysis
+```{r}
+CAOC = CA_net_analysis(object = CAOC,
+                       K = 0.1, 
+                       N = 1,
+                       R = 100,
+                       CI = 0.95,
+                       CA_cutoff_value = c(0, 0.2, 0.2, 0.2),
+                       CA_cutoff_chatP = 0.2,
+                       CA_cutoff_sd = NULL,
+                       CA_cutoff_CI = 0)
+```
+
+
+Infer DEpath
+```{r}
+CAOC = DEpath_table(object = CAOC,
+                        Sender.group = NULL,
+                        Receiver.group = NULL,
+                        Direction = NULL,
+                        p_cutoff = NULL,
+                        sd_cutoff = NULL,
+                        DI_cutoff = NULL,
+                        top = NULL)
+```
+
+
+```{r}
+CAOC_skm = CAOC
+```
+
+
+## Visualization
+Chorddiagram
+```{r}
+CAOC_chorddiagram(object = CAOC_skm,
+                  dir = "forward",
+                  category = "All",
+                  style = "ave.weight",
+                  chatP_cutoff = 0.3)
+```
+
+
+```{r}
+CAOC_chorddiagram(object = CAOC_skm,
+                  dir = "forward",
+                  category = "metabolite",
+                  style = "ave.weight",
+                  chatP_cutoff = 0.3)
+```
+
+
+```{r}
+CAOC_chorddiagram(object = CAOC_skm,
+                  dir = "forward",
+                  category = "cytokines",
+                  style = "ave.weight",
+                  chatP_cutoff = 0.3)
+```
+
+
+
+
+```{r}
+CAOC_chorddiagram(object = CAOC_skm,
+                  dir = "forward",
+                  category = "All",
+                  style = "total.counts",
+                  chatP_cutoff = 0.3)
+```
+
+
+```{r}
+CAOC_chorddiagram(object = CAOC_skm,
+                  dir = "forward",
+                  category = "metabolite",
+                  style = "total.counts",
+                  chatP_cutoff = 0.3)
+```
+
+
+################################################################################
+
+# Additional visualizations
+
+```{r}
+df.plot = CAOC_jm@net$Sick$forward$Fibroblasts_to_Neutrophils
+
+x = OC_GOanalysis(df = df.plot,
+                  LS = NULL,
+                  layer = "Target")
+
+GOanalysis_scatterplot(df = x$result,
+                       n = 10,
+                       size=6)
+```
+
+
+```{r}
+x = construct_Network_df(df = df.plot,
+                         category = "All",
+                         restrict.by = "Both")
+# S100a8-driven GRN
+network_treeplot(x[20])
+
+# Lgals1-to-Cd14 GRN
+network_treeplot(x[39])
+```
+
+
+```{r}
+df.plot = CAOC_jm@DEpath[CAOC_jm@DEpath$Direction == "forward" & 
+                        CAOC_jm@DEpath$Receiver.group %in% c("Neutrophils") &
+                          CAOC_jm@DEpath$LS_name %in% c("Adenine"), ]
+
+CAOC_DI_barplot(df = df.plot,
+                n = 3,
+                axis.text.size = 50)
+```
+
+```{r}
+df.plot = CAOC_jm@DEpath[CAOC_jm@DEpath$Direction == "forward" & 
+                           CAOC_jm@DEpath$Sender.group %in% c("Fibroblasts") &
+                           CAOC_jm@DEpath$Receiver.group %in% c("Neutrophils") &
+                           CAOC_jm@DEpath$LS_name %in% c("Adenine"), ]
+
+CAOC_DI_barplot(df = df.plot,
+                n = 3,
+                axis.text.size = 50)
+```
+
+
+
+```{r}
+df.plot = CAOC_ms@net$Sick$backward$Monocytes_to_Neutrophils
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+```{r}
+df.plot = CAOC_ms@net$Healthy$backward$`B cells_to_Endothelial cells`
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+```{r}
+df.plot = CAOC_ms@DEpath[CAOC_ms@DEpath$Direction == "backward" & 
+                        CAOC_ms@DEpath$Receiver.group %in% c("Endothelial cells") &
+                          CAOC_ms@DEpath$Sender.group %in% c("B cells"), ]
+
+CAOC_DI_barplot(df = df.plot,
+                n = 10,
+                axis.text.size = 50)
+```
+
+```{r}
+df.plot = CAOC_skm@net$Sick$forward$Fibroblasts_to_Macrophages
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+```{r}
+df.plot = CAOC_skm@net$Healthy$forward$Fibroblasts_to_Macrophages
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+
+```{r}
+df.plot = CAOC_skm@DEpath[CAOC_skm@DEpath$Direction == "forward" & 
+                        CAOC_skm@DEpath$Receiver.group %in% c("Macrophages") &
+                          CAOC_skm@DEpath$Sender.group %in% c("Fibroblasts"), ]
+
+CAOC_DI_barplot(df = df.plot,
+                n = 10,
+                axis.text.size = 50)
+```
+
+

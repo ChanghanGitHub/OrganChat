@@ -1,0 +1,252 @@
+---
+title: "Sandra_CellRepMed_2023_DataProcessing_MetaboliteAnalysis"
+output: html_document
+date: "2026-04-28"
+---
+
+Processing the originl data and inferring metabolite flux level through OrganChat (based on METAFlux).
+The original data comes from the following paper: Lilja S, Li X, Smelik M ... Multi-organ single-cell analysis reveals an on/off switch system with potential for personalized treatment of immunological diseases. Cell Reports Medicine, 2023; 4
+
+
+```{r message=FALSE,warning=FALSE}
+library(Seurat)
+library(ggplot2)
+library(patchwork)
+library(RColorBrewer)
+library(dplyr)
+library(pheatmap)
+library(ggraph)
+library(forcats)
+library(stringr)
+library(plyr)
+library(tidyverse)
+
+library(METAFlux)
+```
+
+
+# Load and process the original data
+
+Load the table of pro- and anti-inflammatory upstream regulators (URs), and the transcriptomics data provided by the paper.
+```{r, include=FALSE}
+setwd("~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Sandra_2023_mouse/")
+
+Inter_allorgans <- read_csv("Sandra_2023_Inter_allorgans.csv")
+Sandra_2023_RNA <- readRDS("Sandra_2023_seu.rds")
+```
+
+
+For each organ in each condition, select clusters with more than 20 cells
+```{r}
+organ.list <- levels(Sandra_2023_RNA@meta.data$organ)
+meta.data <- Sandra_2023_RNA@meta.data
+rownames(meta.data) <- colnames(Sandra_2023_RNA@assays$RNA$data)
+
+cell.use <- c()
+for (i in 1:length(organ.list)) {
+  cell.condition1 <- meta.data[meta.data$organ == organ.list[i] & meta.data$condition == "Sick", ]
+  cell.condition2 <- meta.data[meta.data$organ == organ.list[i] & meta.data$condition == "Healthy", ]
+  x1 <- aggregate(cell.condition1, by = list(cell.condition1$Type), length)
+  x2 <- aggregate(cell.condition2, by = list(cell.condition2$Type), length)
+  
+  x1.cluster <- x1$Group.1[x1$Type > 20]
+  x2.cluster <- x2$Group.1[x2$Type > 20]
+  
+  cluster.select <- intersect(x1.cluster, x2.cluster)
+  cell.select <- rownames(meta.data)[meta.data$organ == organ.list[i] & meta.data$Type %in% cluster.select]
+  cell.use <- c(cell.use, cell.select)
+}
+
+Sandra_2023_RNA <- subset(Sandra_2023_RNA, cells = cell.use)
+```
+
+
+Save the filtered data
+```{r}
+setwd("~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Sandra_2023_mouse")
+# saveRDS(Sandra_2023_RNA, "Sandra_2023_mouse_filtered.rds")
+```
+
+
+# Convert the URs from human mouse genes
+
+```{r, include=FALSE}
+library(biomaRt)
+library(edgeR)
+library(clusterProfiler)
+library(org.Hs.eg.db)
+library(org.Mm.eg.db)
+```
+
+
+Function: convertGene -- find the homo genes based on the entrez id (human --> mouse)
+```{r}
+convertGene <- function(x){
+  
+  require(biomaRt)
+  sp.to = useMart("ensembl", dataset = "mmusculus_gene_ensembl", host = "https://feb2014.archive.ensembl.org")
+  sp.from = useMart("ensembl", dataset = "hsapiens_gene_ensembl", host = "https://feb2014.archive.ensembl.org")
+  
+  genes = getLDS(attributes = "ensembl_gene_id", values = x, mart = sp.from,
+                 attributesL = c("mgi_symbol", "ensembl_gene_id"), martL = sp.to, uniqueRows = T)
+  names(genes) <- c("ensembl_gene_id", "mgi_symbol", "ensembl_gene_id_converted")
+  
+  return(genes)
+  
+}
+```
+
+
+Export the URs and find their mouse homo genes
+```{r}
+Inter_all_target <- unique(Inter_allorgans$target)
+Inter_all_target <- str_split(Inter_all_target, fixed("/"))
+
+all.target = c()
+for (i in 1:length(Inter_all_target)) {
+  all.target <- unique(c(all.target, Inter_all_target[[i]]))
+}
+
+# get the ensembl id of the mouse genes
+gene.from = data.frame(from = all.target)
+
+gene_id <- getBM(attributes = c("ensembl_gene_id", "external_gene_name"), mart = useDataset("hsapiens_gene_ensembl", useMart("ensembl")))
+
+gene.from <- merge(gene.from, gene_id[ , c(1,2)], by.x = "from", by.y = "external_gene_name" )
+gene.from <- gene.from[complete.cases(gene.from), ]
+
+gene_converted <- convertGene(gene.from$ensembl_gene_id)
+gene_converted <- merge(gene.from, gene_converted[, c(1,2)], by = "ensembl_gene_id")
+
+all.target.mouse <- intersect(gene_converted$mgi_symbol, rownames(Sandra_2023_RNA@assays$RNA@data))
+```
+
+
+Select the URs which are highly expressed (>1) in at least one cluster
+```{r, include=FALSE}
+library(exFINDER)
+
+data.Sick <- subset(Sandra_2023_RNA, subset = condition == "Sick")
+df.exp <- get_AveExp(Gene = all.target.mouse,
+                     Exp.Data = data.Sick@assays$RNA@data,
+                     Meta.Data = data.Sick@meta.data)
+
+df.exp$max = apply(df.exp[, 2:ncol(df.exp)], 1, max)
+all.target.mouse.Sick = df.exp$Gene[df.exp$max >1]
+
+data.Healthy <- subset(Sandra_2023_RNA, subset = condition == "Healthy")
+df.exp <- get_AveExp(Gene = all.target.mouse,
+                     Exp.Data = data.Healthy@assays$RNA@data,
+                     Meta.Data = data.Healthy@meta.data)
+
+df.exp$max = apply(df.exp[, 2:ncol(df.exp)], 1, max)
+all.target.mouse.Healthy = df.exp$Gene[df.exp$max >1]
+
+# the final selections
+all.target.mouse <- unique(c(all.target.mouse.Sick, all.target.mouse.Healthy))
+all.target.mouse <- data.frame(targets = all.target.mouse)
+```
+
+
+Save the target genes
+```{r}
+setwd("~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Sandra_2023_mouse/")
+
+# write_excel_csv(all.target.mouse, file = "targets_highexpression.csv") 
+```
+
+
+# Infer metabolite flux data using human-converted Seurat object ("Sandra_2023_converted.rds")
+
+Load the Seurat object (converted to human genes)
+```{r}
+setwd("~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Sandra_2023_mouse/")
+
+Sandra_2023_RNA <- readRDS("Sandra_2023_converted.rds")
+```
+
+
+Load metabolite dictionary data
+```{r, include=FALSE}
+setwd("~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Sandra_2023_mouse/")
+
+hmdb_dictionary <- read_csv("hmdb_dictionary_20240129.csv")
+METAFlux_lookup <- read_csv("METAFlux_lookup_20240131.csv")
+```
+
+
+For each organ in each condition, select clusters with more than 20 cells
+```{r}
+organ.list <- levels(Sandra_2023_RNA@meta.data$organ)
+meta.data <- Sandra_2023_RNA@meta.data
+rownames(meta.data) <- colnames(Sandra_2023_RNA@assays$RNA$data)
+
+cell.use <- c()
+for (i in 1:length(organ.list)) {
+  cell.condition1 <- meta.data[meta.data$organ == organ.list[i] & meta.data$condition == "Sick", ]
+  cell.condition2 <- meta.data[meta.data$organ == organ.list[i] & meta.data$condition == "Healthy", ]
+  x1 <- aggregate(cell.condition1, by = list(cell.condition1$Type), length)
+  x2 <- aggregate(cell.condition2, by = list(cell.condition2$Type), length)
+  
+  x1.cluster <- x1$Group.1[x1$Type > 20]
+  x2.cluster <- x2$Group.1[x2$Type > 20]
+  
+  cluster.select <- intersect(x1.cluster, x2.cluster)
+  cell.select <- rownames(meta.data)[meta.data$organ == organ.list[i] & meta.data$Type %in% cluster.select]
+  cell.use <- c(cell.use, cell.select)
+}
+
+Sandra_2023_RNA <- subset(Sandra_2023_RNA, cells = cell.use)
+```
+
+
+# Metabolite analysis (based on METAFlux)
+
+```{r, include=FALSE}
+setwd("~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Sandra_2023_mouse/")
+conditions = c("Sick", "Healthy")
+
+for (i in 1:5) {
+  # Prepare the input RNA data 
+  organ.select = levels(Sandra_2023_RNA@meta.data$organ)[i]
+  Data.input_condition1 <- subset(Sandra_2023_RNA, subset = organ == organ.select &
+                                    # Type %in% cluster.top &
+                                    condition == conditions[1])
+  
+  Data.input_condition2 <- subset(Sandra_2023_RNA, subset = organ == organ.select &
+                                    # Type %in% cluster.top &
+                                    condition == conditions[2])
+  
+  Data.input_condition1$Type <- fct_drop(Data.input_condition1$Type)
+  Data.input_condition2$Type <- fct_drop(Data.input_condition2$Type)
+  # Update the Active Identity
+  Data.input_condition1 <- SetIdent(Data.input_condition1, value = Data.input_condition1$Type)
+  Data.input_condition2 <- SetIdent(Data.input_condition2, value = Data.input_condition2$Type)
+  
+  # METAFlux analysis
+  Data.list = list(Condition1 = Data.input_condition1, Condition2 = Data.input_condition2)
+  names(Data.list) = conditions
+  
+  for (j in 1:length(Data.list)) {
+    flux = run_METAFlux(Data.input = Data.list[[j]],
+                        myident = 'Type',
+                        n_bootstrap=100, 
+                        seed=1,
+                        medium = human_blood)
+    
+    flux = METAFlux_reformat(flux = flux,
+                             cell.types = levels(Data.list[[j]]@meta.data$Type),
+                             exclude = "None",
+                             METAFlux_lookup = METAFlux_lookup,
+                             scale.byflux = TRUE)
+    
+    output = METAFlux_convert_OrganChat(cell.types = levels(Data.list[[j]]$Type),
+                                       flux = flux,
+                                       METAFlux_lookup = METAFlux_lookup,
+                                       hmdb_dictionary = hmdb_dictionary)
+    
+   #  write.csv(output , file = paste0(organ.select, "_flux_", names(Data.list[j]), ".csv"), 
+   #            row.names = TRUE, col.names = TRUE)
+  }
+}
+```

@@ -1,0 +1,408 @@
+---
+title: "Sandra_CellRepMed_2023_MOOC"
+author: "Changhan"
+date: "2024-08-10"
+output: html_document
+---
+
+Perform multi-organ OrganChat (MOOC) Analysis of OrganChat between conditions for: joint, muscle, lung, skin, spleen.
+
+```{r message=FALSE,warning=FALSE}
+library(OrganChat)
+library(readr)
+library(forcats)
+```
+
+
+# Preparation
+
+```{r}
+data.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Sandra_2023_mouse/"     # your path to the data
+DB.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/OrganChatDB/"                   # your path to the OrganChatDB
+Dictionary.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Metabolite_Dictionary/" # your path to the files "hmdb_dictionary" and "METAFlux_lookup"
+output.dir = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Sandra_2023_mouse/"    # your path to the ouput folder
+```
+
+
+Load metabolite dictionary data
+```{r, include=FALSE}
+hmdb_dictionary <- read_csv(paste0(Dictionary.path, "hmdb_dictionary_20240129.csv"))
+METAFlux_lookup <- read_csv(paste0(Dictionary.path, "METAFlux_lookup_20240131.csv"))
+```
+
+# Load OCDB
+```{r}
+# load database
+load(paste0(DB.path, "LSR_layer1_mouse.rda"))
+load(paste0(DB.path, "RSE_layer2_mouse.rda"))
+load(paste0(DB.path, "SET_layer3_mouse.rda"))
+
+OrganChatDB <- list()
+OrganChatDB[[1]] <- LSR_layer1_mouse
+OrganChatDB[[2]] <- RSE_layer2_mouse
+OrganChatDB[[3]] <- SET_layer3_mouse
+```
+
+
+Load the scRNA-seq data and the targets
+```{r, include=FALSE}
+Sandra_2023_RNA <- readRDS(paste0(data.path, "Sandra_2023_mouse_filtered.rds") )
+targets <- read_csv(paste0(data.path, "targets_highexpression.csv") )
+```
+
+
+Create data inputs
+```{r}
+data.list = list()
+idents.list = list()
+conditions.list = list()
+
+organs = c("joint", "muscle", "lung", "skin", "spleen")
+conditions = c("Sick", "Healthy")
+
+for (i in 1:length(organs)) {
+  
+  organ.select = organs[i]
+  
+  Data.input_organ <- subset(Sandra_2023_RNA, subset = organ == organ.select)
+  data.list[[i]] = Data.input_organ@assays$RNA@data
+
+  Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+  idents.list[[i]] = Data.input_organ@active.ident
+  
+  Idents(Data.input_organ) = Data.input_organ@meta.data$condition
+  conditions.list[[i]] = Data.input_organ@active.ident
+}
+```
+
+Create OC object
+```{r}
+MOOC = create_OrganChat(object = data.list, 
+                        organs = organs,
+                        idents.list = idents.list, 
+                        ComparisonAnalysis = TRUE,
+                        conditions = conditions,
+                        conditions.list = conditions.list,
+                        assay = NULL, 
+                        do.sparse = T)
+```
+
+Integrate the scRNA-seq data
+```{r}
+MOOC = MO_cal_scRNA.bygroup(object = MOOC,
+                            DB = OrganChatDB,
+                            mean_method = NULL,
+                            scale.max = 10)
+```
+
+
+
+Prepare the metabolite flux data
+```{r, include=FALSE}
+organs = MOOC@organs
+
+metalist.1 = list()
+metalist.2 = list()
+
+for (i in 1:5) {
+  organ.select = organs[i]
+  metalist.1[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[1],".csv") )
+  metalist.1[[i]] <- as.data.frame(metalist.1[[i]])
+  rownames(metalist.1[[i]]) <- metalist.1[[i]][, 1]
+  metalist.1[[i]] <- metalist.1[[i]][, -1]
+  
+  metalist.2[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[2],".csv"))
+  metalist.2[[i]] <- as.data.frame(metalist.2[[i]])
+  rownames(metalist.2[[i]]) <- metalist.2[[i]][, 1]
+  metalist.2[[i]] <- metalist.2[[i]][, -1]
+}
+```
+
+Integrate the flux data
+```{r}
+MOOC <- MO_merge_metabolite.bygroup(object = MOOC,
+                                    metabolitedata.list.condition1 = metalist.1,
+                                    metabolitedata.list.condition2 = metalist.2,
+                                    type = "flux",
+                                    scale.max = 10)
+```
+
+Pairwise analysis (~45min)
+```{r}
+start.time <- Sys.time()
+
+MOOC.net <- MO_pairwise_analysis(object = MOOC,
+                             DB = OrganChatDB, 
+                             LS = NULL, 
+                             receptor = NULL, 
+                             tf = NULL,
+                             target = targets$targets,
+                             K = 0.1, 
+                             N = 1,
+                             R = 100,
+                             CI = 0.95,
+                             CA_cutoff_value = c(0, 0.2, 0.2, 0.2),
+                             CA_cutoff_chatP = 0.2,
+                             CA_cutoff_sd = NULL,
+                             CA_cutoff_CI = 0)
+
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+time.taken
+```
+
+
+```{r}
+# saveRDS(MOOC.net, paste0(data.path, "MOOCnet.rds"))
+```
+
+
+
+Visualization
+category -- "All", "hormone_peptide", "cytokines", "hormone_nonpeptide", "metabolite"
+
+style = "ave.weight"
+```{r}
+# Construct the network
+MOOC.plot <- MO_networkconstruct(object = MOOC,
+                                MO.net.list = MOOC.net,
+                                category = "All",
+                                chatP_cutoff = 0.5)
+
+MO_networkplot(network.input = MOOC.plot,
+               style = "ave.weight")
+```
+
+
+
+style = "ave.weight"
+```{r}
+# Construct the network
+MOOC.plot <- MO_networkconstruct(object = MOOC,
+                                MO.net.list = MOOC.net,
+                                category = "cytokines",
+                                chatP_cutoff = 0.5)
+
+MO_networkplot(network.input = MOOC.plot,
+               style = "ave.weight")
+```
+
+style = "ave.weight"
+```{r}
+# Construct the network
+MOOC.plot <- MO_networkconstruct(object = MOOC,
+                                MO.net.list = MOOC.net,
+                                category = "metabolite",
+                                chatP_cutoff = 0.5)
+
+MO_networkplot(network.input = MOOC.plot,
+               style = "ave.weight")
+```
+
+style = "ave.weight"
+```{r}
+# Construct the network
+MOOC.plot <- MO_networkconstruct(object = MOOC,
+                                MO.net.list = MOOC.net,
+                                category = "hormone_peptide",
+                                chatP_cutoff = 0.5)
+
+MO_networkplot(network.input = MOOC.plot,
+               style = "ave.weight")
+```
+
+style = "ave.weight"
+```{r}
+# Construct the network
+MOOC.plot <- MO_networkconstruct(object = MOOC,
+                                MO.net.list = MOOC.net,
+                                category = "hormone_nonpeptide",
+                                chatP_cutoff = 0.5)
+
+MO_networkplot(network.input = MOOC.plot,
+               style = "ave.weight")
+```
+
+style = "total.counts"
+```{r}
+# Construct the network
+MOOC.plot <- MO_networkconstruct(object = MOOC,
+                                MO.net.list = MOOC.net,
+                                category = "All",
+                                chatP_cutoff = 0.5)
+
+MO_networkplot(network.input = MOOC.plot,
+               style = "total.counts")
+```
+
+style = "total.counts"
+```{r}
+# Construct the network
+MOOC.plot <- MO_networkconstruct(object = MOOC,
+                                MO.net.list = MOOC.net,
+                                category = "cytokines",
+                                chatP_cutoff = 0.5)
+
+MO_networkplot(network.input = MOOC.plot,
+               style = "total.counts")
+```
+
+style = "total.counts"
+```{r}
+# Construct the network
+MOOC.plot <- MO_networkconstruct(object = MOOC,
+                                MO.net.list = MOOC.net,
+                                category = "metabolite",
+                                chatP_cutoff = 0.5)
+
+MO_networkplot(network.input = MOOC.plot,
+               style = "total.counts")
+```
+
+style = "total.counts"
+```{r}
+# Construct the network
+MOOC.plot <- MO_networkconstruct(object = MOOC,
+                                MO.net.list = MOOC.net,
+                                category = "hormone_peptide",
+                                chatP_cutoff = 0.5)
+
+MO_networkplot(network.input = MOOC.plot,
+               style = "total.counts")
+```
+
+style = "total.counts"
+```{r}
+# Construct the network
+MOOC.plot <- MO_networkconstruct(object = MOOC,
+                                MO.net.list = MOOC.net,
+                                category = "hormone_nonpeptide",
+                                chatP_cutoff = 0.5)
+
+MO_networkplot(network.input = MOOC.plot,
+               style = "total.counts")
+```
+
+################################################################################
+
+Load the list of GRN for MOOC
+```{r}
+# setwd("/Volumes/Samsung_T5/OrganChat/Examples/Sandra_CellRepMed_2023/Data")
+# MOOC.net <- readRDS("MOOCnet.rds")
+```
+
+
+Get the inferred targets list
+```{r}
+inferred.targets = c()
+
+for ( i in 1:(length(MOOC.net)-1) ) {
+  for ( j in 1:2 ) {
+    for ( k in 1:4 ) {
+      df = MOOC.net[[i]][[j]][[k]]
+      for ( ii in 1:length(df) ) {
+        if( nrow(df[[ii]])>0 ){
+          inferred.targets = c(inferred.targets, df[[ii]]$Target)
+        }
+      }
+    }
+  }
+}
+
+inferred.targets = unique(inferred.targets)
+```
+
+
+Get their average expression data
+```{r}
+DGdata <- MOOC@DGdata
+
+list.1 <- list()
+list.2 <- list()
+group.organ <- c()
+
+for (i in 1:5) {
+  list.1[[i]] = data.frame( t(DGdata[[1]][[i]][ inferred.targets, ]) )
+  rownames(list.1[[i]]) = paste0(rownames(list.1[[i]]), "_", names(DGdata[[1]][i]))
+  list.2[[i]] = data.frame( t(DGdata[[2]][[i]][ inferred.targets, ]) )
+  rownames(list.2[[i]]) = paste0(rownames(list.2[[i]]), "_", names(DGdata[[2]][i]))
+  
+  group.organ <- c(group.organ, rownames(list.1[[i]]))
+}
+
+expdata.1 <- data.frame( t(rbindlist(list.1)) )
+expdata.2 <- data.frame( t(rbindlist(list.2)) )
+
+colnames(expdata.1) = group.organ
+colnames(expdata.2) = group.organ
+```
+
+
+Calculate the log2 fold change
+```{r}
+expdata.1[expdata.1 < 0.05] = 0.05
+expdata.2[expdata.2 < 0.05] = 0.05
+
+log2fc.df <- log2(expdata.1/expdata.2)
+
+df.plot = as.matrix(log2fc.df)
+df.plot[df.plot >= 3] = 3
+df.plot[df.plot < 3 & df.plot > 1] = 2
+df.plot[df.plot <= 1 & df.plot > 0.1] = 1
+df.plot[df.plot <= 0.1 & df.plot >= -0.1] = 0
+df.plot[df.plot < -0.1 & df.plot >= -1] = -1
+df.plot[df.plot < -1 & df.plot > -3] = -2
+df.plot[df.plot <= -3] = -3
+```
+
+Plot the heatmap
+```{r}
+bk <- c(seq(-3, 3, by = 1))
+
+col_cluster_list <- str_split(colnames(df.plot), fixed("_"))
+col_cluster = c()
+for (i in 1:length(col_cluster_list)) {
+  col_cluster = c(col_cluster, col_cluster_list[[i]][[1]])
+}
+
+col_anno = data.frame(clusters = col_cluster,
+                      organs = c(rep("joint",5), rep("muscle",7), rep("lung",2), rep("skin",3), rep("spleen",6)))
+rownames(col_anno) = colnames(df.plot)
+col_anno$organs = factor(col_anno$organs, levels = c("joint", "muscle", "lung", "skin", "spleen"))
+col_anno$clusters = factor(col_anno$clusters)
+
+mycolors.organ = brewer.pal(8, "Set2")[1:5]
+set.seed(1)
+mycolors.cluster = rand_color(length(levels(col_anno$clusters)), transparency = 0.2)
+names(mycolors.organ) <- c("joint", "lung", "muscle", "skin", "spleen")
+names(mycolors.cluster) <- levels(col_anno$clusters)
+# mycolors = c(mycolors.organ, mycolors.cluster)
+# names(mycolors) <- c(c("joint", "lung", "muscle", "skin", "spleen"), levels(col_anno$clusters))
+mycolors <- list(organs = mycolors.organ, clusters = mycolors.cluster)
+
+legend_anno = c("below -3", "-3 ~ -1", "-1 ~ -0.1", "-0.1 ~ 0.1", "0.1 ~ 1", "1 ~ 3", "above 3")
+
+
+pdf(paste0(output.dir, "targets_Heatmap_log2fc.pdf"), width=8, height = 12)
+
+pheatmap(df.plot,
+         cluster_cols = F,
+         cluster_rows = F,
+         scale = "none",
+         legend_breaks = bk, 
+         legend_labels = legend_anno,
+         annotation_col = col_anno,
+         annotation_colors = mycolors,
+         border_color = "grey80",
+         color = colorRampPalette(c("royalblue3", "white", "tomato3"))(length(bk)),
+         breaks = bk, 
+         cellheight = 10, 
+         cellwidth = 10,
+         labels_col = c(rep("", 23)))
+
+dev.off()
+
+set.seed(NULL)
+```
+
+
