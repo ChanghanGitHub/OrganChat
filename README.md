@@ -20,7 +20,7 @@ devtools::install_github("ChanghanGitHub/OrganChat")
 
 ## Overview
 
-<img width="536" alt="image" src="man/figures/github_Overview.png" align="center"/>
+<img width="536" alt="image" src="man/figures/github_Overview.png"/>
 
 OrganChatDB integrates LS-receptor signaling, receptor-SE interactions,
 and SE-target regulations for both human and mouse, as well as a
@@ -30,6 +30,9 @@ metabolites, peptide and nonpeptide hormones, and cytokines – for human
 and mouse, respectively (Fig. 1a-b). The standard OrganChat workflow
 consists of three key modules: (1) Data processing module; (2) OOC
 inference module; (3) Multi-scale analysis module.
+
+All processed data and some saved OrganChat objects can be download
+from: <https://doi.org/10.5281/zenodo.19042679>.
 
 ## Examples
 
