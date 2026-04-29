@@ -1,0 +1,510 @@
+---
+title: "TumorMeta_Sun_2023_OtherMethods"
+author: "Changhan"
+date: "2026-04-26"
+output: html_document
+---
+
+Benchmarking analyses against widely used CCC methods, including CellChat, ICELLNET, and exFINDER.
+
+For each cluster identified by Seurat162, the top 10 marker genes were used as input target genes for OrganChat and exFINDER. Then the LS-T SigNet between clusters was inferred by OrganChat, and the ligand-target regulatory network was provided by exFINDER and its own database. The CellChat analysis was done based on its standard workflow, while the p-value threshold (thresh.p) in the identifyOverExpressedGenes function was set to 1 to include all inferred ligand-receptor pairs. For ICELLNET, the receiver cells were set to be all measured cells to infer all possible communications between clusters, then the analysis was performed following its standard workflow.
+
+# Preparation
+
+```{r}
+library(OrganChat)
+
+library(RColorBrewer)
+library(survival)
+library(pheatmap)
+```
+
+
+```{r}
+data.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/TumorMeta_Sun_2023/"     # your path to the data
+DB.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/OrganChatDB/"                   # your path to the OrganChatDB
+Dictionary.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Metabolite_Dictionary/" # your path to the files "hmdb_dictionary" and "METAFlux_lookup"
+output.dir = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/TumorMeta_Sun_2023/"    # your path to the ouput folder
+```
+
+
+Load data sets and marker gene list
+```{r, include=FALSE}
+seurat_MSI <- readRDS(paste0(data.path, "seurat_MSI.rds"))
+seurat_RNA <- readRDS(paste0(data.path, "seurat_RNA.rds"))
+
+seurat_RNA_markers <- read_csv(paste0(data.path, "seurat_RNA_markers.csv"))
+
+Idents(seurat_MSI) = seurat_MSI@meta.data$cell_type
+Idents(seurat_RNA) = seurat_RNA@meta.data$cell_type
+```
+
+
+# OC analysis
+
+Load OCDB
+```{r}
+# load database
+load(paste0(DB.path, "LSR_layer1_human.rda"))
+load(paste0(DB.path, "RSE_layer2_human.rda"))
+load(paste0(DB.path, "SET_layer3_human.rda"))
+
+OrganChatDB <- list()
+OrganChatDB[[1]] <- LSR_layer1_human
+OrganChatDB[[2]] <- RSE_layer2_human
+OrganChatDB[[3]] <- SET_layer3_human
+```
+
+# OrganChat analysis between two assigned organs
+
+Prepare input data sets
+```{r}
+Data_organ1 <- subset(seurat_RNA, subset = organ == "organ1")
+Data_organ2 <- subset(seurat_RNA, subset = organ == "organ2")
+
+Data_organ1@meta.data$cell_type <- fct_drop(Data_organ1@meta.data$cell_type)
+Data_organ2@meta.data$cell_type <- fct_drop(Data_organ2@meta.data$cell_type)
+
+Idents(Data_organ1) = Data_organ1@meta.data$cell_type
+Idents(Data_organ2) = Data_organ2@meta.data$cell_type
+
+data.list = list(data1 = Data_organ1@assays$RNA@data, data2 = Data_organ2@assays$RNA@data)
+idents.list = list(idents1 = Data_organ1@active.ident, idents2 = Data_organ2@active.ident)
+```
+
+Create OrganChat object
+```{r}
+OC.test = create_OrganChat(object = data.list, 
+                          organs = c("organ1", "organ2"), 
+                          idents.list = idents.list,
+                          ComparisonAnalysis = FALSE,
+                          assay = NULL, 
+                          do.sparse = T)
+```
+
+Prepare the input scMETA data
+```{r}
+scMETA_organ1 <- subset(seurat_MSI, subset = organ == "organ1")
+scMETA_organ2 <- subset(seurat_MSI, subset = organ == "organ2")
+
+scMETA_organ1@meta.data$cell_type <- fct_drop(scMETA_organ1@meta.data$cell_type)
+scMETA_organ2@meta.data$cell_type <- fct_drop(scMETA_organ2@meta.data$cell_type)
+
+Idents(scMETA_organ1) = scMETA_organ1@meta.data$cell_type
+Idents(scMETA_organ2) = scMETA_organ2@meta.data$cell_type
+```
+
+
+Integrate scMeta data
+```{r}
+OC.test = cal_scMeta.bygroup(object = OC.test,
+                        scMeta.data = scMETA_organ1@assays$RNA@data,
+                        organ.name = "organ1",
+                        idents = scMETA_organ1@active.ident,
+                        mean_method = NULL)
+
+OC.test = cal_scMeta.bygroup(object = OC.test,
+                        scMeta.data = scMETA_organ2@assays$RNA@data,
+                        organ.name = "organ2",
+                        idents = scMETA_organ2@active.ident,
+                        mean_method = NULL)
+```
+
+Use the RNA data to calculate the mean expression of the DG(downstream gene) and LS(long-range signal)
+```{r}
+OC.test = cal_scRNA.bygroup(object = OC.test,
+                       DB = OrganChatDB,
+                       mean_method = NULL,
+                       scale.max = 10)
+```
+
+Select the top 10 markers of every cluster
+```{r}
+seurat_RNA_markers %>%
+  group_by(cluster) %>%
+  slice_head(n = 10) %>%
+  ungroup() -> top10
+
+target.test =  unique(top10$gene)
+
+OC.test = OCnet0_infer(object = OC.test, 
+                  DB = OrganChatDB, 
+                  LS = NULL, 
+                  receptor = NULL, 
+                  tf = NULL,
+                  target = target.test,
+                  single.condition = TRUE)
+```
+
+
+OC inferred signals & receptors
+```{r}
+OC.signal <- unique(OC.test@net0$LS)
+OC.receptor <- unique(OC.test@net0$Receptor)
+```
+
+
+
+# CellChat analysis
+
+```{r, include=FALSE}
+library(CellChat)
+library(patchwork)
+options(stringsAsFactors = FALSE)
+```
+
+
+```{r, include=FALSE}
+data.input <- seurat_RNA[["RNA"]]@data # normalized data matrix
+# For Seurat version >= “5.0.0”, get the normalized data via `seurat_object[["RNA"]]$data`
+labels <- Idents(seurat_RNA)
+meta <- data.frame(labels = labels, row.names = names(labels)) # create a dataframe of the cell labels
+
+# create CC object
+cellchat <- createCellChat(object = seurat_RNA, group.by = "ident", assay = "RNA")
+
+# assign CCDB
+CellChatDB <- CellChatDB.human # use CellChatDB.mouse if running on mouse data
+CellChatDB.use <- CellChatDB
+cellchat@DB <- CellChatDB.use
+
+cellchat <- subsetData(cellchat) # This step is necessary even if using the whole database
+future::plan("multisession", workers = 4) # do parallel
+cellchat <- identifyOverExpressedGenes(cellchat, thresh.p = 1)
+cellchat <- identifyOverExpressedInteractions(cellchat)
+
+# CC analysis
+cellchat <- computeCommunProb(cellchat, type = "triMean")
+cellchat <- filterCommunication(cellchat, min.cells = 10)
+cellchat <- computeCommunProbPathway(cellchat)
+cellchat <- aggregateNet(cellchat)
+```
+
+Export the inferred ligands and receptors
+```{r}
+x = cellchat@LR$LRsig$interaction_name
+x.split <- str_split(x, fixed("_"))
+
+CC.ligand = c()
+CC.receptor = c()
+
+for (i in 1:length(x.split)) {
+  CC.ligand <- c(CC.ligand, x.split[[i]][1])
+  
+  for (j in 2:length(x.split[[i]]) ) {
+    CC.receptor <- c(CC.receptor, x.split[[i]][j])
+  }
+}
+
+CC.ligand <- unique(CC.ligand)
+CC.receptor <- unique(CC.receptor)
+```
+
+
+
+# ICELLNET analysis
+
+```{r, include=FALSE}
+library(BiocGenerics)
+library("org.Hs.eg.db")
+library("hgu133plus2.db")
+library(jetset)
+library(icellnet)
+library(gridExtra)
+
+db=as.data.frame(read.csv(curl::curl(url="https://raw.githubusercontent.com/soumelis-lab/ICELLNET/master/data/ICELLNETdb.tsv"), sep="\t",header = T, check.names=FALSE, stringsAsFactors = FALSE, na.strings = ""))
+               
+db.name.couple=name.lr.couple(db, type="Family")
+head(db.name.couple)
+```
+
+
+```{r}
+data <- as.data.frame(GetAssayData(seurat_RNA, layer = "data")) #or other matrix for which features expression values # are scaled by the total expression in each cell
+
+target <- seurat_RNA@meta.data
+target$Type=seurat_RNA$cell_type
+target$Class=seurat_RNA$cell_type
+target$Cell=rownames(target)
+
+average.manual=matrix(ncol=length(unique(target$Type)), nrow=length(rownames(data)))
+colnames(average.manual)=unique(target$Type)
+rownames(average.manual)=rownames(data)
+dim(average.manual)
+for (cell in unique(target$Type)){
+  cells.clust=target$Cell[which(target$Type==cell)]
+  average.manual[,cell]=apply(data[,which(colnames(data)%in%cells.clust)], 1, mean)
+}
+
+average.clean=average.manual
+```
+
+direction = "out"
+```{r}
+data.icell=as.data.frame(gene.scaling(as.data.frame(average.clean), n=1, db=db))
+
+PC.data=as.data.frame(data.icell[, c(unique(seurat_RNA$cell_type), "Symbol")], row.names = rownames(data.icell))
+my.selection = unique(seurat_RNA$cell_type)
+
+score.computation.1= icellnet.score(direction="out", PC.data=PC.data, 
+                                    CC.data= as.data.frame(data.icell[, unique(seurat_RNA$cell_type)], 
+                                                           row.names = rownames(data.icell)),  
+                                    PC=my.selection, CC.type = "RNAseq", 
+                                    PC.type = "RNAseq",  db = db)
+score1=as.data.frame(score.computation.1[[1]])
+lr1=score.computation.1[[2]]
+```
+
+
+Export the inferred ligands and receptors
+```{r}
+lr_data <- data.frame(lr_name = rownames(lr1), value = lr1) 
+    
+text <- lr_data$lr_name
+text <- gsub(" ", "", text, fixed=TRUE)
+text <- str_split(text, fixed("/"))
+n <- length(text)
+
+text_ligands <- c()
+text_receptors <- c()
+    
+for (k in 1:n) {
+  text_ligands <- c(text_ligands, text[[k]][1])
+  text_receptors <- c(text_receptors, text[[k]][2])
+}
+   
+text_ligands = text_ligands[!duplicated(text_ligands)]
+text_ligands <- str_split(text_ligands, fixed("+"))
+
+text_receptors = text_receptors[!duplicated(text_receptors)]
+text_receptors <- str_split(text_receptors, fixed("+"))
+    
+ICELLNET.ligand <- c()
+ICELLNET.receptor <- c()
+
+for (k in 1:length(text_ligands)) {
+  if (length(text_ligands[[k]]) == 1){
+    ICELLNET.ligand <- c(ICELLNET.ligand, text_ligands[[k]])
+  }else{ ICELLNET.ligand <- c(ICELLNET.ligand, text_ligands[[k]][1:length(text_ligands[[k]])]) }
+}
+
+
+for (k in 1:length(text_receptors)) {
+  if (length(text_receptors[[k]]) == 1){
+    ICELLNET.receptor <- c(ICELLNET.receptor, text_receptors[[k]])
+  }else{ ICELLNET.receptor <- c(ICELLNET.receptor, text_receptors[[k]][1:length(text_receptors[[k]])]) }
+}
+
+ICELLNET.ligand.in <- unique(ICELLNET.ligand)
+ICELLNET.receptor.in <- unique(ICELLNET.receptor)
+```
+
+
+direction = "in"
+```{r}
+data.icell=as.data.frame(gene.scaling(as.data.frame(average.clean), n=1, db=db))
+
+PC.data=as.data.frame(data.icell[, c(unique(seurat_RNA$cell_type), "Symbol")], row.names = rownames(data.icell))
+my.selection = unique(seurat_RNA$cell_type)
+
+score.computation.2= icellnet.score(direction="in", PC.data=PC.data, 
+                                    CC.data= as.data.frame(data.icell[, unique(seurat_RNA$cell_type)], 
+                                                           row.names = rownames(data.icell)),  
+                                    PC=my.selection, CC.type = "RNAseq", 
+                                    PC.type = "RNAseq",  db = db)
+score2=as.data.frame(score.computation.2[[1]])
+lr2=score.computation.2[[2]]
+```
+
+
+Export the inferred ligands and receptors
+```{r}
+lr_data <- data.frame(lr_name = rownames(lr2), value = lr2) 
+    
+text <- lr_data$lr_name
+text <- gsub(" ", "", text, fixed=TRUE)
+text <- str_split(text, fixed("/"))
+n <- length(text)
+
+text_ligands <- c()
+text_receptors <- c()
+    
+for (k in 1:n) {
+  text_ligands <- c(text_ligands, text[[k]][1])
+  text_receptors <- c(text_receptors, text[[k]][2])
+}
+   
+text_ligands = text_ligands[!duplicated(text_ligands)]
+text_ligands <- str_split(text_ligands, fixed("+"))
+
+text_receptors = text_receptors[!duplicated(text_receptors)]
+text_receptors <- str_split(text_receptors, fixed("+"))
+    
+ICELLNET.ligand <- c()
+ICELLNET.receptor <- c()
+
+for (k in 1:length(text_ligands)) {
+  if (length(text_ligands[[k]]) == 1){
+    ICELLNET.ligand <- c(ICELLNET.ligand, text_ligands[[k]])
+  }else{ ICELLNET.ligand <- c(ICELLNET.ligand, text_ligands[[k]][1:length(text_ligands[[k]])]) }
+}
+
+
+for (k in 1:length(text_receptors)) {
+  if (length(text_receptors[[k]]) == 1){
+    ICELLNET.receptor <- c(ICELLNET.receptor, text_receptors[[k]])
+  }else{ ICELLNET.receptor <- c(ICELLNET.receptor, text_receptors[[k]][1:length(text_receptors[[k]])]) }
+}
+
+ICELLNET.ligand.out <- unique(ICELLNET.ligand)
+ICELLNET.receptor.out <- unique(ICELLNET.receptor)
+```
+
+
+merge
+```{r}
+ICELLNET.ligand <- unique( c(ICELLNET.ligand.in, ICELLNET.ligand.out) )
+ICELLNET.receptor <- unique( c(ICELLNET.receptor.in, ICELLNET.receptor.out) )
+```
+
+
+################################################################################
+
+# exFINDER analysis
+
+```{r, include=FALSE}
+library(exFINDER)
+```
+
+~/Documents/OrganChat_v3/exFINDERmaster2
+```{r}
+# load exFINDER database
+load("~/Documents/OrganChat_v3/exFINDERmaster2/data/LR_layer1_human.rda")
+load("~/Documents/OrganChat_v3/exFINDERmaster2/data/RTF_layer2_human.rda")
+load("~/Documents/OrganChat_v3/exFINDERmaster2/data/TFT_layer3_human.rda")
+
+exFINDER.H <- list()
+exFINDER.H[[1]] <- LR_layer1_human
+exFINDER.H[[2]] <- RTF_layer2_human
+exFINDER.H[[3]] <- TFT_layer3_human
+```
+
+
+```{r}
+exp.data <- seurat_RNA@assays$RNA@data
+meta.data <- seurat_RNA@meta.data
+meta.data$Type <- meta.data$cell_type
+
+ltGRN <- get_ltGRN(Target = target.test, DB = exFINDER.H)
+```
+
+
+```{r}
+exFINDER.ligand = unique( ltGRN$Graph.Node$Gene[ltGRN$Graph.Node$Role == "Ligand"] )
+exFINDER.receptor = unique( ltGRN$Graph.Node$Gene[ltGRN$Graph.Node$Role == "Receptor"] )
+```
+
+
+################################################################################
+
+# Visualization
+
+```{r}
+Signal.list = list(OC = OC.signal, CC = CC.ligand, ICELLNET = ICELLNET.ligand, exFINDER = exFINDER.ligand)
+Receptor.list = list(OC = OC.receptor, CC = CC.receptor, ICELLNET = ICELLNET.receptor, exFINDER = exFINDER.receptor)
+```
+
+
+```{r}
+unique.pct = c()
+for (i in 1:3) {
+  pct = 1 - length(intersect(Signal.list[[1]], Signal.list[[i+1]]))/length(Signal.list[[1]])
+  unique.pct = c(unique.pct, pct)
+}
+
+for (i in 1:3) {
+  pct = 1 - length(intersect(Receptor.list[[1]], Receptor.list[[i+1]]))/length(Receptor.list[[1]])
+  unique.pct = c(unique.pct, pct)
+}
+
+pct.df_1 = data.frame(value = unique.pct, 
+                    name = c(rep(c("CellChat", "ICELLNET", "exFINDER"), 2)),
+                    category = c(rep("Signal/Ligand", 3), rep("Receptor", 3)))
+pct.df_1$result = "uncovered"
+
+pct.df_2 = data.frame(value = 1- unique.pct, 
+                    name = c(rep(c("CellChat", "ICELLNET", "exFINDER"), 2)),
+                    category = c(rep("Signal/Ligand", 3), rep("Receptor", 3)))
+pct.df_2$result = "covered"
+
+pct.df <- rbind(pct.df_1, pct.df_2)
+pct.df$ID <- paste0(pct.df$name, "_", pct.df$category)
+pct.df$name <- factor(pct.df$name, levels = c("CellChat", "ICELLNET", "exFINDER"))
+pct.df$ID <- factor(pct.df$ID, levels = c("CellChat_Signal/Ligand", "CellChat_Receptor", 
+                                          "ICELLNET_Signal/Ligand", "ICELLNET_Receptor",
+                                          "exFINDER_Signal/Ligand", "exFINDER_Receptor"))
+```
+
+
+```{r}
+# Stacked + percent
+p = ggplot(pct.df, aes(fill=result, y=value, x=ID)) + 
+  geom_bar(width = 0.7, position=position_stack(), stat="identity") +
+  scale_fill_manual(values = c("#B0E2FF", "#FF7F50")) + 
+  theme_minimal() + 
+  theme(plot.background = element_rect(fill = "white") ,
+        panel.grid.minor = element_blank())
+
+p
+# ggsave(p, filename=paste0(output.dir, "MethodCompare_Barplot_1.pdf") )
+```
+
+
+```{r}
+LS.pct = c()
+for (i in 1:3) {
+  pct = 1 - length(intersect(unique(OrganChatDB[[1]]$from), Signal.list[[i+1]]))/length(Signal.list[[i+1]])
+  LS.pct = c(LS.pct, pct)
+}
+
+for (i in 1:3) {
+  pct = 1 - length(intersect(unique(OrganChatDB[[1]]$to), Receptor.list[[i+1]]))/length(Receptor.list[[i+1]])
+  LS.pct = c(LS.pct, pct)
+}
+
+LSpct.df_1 = data.frame(value = LS.pct, 
+                    name = c(rep(c("CellChat", "ICELLNET", "exFINDER"), 2)),
+                    category = c(rep("Signal/Ligand", 3), rep("Receptor", 3)))
+LSpct.df_1$result = "non-LS"
+
+LSpct.df_2 = data.frame(value = 1- LS.pct, 
+                    name = c(rep(c("CellChat", "ICELLNET", "exFINDER"), 2)),
+                    category = c(rep("Signal/Ligand", 3), rep("Receptor", 3)))
+LSpct.df_2$result = "LS"
+
+LSpct.df <- rbind(LSpct.df_1, LSpct.df_2)
+LSpct.df$ID <- paste0(LSpct.df$name, "_", LSpct.df$category)
+LSpct.df$name <- factor(LSpct.df$name, levels = c("CellChat", "ICELLNET", "exFINDER"))
+LSpct.df$ID <- factor(LSpct.df$ID, levels = c("CellChat_Signal/Ligand", "CellChat_Receptor", 
+                                          "ICELLNET_Signal/Ligand", "ICELLNET_Receptor",
+                                          "exFINDER_Signal/Ligand", "exFINDER_Receptor"))
+```
+
+
+```{r}
+# Stacked + percent
+p = ggplot(LSpct.df, aes(fill=result, y=value, x=ID)) + 
+  geom_bar(width = 0.7, position=position_stack(), stat="identity") + 
+  scale_fill_manual(values = c("#90EE90", "#F4A460")) +
+  theme_minimal() + 
+  theme(plot.background = element_rect(fill = "white") ,
+        panel.grid.minor = element_blank())
+
+p
+# ggsave(p, filename=paste0(output.dir, "MethodCompare_Barplot_2.pdf") )
+```
+
+
+
+
+

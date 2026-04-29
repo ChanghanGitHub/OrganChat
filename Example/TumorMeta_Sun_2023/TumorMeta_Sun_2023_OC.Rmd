@@ -1,0 +1,337 @@
+---
+title: "TumorMeta_Sun_2023_OC"
+author: "Changhan"
+date: "2026-04-26"
+output: html_document
+---
+
+Visualize the data abd perform OrganChat analysis between two “pseudo-organs” grouped based on cluster identity and spatial context. Group A: muscularis mucosa, peritumoral muscularis, and tumor tissue cells, while Group B: blood-containing tissue, intestinal metaplasia, lamina propria, and normal epithelium cells.
+
+The original data comes from the following paper: Sun, C., Wang, A., Zhou, Y. et al. Spatially resolved multi-omics highlights cell-specific metabolic remodeling and interactions in gastric cancer. Nat Commun 14, 2692 (2023). https://doi.org/10.1038/s41467-023-38360-5.
+
+
+```{r}
+library(OrganChat)
+library(dittoSeq)
+library(RColorBrewer)
+```
+
+
+# Preparation
+
+```{r}
+data.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/TumorMeta_Sun_2023/"     # your path to the data
+DB.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/OrganChatDB/"                   # your path to the OrganChatDB
+Dictionary.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Metabolite_Dictionary/" # your path to the files "hmdb_dictionary" and "METAFlux_lookup"
+output.dir = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/TumorMeta_Sun_2023/"    # your path to the ouput folder
+```
+
+
+Load data sets and marker gene list
+```{r, include=FALSE}
+# The two objects below contains spacial info for visualization
+seurat_MSI_DimPLot <- readRDS(paste0(data.path, "TumorMeta_Sun_2023_seurat_MSI_DimPLot.rds"))
+seurat_RNA_DimPLot <- readRDS(paste0(data.path, "TumorMeta_Sun_2023_seurat_RNA_DimPLot.rds"))
+
+# The two objects below are simplified by removing unnecessary assays for OrganChat analysis to improve computational effeciency
+seurat_MSI <- readRDS(paste0(data.path, "seurat_MSI.rds"))
+seurat_RNA <- readRDS(paste0(data.path, "seurat_RNA.rds"))
+
+seurat_RNA_markers <- read_csv(paste0(data.path, "seurat_RNA_markers.csv"))
+```
+
+################################################################################
+
+# DimPlot
+
+```{r}
+seurat_RNA_DimPLot@meta.data$cell_type = factor(seurat_RNA_DimPLot@meta.data$cell_type, 
+                                                levels = c("Blood-containing tissue",
+                                                           "Intestinal metaplasia",
+                                                           "Lamina propria",
+                                                           "Normal epithelium",
+                                                           "Muscularis mucosa",
+                                                           "Peritumoral muscularis",
+                                                           "Tumor tissue"))
+
+dittoDimPlot(seurat_RNA_DimPLot, 
+             var = "cell_type", 
+             reduction.use = "umap", 
+             size = 2,
+             do.label = F,
+             show.axes.numbers = F,
+             xlab = NULL,
+             ylab = NULL,
+             color.panel = brewer.pal(8, "Set1")[1:7])
+```
+
+
+```{r}
+seurat_RNA_DimPLot@meta.data$LRC = factor(seurat_RNA@meta.data$LRC)
+
+dittoDimPlot(seurat_RNA_DimPLot, 
+             var = "LRC", 
+             reduction.use = "umap", 
+             size = 2,
+             do.label = F,
+             show.axes.numbers = F,
+             xlab = NULL,
+             ylab = NULL,
+             color.panel = c("#C9C9C9", "#FF3030"))
+```
+
+
+# OrganChat analysis between two assigned groups
+
+
+Load metabolite dictionary data
+```{r, include=FALSE}
+hmdb_dictionary <- read_csv(paste0(Dictionary.path, "hmdb_dictionary_20240129.csv"))
+METAFlux_lookup <- read_csv(paste0(Dictionary.path, "METAFlux_lookup_20240131.csv"))
+```
+
+Load OCDB
+```{r}
+# load database
+load(paste0(DB.path, "LSR_layer1_human.rda"))
+load(paste0(DB.path, "RSE_layer2_human.rda"))
+load(paste0(DB.path, "SET_layer3_human.rda"))
+
+OrganChatDB <- list()
+OrganChatDB[[1]] <- LSR_layer1_human
+OrganChatDB[[2]] <- RSE_layer2_human
+OrganChatDB[[3]] <- SET_layer3_human
+```
+
+
+Prepare input data sets
+```{r}
+Data_organ1 <- subset(seurat_RNA, subset = organ == "organ1")
+Data_organ2 <- subset(seurat_RNA, subset = organ == "organ2")
+
+Data_organ1@meta.data$cell_type <- fct_drop(Data_organ1@meta.data$cell_type)
+Data_organ2@meta.data$cell_type <- fct_drop(Data_organ2@meta.data$cell_type)
+
+Idents(Data_organ1) = Data_organ1@meta.data$cell_type
+Idents(Data_organ2) = Data_organ2@meta.data$cell_type
+
+data.list = list(data1 = Data_organ1@assays$RNA@data, data2 = Data_organ2@assays$RNA@data)
+idents.list = list(idents1 = Data_organ1@active.ident, idents2 = Data_organ2@active.ident)
+```
+
+
+Create OrganChat object
+```{r}
+OC = create_OrganChat(object = data.list, 
+                          organs = c("organ1", "organ2"), 
+                          idents.list = idents.list,
+                          ComparisonAnalysis = FALSE,
+                          assay = NULL, 
+                          do.sparse = T)
+```
+
+Prepare the input scMETA data
+```{r}
+scMETA_organ1 <- subset(seurat_MSI, subset = organ == "organ1")
+scMETA_organ2 <- subset(seurat_MSI, subset = organ == "organ2")
+
+scMETA_organ1@meta.data$cell_type <- fct_drop(scMETA_organ1@meta.data$cell_type)
+scMETA_organ2@meta.data$cell_type <- fct_drop(scMETA_organ2@meta.data$cell_type)
+
+Idents(scMETA_organ1) = scMETA_organ1@meta.data$cell_type
+Idents(scMETA_organ2) = scMETA_organ2@meta.data$cell_type
+```
+
+
+Integrate scMeta data
+```{r}
+OC = cal_scMeta.bygroup(object = OC,
+                        scMeta.data = scMETA_organ1@assays$RNA@data,
+                        organ.name = "organ1",
+                        idents = scMETA_organ1@active.ident,
+                        mean_method = NULL)
+
+OC = cal_scMeta.bygroup(object = OC,
+                        scMeta.data = scMETA_organ2@assays$RNA@data,
+                        organ.name = "organ2",
+                        idents = scMETA_organ2@active.ident,
+                        mean_method = NULL)
+```
+
+Use the RNA data to calculate the mean expression of the DG(downstream gene) and LS(long-range signal)
+```{r}
+OC = cal_scRNA.bygroup(object = OC,
+                       DB = OrganChatDB,
+                       mean_method = NULL,
+                       scale.max = 10)
+```
+
+Select the top markers of the "Peritumoral muscularis" and "Muscularis mucosa"
+```{r}
+seurat_RNA_markers %>%
+  group_by(cluster) %>%
+  slice_head(n = 50) %>%
+  ungroup() -> topmarkers
+
+target =  unique( topmarkers$gene[ topmarkers$cluster %in% c("Peritumoral muscularis", "Muscularis mucosa", "Tumor tissue")] )
+# target = unique(topmarkers$gene)
+
+OC = OCnet0_infer(object = OC, 
+                  DB = OrganChatDB, 
+                  LS = NULL, 
+                  receptor = NULL, 
+                  tf = NULL,
+                  target = target,
+                  single.condition = TRUE)
+```
+
+Filter the network
+```{r}
+OC = filter_OCnet0(object = OC, cutoff_value = c(0, 0.2, 0.2, 0.2), single.condition = TRUE)
+```
+
+Calculate the chatP
+```{r}
+OC = cal_netchat_prob(object = OC, K = 0.1, N = 1, 
+                      single.condition = TRUE)
+```
+
+Bootstrap test
+```{r}
+OC = cal_netchat_bootstrap(object = OC, R = 5, sd_cutoff = Inf, p_cutoff = NULL, 
+                           single.condition = TRUE)
+```
+
+
+# Visualization
+
+river plot: organ1 (Muscularis mucosa) -> organ1 (Tumor tissue), self communication
+```{r}
+df.plot = OC@net$Condition1$self_organ1$`organ1_Muscularis mucosa_to_Tumor tissue`
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 10,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+river plot: organ2 (Intestinal metaplasia) -> organ1 (Tumor tissue)
+```{r}
+df.plot = OC@net$Condition1$backward$`Intestinal metaplasia_to_Tumor tissue`
+
+OC_riverplot(df = df.plot,
+             pref = "chatP",
+             category = "All",
+             n.path = 10,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+river plot: organ2 (Normal epithelium) -> organ1 (Tumor tissue)
+```{r}
+df.plot = OC@net$Condition1$backward$`Normal epithelium_to_Tumor tissue`
+
+OC_riverplot(df = df.plot,
+             pref = "chatP",
+             category = "All",
+             n.path = 10,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+river plot: organ1 (Peritumoral muscularis) -> organ1 (Tumor tissue), self communication
+```{r}
+df.plot = OC@net$Condition1$self_organ1$`organ1_Peritumoral muscularis_to_Tumor tissue`
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 10,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+chord diagram: average weight (average communication probability) of LS-T pathways in organ2 -> organ1 communication on cluster level.
+```{r}
+OC_chorddiagram(object = OC,
+                net = OC@net$Condition1$backward, # a list of sig network of one direction
+                dir = "backward",
+                category = "All",
+                style = "ave.weight")
+```
+
+
+chord diagram: average weight (average communication probability) of LS-T pathways in organ1 -> organ1 communication on cluster level.
+```{r}
+OC_chorddiagram(object = OC,
+                net = OC@net$Condition1$self_organ1, # a list of sig network of one direction
+                dir = "self_organ1",
+                category = "All",
+                style = "ave.weight")
+```
+
+
+
+bubble heat map: organ2 -> organ1 communication
+```{r}
+OC_bubbleheatmap(object = OC,
+                net = OC@net$Condition1$backward, # a list of sig network of one direction
+                dir = "backward",
+                category = "All",
+                size = "total.counts",
+                color = "total.chatP")
+```
+
+
+bubble heat map: organ1 -> organ1 communication
+```{r}
+OC_bubbleheatmap(object = OC,
+                net = OC@net$Condition1$self_organ1, # a list of sig network of one direction
+                dir = "self_organ1",
+                category = "All",
+                size = "total.counts",
+                color = "total.chatP")
+```
+
+
+bubble heat map: organ2 -> organ2 communication
+```{r}
+OC_bubbleheatmap(object = OC,
+                net = OC@net$Condition1$self_organ2, # a list of sig network of one direction
+                dir = "self_organ2",
+                category = "All",
+                size = "total.counts",
+                color = "total.chatP")
+```
+
+
+tree plot of the selected GRN in organ1 (Tumor tissue) -> organ1 (Tumor tissue) communication
+```{r}
+df.plot = OC@net$Condition1$self_organ1$`organ1_Tumor tissue_to_Tumor tissue`
+x = construct_Network_df(df = df.plot,
+                         category = "All",
+                         restrict.by = "Both")
+network_treeplot(x)
+```
+
+
+rose diagram: signaling inflow/outflow of organ2 (Normal epithelium) -> organ1 (Tumor tissue) communication
+```{r}
+components_rosediagram(df = OC@net$Condition1$backward$`Normal epithelium_to_Tumor tissue`, 
+                       category = "All",
+                       n = 5)
+```
+
+
+
+
+
+
+
+

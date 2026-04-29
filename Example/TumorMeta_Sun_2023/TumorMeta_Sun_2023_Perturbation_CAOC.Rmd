@@ -1,0 +1,415 @@
+---
+title: "TumorMeta_Sun_2023_Perturbation_CAOC"
+author: "Changhan"
+date: "2026-04-26"
+output: html_document
+---
+
+Perturbation-based validation on two LS-receptor pairs by manually down-regulating LGALS1-LGALS3BP and up-regulating adenine-HNRNPA2B1, while retaining MIF-CD74 as the unperturbed control.
+
+OrganChat analyses were conducted under both perturbed and control conditions, and the differential index (DI) of the pathways LGALS1-LGALS3BP-PCBP2-MALAT1, adenine-HNRNPA2B1-YBX1-FBL, and MIF-CD74-HNRNPK-NEAT1 was computed and averaged across clusters and conditions.
+
+```{r}
+library(OrganChat)
+
+library(RColorBrewer)
+library(survival)
+library(pheatmap)
+```
+
+# Preparation
+
+```{r}
+data.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/TumorMeta_Sun_2023/"     # your path to the data
+DB.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/OrganChatDB/"                   # your path to the OrganChatDB
+Dictionary.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Metabolite_Dictionary/" # your path to the files "hmdb_dictionary" and "METAFlux_lookup"
+output.dir = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/TumorMeta_Sun_2023/"    # your path to the ouput folder
+```
+
+Load data sets and marker gene list
+```{r, include=FALSE}
+seurat_MSI <- readRDS(paste0(data.path, "seurat_MSI.rds"))
+seurat_RNA <- readRDS(paste0(data.path, "seurat_RNA.rds"))
+
+seurat_RNA_markers <- read_csv(paste0(data.path, "seurat_RNA_markers.csv"))
+```
+
+Load metabolite dictionary data
+```{r, include=FALSE}
+hmdb_dictionary <- read_csv(paste0(Dictionary.path, "hmdb_dictionary_20240129.csv"))
+METAFlux_lookup <- read_csv(paste0(Dictionary.path, "METAFlux_lookup_20240131.csv"))
+```
+
+Load OCDB
+```{r}
+# load database
+load(paste0(DB.path, "LSR_layer1_human.rda"))
+load(paste0(DB.path, "RSE_layer2_human.rda"))
+load(paste0(DB.path, "SET_layer3_human.rda"))
+
+OrganChatDB <- list()
+OrganChatDB[[1]] <- LSR_layer1_human
+OrganChatDB[[2]] <- RSE_layer2_human
+OrganChatDB[[3]] <- SET_layer3_human
+```
+
+# Perturbation
+
+For OrganChat validation, two LS-receptor pairs (LGALS1-LGALS3BP and Adenine-HNRNPA2B1) were manually perturbed: 
+(1) Half of the spots in the muscularis mucosa and tumor tissue were randomly selected for perturbation. 
+(2) The expression levels of LGALS1 in muscularis mucosa and LGALS3BP in tumor tissue were downscaled to 0.1x of their original levels, whereas the abundance of Adenine in the muscularis mucosa and the expression of HNRNPA2B1 in tumor tissue were upscaled 10×.
+(3) To evaluate robustness, we introduced multiplicative Gaussian noise to the original value A.
+
+```{r, include=FALSE}
+round = 20
+
+target.cluster = "Tumor tissue"
+no.markers = 30
+
+# perturbed genes & metabolite
+pdown.metabolite = c("LGALS1")
+pdown.gene = c("LGALS3BP")
+
+pup.metabolite = c("HMDB0000034")
+pup.gene = c("HNRNPA2B1")
+
+# controlled genes & metabolites for comparison
+c.metabolite = c("MIF")
+c.gene = c("CD74")
+
+# perturb rate & noise level
+rdown = 0.1
+rup = 10
+noise = 0.02
+
+metabolite = c(pdown.metabolite, pup.metabolite, c.metabolite)
+receptor = c(pdown.gene, pup.gene, c.gene)
+tf = c("PCBP2", "YBX1", "HNRNPK")
+target = c("MALAT1", "FBL", "NEAT1")
+# target = seurat_RNA_markers$gene[seurat_RNA_markers$cluster == target.cluster][1:no.markers]
+
+pdown.path = "LGALS1*LGALS3BP*PCBP2*MALAT1"
+pup.path = "HMDB0000034*HNRNPA2B1*YBX1*FBL"
+c.path = "MIF*CD74*HNRNPK*NEAT1"
+
+
+n = length(unique(seurat_RNA@meta.data$cell_type))
+M.initial = matrix(0, n, n)
+
+rownames(M.initial) = unique(seurat_RNA@meta.data$cell_type) # sender
+colnames(M.initial) = unique(seurat_RNA@meta.data$cell_type) # receiver
+
+M.list = list(down = M.initial, up = M.initial, control = M.initial)
+
+expression = c()
+name = c()
+condition = c()
+iteration = c()
+
+for (i in 1:round) {
+  
+  Data_RNA = seurat_RNA
+  Data_MSI = seurat_MSI
+  
+  Data_RNA$condition = "control"
+  Data_MSI$condition = "control"
+  
+  x = table(Data_RNA@meta.data$cell_type)
+  x = x[unique(Data_RNA@meta.data$cell_type)]
+  x = as.numeric(round(unname(x)/2))
+  
+  set.seed(NULL)
+  index <- sampling:::strata(Data_RNA@meta.data, stratanames = "cell_type", size = x,
+                             method = "srswor", description = TRUE)
+  
+  Data_MSI@meta.data$condition[index$ID_unit] = "perturbed"
+  Data_RNA@meta.data$condition[index$ID_unit] = "perturbed"
+  
+  ##############################################################################
+  # select cells (receptors)
+  meta.data = Data_RNA@meta.data
+  rownames(meta.data) = colnames(Data_RNA@assays$RNA@data)
+  cell.use_down = rownames(meta.data)[meta.data$condition == "perturbed" & meta.data$cell_type == target.cluster]
+  cell.use_up = rownames(meta.data)[meta.data$condition == "perturbed" & meta.data$cell_type == target.cluster]
+  # change value
+  Data_RNA@assays$RNA@data[pdown.gene, cell.use_down] = Data_RNA@assays$RNA@data[pdown.gene, cell.use_down]*rdown
+  Data_RNA@assays$RNA@data[pup.gene, cell.use_up] = Data_RNA@assays$RNA@data[pup.gene, cell.use_up]*rup
+  
+  ##############################################################################
+  # select cells for LS (metabolite)
+  meta.data = Data_MSI@meta.data
+  rownames(meta.data) = colnames(Data_MSI@assays$RNA@data)
+  cell.use_up = rownames(meta.data)[meta.data$condition == "perturbed" & meta.data$cell_type == "Muscularis mucosa"]
+  # change value
+  Data_MSI@assays$RNA@data[pup.metabolite, cell.use_up] = Data_MSI@assays$RNA@data[pup.metabolite, cell.use_up]*rup
+  
+  ##############################################################################
+  # select cells for LS (hormone)
+  meta.data = Data_RNA@meta.data
+  rownames(meta.data) = colnames(Data_RNA@assays$RNA@data)
+  cell.use_down = rownames(meta.data)[meta.data$condition == "perturbed" & meta.data$cell_type == "Muscularis mucosa"]
+  # change value
+  Data_RNA@assays$RNA@data[pdown.metabolite, cell.use_down] = Data_RNA@assays$RNA@data[pdown.metabolite, cell.use_down]*rdown
+  
+  ##############################################################################
+  # add noise
+  a = dim(Data_RNA@assays$RNA@data)[1]
+  b = dim(Data_RNA@assays$RNA@data)[2]
+  # set.seed(1)
+  set.seed(NULL)
+  noise.M = matrix(round(rnorm(a*b, mean = 0, sd = 1), 2), a, b)
+  noise.M = as( 1 + noise.M/max(noise.M)*noise , "dgCMatrix")
+  Data_RNA@assays$RNA@data = Data_RNA@assays$RNA@data*noise.M
+  
+  # add noise
+  a = dim(Data_MSI@assays$RNA@data)[1]
+  b = dim(Data_MSI@assays$RNA@data)[2]
+  # set.seed(2)
+  set.seed(NULL)
+  noise.M = matrix(round(rnorm(a*b, mean = 0, sd = 1), 2), a, b)
+  noise.M = as( 1 + noise.M/max(noise.M)*noise , "dgCMatrix")
+  Data_MSI@assays$RNA@data = Data_MSI@assays$RNA@data*noise.M
+  
+  ##############################################################################
+  # Prepare input data sets
+  Data_organ1 <- subset(Data_RNA, subset = organ == "organ1")
+  Data_organ2 <- subset(Data_RNA, subset = organ == "organ2")
+  
+  Data_organ1@meta.data$cell_type <- fct_drop(Data_organ1@meta.data$cell_type)
+  Data_organ2@meta.data$cell_type <- fct_drop(Data_organ2@meta.data$cell_type)
+  
+  Idents(Data_organ1) = Data_organ1@meta.data$cell_type
+  Idents(Data_organ2) = Data_organ2@meta.data$cell_type
+  
+  data.list = list(data1 = Data_organ1@assays$RNA@data, data2 = Data_organ2@assays$RNA@data)
+  idents.list = list(idents1 = Data_organ1@active.ident, idents2 = Data_organ2@active.ident)
+  
+  Idents(Data_organ1) = Data_organ1@meta.data$condition
+  Idents(Data_organ2) = Data_organ2@meta.data$condition
+  
+  conditions.list = list(idents1 = Data_organ1@active.ident, idents2 = Data_organ2@active.ident)
+  
+  ##############################################################################
+  CAOC = create_OrganChat(object = data.list, 
+                          organs = c("organ1", "organ2"), 
+                          idents.list = idents.list,
+                          ComparisonAnalysis = TRUE,
+                          conditions = c("control", "perturbed"),
+                          conditions.list = conditions.list,
+                          assay = NULL, 
+                          do.sparse = T)
+  
+  ##############################################################################
+  # Prepare the input scMETA data
+  scMETA_organ1 <- subset(Data_MSI, subset = organ == "organ1")
+  scMETA_organ2 <- subset(Data_MSI, subset = organ == "organ2")
+  
+  scMETA_organ1@meta.data$cell_type <- fct_drop(scMETA_organ1@meta.data$cell_type)
+  scMETA_organ2@meta.data$cell_type <- fct_drop(scMETA_organ2@meta.data$cell_type)
+  
+  Idents(scMETA_organ1) = scMETA_organ1@meta.data$cell_type
+  Idents(scMETA_organ2) = scMETA_organ2@meta.data$cell_type
+  
+  idents_organ1 = Idents(scMETA_organ1)
+  idents_organ2 = Idents(scMETA_organ2)
+  
+  Idents(scMETA_organ1) = scMETA_organ1@meta.data$condition
+  Idents(scMETA_organ2) = scMETA_organ2@meta.data$condition
+  
+  conditions.label_organ1 = Idents(scMETA_organ1)
+  conditions.label_organ2 = Idents(scMETA_organ2)
+  
+  ##############################################################################
+  CAOC = CA_cal_scMeta.bygroup(object = CAOC,
+                               scMeta.data = scMETA_organ1@assays$RNA@data,
+                               organ.name = "organ1",
+                               idents = idents_organ1,
+                               conditions.label = conditions.label_organ1,
+                               mean_method = NULL,
+                               type = "amount",
+                               scale.max = 10)
+  
+  CAOC = CA_cal_scMeta.bygroup(object = CAOC,
+                               scMeta.data = scMETA_organ2@assays$RNA@data,
+                               organ.name = "organ2",
+                               idents = idents_organ2,
+                               conditions.label = conditions.label_organ2,
+                               mean_method = NULL,
+                               type = "amount",
+                               scale.max = 10)
+  
+  CAOC = CA_cal_scRNA.bygroup(object = CAOC,
+                              DB = OrganChatDB,
+                              mean_method = NULL,
+                              scale.max = 10)
+  
+  CAOC = CA_net0_infer(object = CAOC,
+                       DB = OrganChatDB, 
+                       LS = metabolite, 
+                       receptor = receptor, 
+                       tf = tf,
+                       target = target)
+  
+  CAOC = CA_net_analysis(object = CAOC,
+                         K = 0.1, 
+                         N = 1,
+                         R = 5,
+                         CA_cutoff_value = NULL,
+                         CA_cutoff_chatP = NULL,
+                         CA_cutoff_sd = NULL)
+  
+  CAOC = DEpath_table(object = CAOC,
+                      Sender.group = NULL,
+                      Receiver.group = NULL,
+                      Direction = NULL,
+                      p_cutoff = NULL,
+                      sd_cutoff = NULL,
+                      DI_cutoff = NULL,
+                      top = NULL)
+  
+  ##############################################################################
+  
+  df = CAOC@DEpath
+  df$ID_2 = paste0(df$Sender.group, "_", df$Receiver.group)
+  
+  df.down = df[df$Path == pdown.path, ]
+  df.up = df[df$Path == pup.path, ]
+  df.control = df[df$Path == c.path, ]
+  
+  df.list = list(down = df.down, up = df.up, control = df.control)
+  
+  for (j in 1:3) {
+    df.output = df.list[[j]]
+    M.select = M.initial
+    for (k in 1:nrow(df.output)) {
+      ind_row = which(rownames(M.select) == df.output$Sender.group[k])
+      ind_col = which(colnames(M.select) == df.output$Receiver.group[k])
+      M.select[ind_row, ind_col] = df.output$DI[k]
+    }
+    M.list[[j]] = M.list[[j]] + M.select
+  }
+  
+  metabolite.exp_c = c(CAOC@LSdata$control$organ1[pdown.metabolite, ]$`Muscularis mucosa`,
+                       CAOC@LSdata$control$organ1[pup.metabolite, ]$`Muscularis mucosa`,
+                       CAOC@LSdata$control$organ1[c.metabolite, ]$`Muscularis mucosa`)
+  
+  metabolite.exp_p = c(CAOC@LSdata$perturbed$organ1[pdown.metabolite, ]$`Muscularis mucosa`,
+                       CAOC@LSdata$perturbed$organ1[pup.metabolite, ]$`Muscularis mucosa`,
+                       CAOC@LSdata$perturbed$organ1[c.metabolite, ]$`Muscularis mucosa`)
+  
+  receptor.exp_c = c(CAOC@DGdata$control$organ1[pdown.gene, ]$`Tumor tissue`,
+                       CAOC@DGdata$control$organ1[pup.gene, ]$`Tumor tissue`,
+                       CAOC@DGdata$control$organ1[c.gene, ]$`Tumor tissue`)
+  
+  receptor.exp_p = c(CAOC@DGdata$perturbed$organ1[pdown.gene, ]$`Tumor tissue`,
+                       CAOC@DGdata$perturbed$organ1[pup.gene, ]$`Tumor tissue`,
+                       CAOC@DGdata$perturbed$organ1[c.gene, ]$`Tumor tissue`)
+  
+  metabolite.exp = c(metabolite.exp_c, metabolite.exp_p)
+  names.metabolite = rep(c(pdown.metabolite, pup.metabolite, c.metabolite), 2)
+  
+  receptor.exp = c(receptor.exp_c, receptor.exp_p)
+  names.receptor = rep(c(pdown.gene, pup.gene, c.gene), 2)
+  
+  expression = c(expression, metabolite.exp, receptor.exp)
+  name = c(name, names.metabolite, names.receptor)
+  condition = c(condition, c(rep("control", 3), rep("perturbed", 3)), c(rep("control", 3), rep("perturbed", 3)))
+  iteration = c(iteration, c(rep(i, 12)))
+  
+}
+
+exp.outout = data.frame(expression = expression,
+                        name = name,
+                        condition = condition,
+                        iteration = iteration)
+```
+
+
+
+```{r}
+for (j in 1:3) {
+  M.list[[j]] = M.list[[j]]/round
+}
+```
+
+
+plot the heat map
+```{r}
+reorder.clusters = c("Blood-containing tissue", 
+                     "Intestinal metaplasia", 
+                     "Lamina propria", 
+                     "Normal epithelium",
+                     "Muscularis mucosa", 
+                     "Peritumoral muscularis", 
+                     "Tumor tissue")
+
+upper.bound = max(max(M.list[[1]]), max(M.list[[2]]), max(M.list[[3]]))
+lower.bound = min(min(M.list[[1]]), min(M.list[[2]]), min(M.list[[3]]))
+bk <- c(seq(lower.bound, upper.bound, by = 0.05))
+
+i = 3
+df.plot = M.list[[i]]
+df.plot = df.plot[reorder.clusters, reorder.clusters]
+
+row_anno = data.frame(cluster = rownames(df.plot))
+row_anno$cluster = factor(row_anno$cluster, levels = rownames(df.plot))
+rownames(row_anno) = row_anno$cluster
+
+col_anno = data.frame(cluster = colnames(df.plot))
+rownames(col_anno) = col_anno$cluster
+col_anno$cluster = factor(col_anno$cluster, levels = colnames(df.plot))
+
+mycolors = brewer.pal(8, "Set1")[1:7]
+names(mycolors) <- unique(col_anno$cluster)
+mycolors <- list(cluster = mycolors)
+
+
+# pdf( paste0(output.dir, "PerturbationHeatmap_", i, ".pdf"), width=12, height = 8)
+
+pheatmap(df.plot,
+         cluster_cols = F,
+         cluster_rows = F,
+         scale = "none",
+         annotation_row = row_anno,
+         annotation_col = col_anno,
+         annotation_colors = mycolors,
+         border_color = "white",
+         color = colorRampPalette(c("navy", "white", "firebrick3"))(length(bk)),
+         breaks = bk, 
+         cellheight = 30, 
+         cellwidth = 30,
+         labels_col = c("", "", "", "", "", "", ""),
+         labels_row = c("", "", "", "", "", "", ""))
+
+# dev.off()
+```
+
+Box plot of the expression values
+```{r}
+# df.plot = exp.outout[exp.outout$name %in% c(pdown.metabolite, pup.metabolite), ]
+
+df.plot = exp.outout
+df.plot$name = factor(df.plot$name, 
+                      levels = c(pdown.metabolite, pup.metabolite, c.metabolite, pdown.gene, pup.gene, c.gene))
+
+p <- ggplot(df.plot, aes(x=name, y=expression, fill=condition)) + 
+  geom_boxplot() +
+  theme_bw() +
+  facet_wrap(~name, scale="free", 
+             labeller = labeller(name = c("HMDB0000191" = "Tumor tissue",
+                                          "HMDB0000803" = "Tumor tissue",
+                                          "HMDB0000131" = "Blood-containing tissue",
+                                          "RPSA" = "Muscularis mucosa",
+                                          "PIGR" = "Muscularis mucosa",
+                                          "RACK1" = "Muscularis mucosa")))
+
+p
+
+# ggsave(p, filename=paste0(output.dir, "PerturbationExpression_Boxplot.pdf") )
+```
+
+
+
+
+
+

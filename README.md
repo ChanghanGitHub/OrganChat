@@ -36,6 +36,17 @@ from: <https://doi.org/10.5281/zenodo.19042679>.
 
 ## Examples
 
+### Benchmarking and perturbation-based validation using a spatial multi-omics human gastric cancer dataset: [link to the folder](Example/TumorMeta_Sun_2023)
+
+1)  [Organ-organ communicarion analysis between two
+    “pseudo-organs”.](Example/TumorMeta_Sun_2023/TumorMeta_Sun_2023_OC.Rmd)
+
+2)  [Benchmarking analysis against CellChat, ICELLNET, and
+    exFINDER](Example/TumorMeta_Sun_2023/TumorMeta_Sun_2023_Benchmarking.Rmd)
+
+3)  [Perturbation-based
+    validation.](Example/TumorMeta_Sun_2023/HTumorMeta_Sun_2023_Perturbation_CAOC.Rmd)
+
 ### Application to a five-organ communication system for immune-mediated diseases: [link to the folder](Example/Sandra_CellRepMed_2023)
 
 1)  [Processing the original data and inferring metabolite
