@@ -1057,7 +1057,7 @@ GOanalysis_scatterplot <- function(df,
   df.plot$significance = -log10(df.plot$p_value)
   df.plot$term_name = factor(df.plot$term_name, levels = df.plot$term_name)
 
-  ggplot(df.plot, aes(x=df.plot$significance, y=df.plot$precision, color = df.plot$term_name)) +
+  ggplot(df.plot, aes(x= significance, y= precision, color = term_name)) +
     geom_point(size=size) +
     theme_bw()
 }

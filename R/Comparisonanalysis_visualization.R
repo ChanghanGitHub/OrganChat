@@ -350,7 +350,7 @@ CAOC_bubbleheatmap <- function(object,
 
     df.plot.list[[i]] = df.plot
 
-    p.list[[i]] <- ggplot(df.plot, aes(df.plot$to, df.plot$from, size = size)) +
+    p.list[[i]] <- ggplot(df.plot, aes(to, from, size = size)) +
       geom_point(aes(color = color)) +
       xlab("Receiver group") + ylab("Sender group") +
       theme_bw() +

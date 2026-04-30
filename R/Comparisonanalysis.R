@@ -219,6 +219,7 @@ CA_merge_metabolite.bygroup <- function(object,
 #' @param receptor the list of Receptor used for inferring the pathways, the input is NULL by default, which means all will be used
 #' @param tf the list of Signaling Effector used for inferring the pathways, the input is NULL by default, which means all will be used
 #' @param target  the list of Target used for inferring the pathways, the input is NULL by default, which means all will be used
+#' @param hmdb_dictionary OrganChat-provided database matching "metabolite name" and the HMDB ID.
 #'
 #' @importFrom forcats fct_drop
 #'
@@ -229,7 +230,8 @@ CA_net0_infer <- function(object,
                           LS = NULL,
                           receptor = NULL,
                           tf = NULL,
-                          target = NULL){
+                          target = NULL,
+                          hmdb_dictionary = hmdb_dictionary){
 
   net0.list = list()
   # for each condition
