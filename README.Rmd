@@ -27,7 +27,7 @@ All processed data and some saved OrganChat objects can be download from: https:
 
 ## Tutorials
 
-[Inferring, analyzing, and comparing the organ-organ communication (OOC) between different conditions using OrganChat.](`r paste0('file:///', file.path(find.package('OrganChat'), 'vignettes', 'Comparison_Analysis_Tutorial.html'))`)
+[Inferring, analyzing, and comparing the organ-organ communication (OOC) between different conditions using OrganChat.](file:///Users/changhan/Documents/OrganChat/vignettes/Comparison_Analysis_Tutorial.html)
 
 ## Examples
 
