@@ -38,7 +38,7 @@ from: <https://doi.org/10.5281/zenodo.19042679>.
 
 [Inferring, analyzing, and comparing the organ-organ communication (OOC)
 between different conditions using
-OrganChat.](https://htmlpreview.github.io/?https://github.com/ChanghanGitHub/OrganChat/blob/master/vignettes/Comaprison_Analysis_Tutorial.html)
+OrganChat.](https://htmlpreview.github.io/?https://github.com/ChanghanGitHub/OrganChat/tree/master/vignettes/Comaprison_Analysis_Tutorial.html)
 
 ## Examples
 
