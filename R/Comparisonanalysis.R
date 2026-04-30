@@ -266,7 +266,8 @@ CA_net0_infer <- function(object,
                                           receptor = receptor,
                                           tf = tf,
                                           target = target,
-                                          single.condition = TRUE)
+                                          single.condition = TRUE,
+                                          hmdb_dictionary = hmdb_dictionary)
 
     net0.list[[i]] = object.singlecondition@net0
   }
