@@ -1,0 +1,347 @@
+---
+title: "ValidationData_NewAnalysis_LRexplore_AdditionalFigures_04182026"
+output: html_document
+date: "2026-04-18"
+---
+
+```{r}
+library(scales)
+library(plotrix)
+library(Seurat)
+library(qtl2)
+library(readr)
+library(dplyr)
+library(forcats)
+```
+
+
+# Load required data & database
+
+
+```{r}
+data.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Insulin_UCI_2025_mouse_ExtendedAnalysis/"     # your path to the data
+DB.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/OrganChatDB/"                   # your path to the OrganChatDB
+Dictionary.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Metabolite_Dictionary/" # your path to the files "hmdb_dictionary" and "METAFlux_lookup"
+output.dir = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Insulin_UCI_2025_mouse_ExtendedAnalysis/"    # your path to the ouput folder
+```
+
+Load metabolite dictionary data
+```{r, include=FALSE}
+hmdb_dictionary <- read_csv(paste0(Dictionary.path, "hmdb_dictionary_20240129.csv"))
+METAFlux_lookup <- read_csv(paste0(Dictionary.path, "METAFlux_lookup_20240131.csv"))
+```
+
+
+Load OCDB
+```{r}
+# load database
+load(paste0(DB.path, "LSR_layer1_mouse.rda"))
+load(paste0(DB.path, "RSE_layer2_mouse.rda"))
+load(paste0(DB.path, "SET_layer3_mouse.rda"))
+
+OrganChatDB <- list()
+OrganChatDB[[1]] <- LSR_layer1_mouse
+OrganChatDB[[2]] <- RSE_layer2_mouse
+OrganChatDB[[3]] <- SET_layer3_mouse
+```
+
+
+Load the Seurat object, which will be stored in a list
+c("Liver", "Skin", "Adipose")
+```{r}
+organ.list = c("Liver", "Skin", "Adipose")
+condition.list = c("old_resistant", "old_sensitive", "young")
+
+UCI_Data_list <- list()
+
+for (i in 1:length(organ.list)) {
+  UCI_Data_list[[i]] = readRDS(paste0(data.path, "UCI_", organ.list[i], "_downsampled.rds"))
+}
+
+
+names(UCI_Data_list) = organ.list
+```
+
+
+Merge "old_resistant", "old_sensitive" for new "old" condition
+```{r}
+for (i in 1:3) {
+  UCI_Data_list[[i]]$condition_2 = UCI_Data_list[[i]]$condition
+  UCI_Data_list[[i]]$condition_2[UCI_Data_list[[i]]$condition_2 == "old_resistant" | UCI_Data_list[[i]]$condition_2 == "old_sensitive"] = "old"
+}
+```
+
+
+# Visuzlizations
+
+Load the objects: Liver to Skin/Adipose (Targets: top 30 markers of each group in every condition)
+```{r}
+CAOC_LiSk = readRDS(paste0(data.path, "CAOC_NewAnalysis_LiverSkin_032026.rds"))
+CAOC_LiAd = readRDS(paste0(data.path, "CAOC_NewAnalysis_LiverAdipose_032026.rds"))
+```
+
+# Visuzlizations
+
+chord diagram
+```{r}
+# pdf(paste0(output.path, "CAOC_chorddiagram_LiSk_forward_AllSignals_totalcounts_075.pdf"), width=8, height = 12)
+CAOC_chorddiagram(object = CAOC_LiSk,
+                  dir = "forward",
+                  category = "All",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+
+# pdf(paste0(output.path, "CAOC_chorddiagram_LiAd_forward_AllSignals_totalcounts_075.pdf"), width=8, height = 12)
+CAOC_chorddiagram(object = CAOC_LiAd,
+                  dir = "forward",
+                  category = "All",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+
+# pdf(paste0(output.path, "CAOC_chorddiagram_LiSk_forward_metabolite_totalcounts_075.pdf"), width=8, height = 12)
+CAOC_chorddiagram(object = CAOC_LiSk,
+                  dir = "forward",
+                  category = "metabolite",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+
+# pdf(paste0(output.path, "CAOC_chorddiagram_LiAd_forward_metabolite_totalcounts_075.pdf"), width=8, height = 12)
+CAOC_chorddiagram(object = CAOC_LiAd,
+                  dir = "forward",
+                  category = "metabolite",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+
+# cytokines
+# pdf(paste0(output.path, "CAOC_chorddiagram_LiSk_forward_cytokines_totalcounts_075.pdf"), width=8, height = 12)
+CAOC_chorddiagram(object = CAOC_LiSk,
+                  dir = "forward",
+                  category = "cytokines",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+
+# pdf(paste0(output.path, "CAOC_chorddiagram_LiAd_forward_cytokines_totalcounts_075.pdf"), width=8, height = 12)
+CAOC_chorddiagram(object = CAOC_LiAd,
+                  dir = "forward",
+                  category = "cytokines",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+
+# hormone_nonpeptide
+# pdf(paste0(output.path, "CAOC_chorddiagram_LiSk_forward_hormone_nonpeptide_totalcounts_075.pdf"), width=8, height = 12)
+CAOC_chorddiagram(object = CAOC_LiSk,
+                  dir = "forward",
+                  category = "hormone_nonpeptide",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+
+# pdf(paste0(output.path, "CAOC_chorddiagram_LiAd_forward_hormone_nonpeptide_totalcounts_075.pdf"), width=8, height = 12)
+CAOC_chorddiagram(object = CAOC_LiAd,
+                  dir = "forward",
+                  category = "hormone_nonpeptide",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+
+# hormone_peptide
+# pdf(paste0(output.path, "CAOC_chorddiagram_LiSk_forward_hormone_peptide_totalcounts_075.pdf"), width=8, height = 12)
+CAOC_chorddiagram(object = CAOC_LiSk,
+                  dir = "forward",
+                  category = "hormone_peptide",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+
+# pdf(paste0(output.path, "CAOC_chorddiagram_LiAd_forward_hormone_peptide_totalcounts_075.pdf"), width=8, height = 12)
+CAOC_chorddiagram(object = CAOC_LiAd,
+                  dir = "forward",
+                  category = "hormone_peptide",
+                  style = "total.counts",
+                  chatP_cutoff = 0.75)
+
+# dev.off(); dev.off(); dev.off(); dev.off()
+# dev.off(); dev.off(); dev.off(); dev.off()
+# dev.off()
+# dev.off()
+```
+
+riverplot
+```{r}
+# LiSk
+df.plot = CAOC_LiSk@net$young$forward$`EC_to_Sebaceous gland`
+# pdf(paste0(output.path, "CAOC_riverplot_LiSk_young_forward_EC_to_Sebaceous.pdf"), width = 12, height = 6)
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+
+df.plot = CAOC_LiSk@net$old$forward$`EC_to_Sebaceous gland`
+# pdf(paste0(output.path, "CAOC_riverplot_LiSk_old_forward_EC_to_Sebaceous.pdf"), width = 12, height = 6)
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+
+# LiAd
+df.plot = CAOC_LiAd@net$young$forward$`zone 2_to_Mesenchymal progenitors`
+# pdf(paste0(output.path, "CAOC_riverplot_LiAd_young_forward_zone2_to_Mesenchymal.pdf"), width = 12, height = 6)
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+
+df.plot = CAOC_LiAd@net$old$forward$`zone 2_to_Mesenchymal progenitors`
+# pdf(paste0(output.path, "CAOC_riverplot_LiAd_old_forward_zone2_to_Mesenchymal.pdf"), width = 12, height = 6)
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+
+# dev.off()
+# dev.off()
+# dev.off()
+# dev.off()
+```
+
+bubleheatmap
+```{r}
+# All signals
+# pdf(paste0(output.path, "CAOC_bubleheatmap_LiSk_forward_AllSignals_chatP_05.pdf"), width = 12, height = 6)
+CAOC_bubbleheatmap(object = CAOC_LiSk,
+                  dir = "forward",
+                  category = "All",
+                  chatP_cutoff = 0.5,
+                  size = "total.counts",
+                  color = "ave.weight")
+
+# pdf(paste0(output.path, "CAOC_bubleheatmap_LiAd_forward_AllSignals_chatP_05.pdf"), width = 12, height = 6)
+CAOC_bubbleheatmap(object = CAOC_LiAd,
+                  dir = "forward",
+                  category = "All",
+                  chatP_cutoff = 0.5,
+                  size = "total.counts",
+                  color = "ave.weight")
+
+# metabolite
+# pdf(paste0(output.path, "CAOC_bubleheatmap_LiSk_forward_metabolite_chatP_05.pdf"), width = 12, height = 6)
+CAOC_bubbleheatmap(object = CAOC_LiSk,
+                  dir = "forward",
+                  category = "metabolite",
+                  chatP_cutoff = 0.5,
+                  size = "total.counts",
+                  color = "ave.weight")
+
+# pdf(paste0(output.path, "CAOC_bubleheatmap_LiAd_forward_metabolite_chatP_05.pdf"), width = 12, height = 6)
+CAOC_bubbleheatmap(object = CAOC_LiAd,
+                  dir = "forward",
+                  category = "metabolite",
+                  chatP_cutoff = 0.5,
+                  size = "total.counts",
+                  color = "ave.weight")
+
+# cytokines
+# pdf(paste0(output.path, "CAOC_bubleheatmap_LiSk_forward_cytokines_chatP_05.pdf"), width = 12, height = 6)
+CAOC_bubbleheatmap(object = CAOC_LiSk,
+                  dir = "forward",
+                  category = "cytokines",
+                  chatP_cutoff = 0.5,
+                  size = "total.counts",
+                  color = "ave.weight")
+
+# pdf(paste0(output.path, "CAOC_bubleheatmap_LiAd_forward_cytokines_chatP_05.pdf"), width = 12, height = 6)
+CAOC_bubbleheatmap(object = CAOC_LiAd,
+                  dir = "forward",
+                  category = "cytokines",
+                  chatP_cutoff = 0.5,
+                  size = "total.counts",
+                  color = "ave.weight")
+
+# hormone_nonpeptide
+# pdf(paste0(output.path, "CAOC_bubleheatmap_LiSk_forward_hormone_nonpeptide_chatP_05.pdf"), width = 12, height = 6)
+CAOC_bubbleheatmap(object = CAOC_LiSk,
+                  dir = "forward",
+                  category = "hormone_nonpeptide",
+                  chatP_cutoff = 0.5,
+                  size = "total.counts",
+                  color = "ave.weight")
+
+# pdf(paste0(output.path, "CAOC_bubleheatmap_LiAd_forward_hormone_nonpeptide_chatP_05.pdf"), width = 12, height = 6)
+CAOC_bubbleheatmap(object = CAOC_LiAd,
+                  dir = "forward",
+                  category = "hormone_nonpeptide",
+                  chatP_cutoff = 0.5,
+                  size = "total.counts",
+                  color = "ave.weight")
+
+# hormone_peptide
+# pdf(paste0(output.path, "CAOC_bubleheatmap_LiSk_forward_hormone_peptide_chatP_05.pdf"), width = 12, height = 6)
+CAOC_bubbleheatmap(object = CAOC_LiSk,
+                  dir = "forward",
+                  category = "hormone_peptide",
+                  chatP_cutoff = 0.5,
+                  size = "total.counts",
+                  color = "ave.weight")
+
+# pdf(paste0(output.path, "CAOC_bubleheatmap_LiAd_forward_hormone_peptide_chatP_05.pdf"), width = 12, height = 6)
+CAOC_bubbleheatmap(object = CAOC_LiAd,
+                  dir = "forward",
+                  category = "hormone_peptide",
+                  chatP_cutoff = 0.5,
+                  size = "total.counts",
+                  color = "ave.weight")
+
+# dev.off(); dev.off(); dev.off(); dev.off()
+# dev.off(); dev.off(); dev.off(); dev.off()
+# dev.off(); dev.off()
+```
+
+
+################################################################################
+
+DEpaths
+```{r}
+DEpath_LiSk = read_csv(paste0(data.path, "Liver_Skin_YoungOld_032026.csv"))
+DEpath_LiAd = read_csv(paste0(data.path, "Liver_Adipose_YoungOld_032026.csv"))
+```
+
+
+```{r}
+DEpath_LiSk %>%
+    group_by(LS) %>%
+    dplyr::arrange(-abs(chatP.change_YO)) %>% 
+    slice_head(n = 1) %>%
+    ungroup() -> DEpath_LiSk_top1
+
+DEpath_LiAd %>%
+    group_by(LS) %>%
+    dplyr::arrange(-abs(chatP.change_YO)) %>% 
+    slice_head(n = 1) %>%
+    ungroup() -> DEpath_LiAd_top1
+
+df.plot_LiSk = inner_join(CAOC_LiSk@DEpath, DEpath_LiSk_top1[ , c("Path", "Sender.group", "Receiver.group")], 
+                     by = c("Path", "Sender.group", "Receiver.group"))
+
+df.plot_LiAd = inner_join(CAOC_LiAd@DEpath, DEpath_LiAd_top1[ , c("Path", "Sender.group", "Receiver.group")], 
+                     by = c("Path", "Sender.group", "Receiver.group"))
+```
+
+
+
+DI_barplot
+```{r}
+CAOC_DI_barplot(df = df.plot_LiSk,
+                n = 3,
+                axis.text.size = 50)
+
+CAOC_DI_barplot(df = df.plot_LiAd,
+                n = 3,
+                axis.text.size = 50)
+
+```
+

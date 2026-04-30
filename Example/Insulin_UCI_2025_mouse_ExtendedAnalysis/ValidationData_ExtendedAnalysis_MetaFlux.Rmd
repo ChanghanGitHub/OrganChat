@@ -1,0 +1,97 @@
+---
+title: "ValidationData_NewMetaFlux_032026"
+output: html_document
+date: "2026-03-18"
+---
+
+# Load the required libraries
+```{r message=FALSE,warning=FALSE}
+library(OrganChat)
+
+library(METAFlux)
+```
+
+```{r}
+data.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Insulin_UCI_2025_mouse_ExtendedAnalysis/"     # your path to the data
+DB.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/OrganChatDB/"                   # your path to the OrganChatDB
+Dictionary.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Metabolite_Dictionary/" # your path to the files "hmdb_dictionary" and "METAFlux_lookup"
+output.dir = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Insulin_UCI_2025_mouse_ExtendedAnalysis/"    # your path to the ouput folder
+```
+
+Load metabolite dictionary data
+```{r, include=FALSE}
+hmdb_dictionary <- read_csv(paste0(Dictionary.path, "hmdb_dictionary_20240129.csv"))
+METAFlux_lookup <- read_csv(paste0(Dictionary.path, "METAFlux_lookup_20240131.csv"))
+```
+
+
+# Data preparation
+
+Load the Seurat object
+```{r}
+organ.list = c("Liver", "Skin", "Adipose")
+condition.list = c("old", "young")
+
+UCI_Data_list <- list()
+
+for (i in 1:length(organ.list)) {
+  UCI_Data_list[[i]] = readRDS(paste0(data.path, "UCI_", organ.list[i], "_downsampled_humanconverted.rds"))
+}
+
+names(UCI_Data_list) = organ.list
+```
+
+Merge "old_resistant", "old_sensitive" for new "old" condition
+```{r}
+for (i in 1:3) {
+  UCI_Data_list[[i]]$condition_2 = UCI_Data_list[[i]]$condition
+  UCI_Data_list[[i]]$condition_2[UCI_Data_list[[i]]$condition_2 == "old_resistant" | UCI_Data_list[[i]]$condition_2 == "old_sensitive"] = "old"
+}
+```
+
+
+
+# Metabolite analysis
+
+```{r, include=FALSE}
+
+for (i in 1:length(UCI_Data_list)) {
+  # Prepare the input RNA data 
+  organ.select = names(UCI_Data_list)[i]
+  Data.input_condition1 <- subset(UCI_Data_list[[organ.select]], subset = condition_2 == condition.list[1])
+  Data.input_condition2 <- subset(UCI_Data_list[[organ.select]], subset = condition_2 == condition.list[2])
+  
+  Data.input_condition1$Type <- fct_drop(Data.input_condition1$Type)
+  Data.input_condition2$Type <- fct_drop(Data.input_condition2$Type)
+
+  # Update the Active Identity
+  Data.input_condition1 <- SetIdent(Data.input_condition1, value = Data.input_condition1$Type)
+  Data.input_condition2 <- SetIdent(Data.input_condition2, value = Data.input_condition2$Type)
+  
+  # METAFlux analysis
+  Data.list = list(Condition1 = Data.input_condition1, Condition2 = Data.input_condition2)
+  names(Data.list) = condition.list
+  
+  for (j in 1:length(Data.list)) {
+    flux = run_METAFlux(Data.input = Data.list[[j]],
+                        myident = 'Type',
+                        n_bootstrap=100, 
+                        seed=1,
+                        medium = human_blood)
+    
+    flux = METAFlux_reformat(flux = flux,
+                             cell.types = levels(Data.list[[j]]@meta.data$Type),
+                             exclude = "None",
+                             METAFlux_lookup = METAFlux_lookup,
+                             scale.byflux = TRUE)
+    
+    output = METAFlux_convert_OrganChat(cell.types = levels(Data.list[[j]]$Type),
+                                       flux = flux,
+                                       METAFlux_lookup = METAFlux_lookup,
+                                       hmdb_dictionary = hmdb_dictionary)
+    
+    # write.csv(output, file = paste0(data.path, organ.select, "_flux_", names(Data.list[j]), ".csv"), 
+    #           row.names = TRUE, col.names = TRUE)
+  }
+}
+```

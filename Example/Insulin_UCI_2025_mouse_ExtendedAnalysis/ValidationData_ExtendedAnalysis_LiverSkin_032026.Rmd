@@ -1,0 +1,311 @@
+---
+title: "ValidationData_NewAnalysis_032026"
+output: html_document
+date: "2026-03-18"
+---
+
+This extended analysis for Liver - Skin communications includes two rounds of OrganChat inference: (1) targets are the top 30 markers of each Skin cluster of both conditions; (2) targets are the top 30 markers of each Liver cluster of both conditions.
+
+Due to the large number of targets, this process can take extensive time. But you can directly load and explore the saved objects from Zenodo.
+
+```{r}
+library(OrganChat)
+```
+
+# Load required data & database
+
+
+```{r}
+data.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Insulin_UCI_2025_mouse_ExtendedAnalysis/"     # your path to the data
+DB.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/OrganChatDB/"                   # your path to the OrganChatDB
+Dictionary.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Metabolite_Dictionary/" # your path to the files "hmdb_dictionary" and "METAFlux_lookup"
+output.dir = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Insulin_UCI_2025_mouse_ExtendedAnalysis/"    # your path to the ouput folder
+```
+
+Load metabolite dictionary data
+```{r, include=FALSE}
+hmdb_dictionary <- read_csv(paste0(Dictionary.path, "hmdb_dictionary_20240129.csv"))
+METAFlux_lookup <- read_csv(paste0(Dictionary.path, "METAFlux_lookup_20240131.csv"))
+```
+
+
+Load OCDB
+```{r}
+# load database
+load(paste0(DB.path, "LSR_layer1_mouse.rda"))
+load(paste0(DB.path, "RSE_layer2_mouse.rda"))
+load(paste0(DB.path, "SET_layer3_mouse.rda"))
+
+OrganChatDB <- list()
+OrganChatDB[[1]] <- LSR_layer1_mouse
+OrganChatDB[[2]] <- RSE_layer2_mouse
+OrganChatDB[[3]] <- SET_layer3_mouse
+```
+
+
+Load the Seurat object, which will be stored in a list
+c("Liver", "Skin", "Adipose")
+```{r}
+organ.list = c("Liver", "Skin", "Adipose")
+condition.list = c("old_resistant", "old_sensitive", "young")
+
+UCI_Data_list <- list()
+
+for (i in 1:length(organ.list)) {
+  UCI_Data_list[[i]] = readRDS(paste0(data.path, "UCI_", organ.list[i], "_downsampled.rds"))
+}
+
+names(UCI_Data_list) = organ.list
+```
+
+
+Merge "old_resistant", "old_sensitive" for new "old" condition
+```{r}
+for (i in 1:3) {
+  UCI_Data_list[[i]]$condition_2 = UCI_Data_list[[i]]$condition
+  UCI_Data_list[[i]]$condition_2[UCI_Data_list[[i]]$condition_2 == "old_resistant" | UCI_Data_list[[i]]$condition_2 == "old_sensitive"] = "old"
+}
+```
+
+################################################################################
+
+# Liver-Skin analysis with Skin marker genes as the targets
+
+## Target selection
+young
+```{r}
+Data.use.1 = subset(UCI_Data_list[["Skin"]], 
+                    subset = condition_2 == "young" ) 
+Data.use.1 <- SetIdent(Data.use.1, value = Data.use.1$Type)
+
+# infer markers 
+markers.Type <- FindAllMarkers(Data.use.1, only.pos = FALSE)
+
+# the total number of targets will be ~5N
+N = 30
+
+markers.Type %>%
+  group_by(cluster) %>%
+  dplyr::arrange(abs(avg_log2FC)) %>%
+  slice_head(n = N) %>%
+  ungroup() -> top.markers
+
+target.1 = unique(top.markers$gene)
+```
+
+old
+```{r}
+Data.use.1 = subset(UCI_Data_list[["Skin"]], 
+                    subset = condition_2 == "old" ) 
+Data.use.1 <- SetIdent(Data.use.1, value = Data.use.1$Type)
+
+# infer markers 
+markers.Type <- FindAllMarkers(Data.use.1, only.pos = FALSE)
+
+# the total number of targets will be ~5N
+N = 30
+
+markers.Type %>%
+  group_by(cluster) %>%
+  dplyr::arrange(abs(avg_log2FC)) %>%
+  slice_head(n = N) %>%
+  ungroup() -> top.markers
+
+target.2 = unique(top.markers$gene)
+```
+
+merge
+```{r}
+target = unique(c(target.1, target.2))
+```
+
+
+## CAOC analysis
+
+Setup organs & conditions
+```{r}
+# organs for validation
+S.organ = "Liver"
+R.organ = "Skin"
+
+# conditions for validation
+conditions = c("young", "old")
+```
+
+
+```{r, include=FALSE}
+organs = c(S.organ, R.organ)
+
+data.list = list()
+idents.list = list()
+conditions.list = list()
+
+for (i in 1:length(organs)) {
+  
+  organ.select = organs[i]
+  # select subset data of the two conditions
+  Data.input_organ <- UCI_Data_list[[organ.select]]
+  
+  data.list[[i]] = Data.input_organ@assays$RNA@data
+  
+  Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+  idents.list[[i]] = Data.input_organ@active.ident
+  
+  Idents(Data.input_organ) = Data.input_organ@meta.data$condition_2
+  conditions.list[[i]] = Data.input_organ@active.ident
+}
+
+# Create OC object
+CAOC = create_OrganChat(object = data.list, 
+                        organs = organs, 
+                        idents.list = idents.list,
+                        ComparisonAnalysis = TRUE,
+                        conditions = conditions,
+                        conditions.list = conditions.list,
+                        assay = NULL, 
+                        do.sparse = T)
+
+# Calculate the expression level using the scRNA-seq data
+CAOC = CA_cal_scRNA.bygroup(object = CAOC,
+                            DB = OrganChatDB,
+                            mean_method = NULL,
+                            scale.max = 10)
+
+# Prepare the metabolite flux data
+organs = CAOC@organs
+
+metalist.1 = list()
+metalist.2 = list()
+
+for (i in 1:length(organs)) {
+  organ.select = organs[i]
+  metalist.1[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[1],".csv") )
+  metalist.1[[i]] <- as.data.frame(metalist.1[[i]])
+  rownames(metalist.1[[i]]) <- metalist.1[[i]][, 1]
+  metalist.1[[i]] <- metalist.1[[i]][, -1]
+  
+  metalist.2[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[2],".csv"))
+  metalist.2[[i]] <- as.data.frame(metalist.2[[i]])
+  rownames(metalist.2[[i]]) <- metalist.2[[i]][, 1]
+  metalist.2[[i]] <- metalist.2[[i]][, -1]
+}
+
+# Integrate metabolite data
+CAOC = CA_merge_metabolite.bygroup(object = CAOC,
+                                   metabolitedata.list.condition1 = metalist.1,
+                                   metabolitedata.list.condition2 = metalist.2,
+                                   type = "flux",
+                                   scale.max = 10)
+
+################################################################################
+LS.names = c()
+DG.names = c()
+
+for (i in 1:length(conditions)) {
+
+  LS.1 = CAOC@LSdata[[i]][[1]]
+  LS.2 = CAOC@LSdata[[i]][[2]]
+
+  DG.1 = CAOC@DGdata[[i]][[1]]
+  DG.2 = CAOC@DGdata[[i]][[2]]
+
+  LS.1$sum = apply(LS.1[ , 1:(ncol(LS.1)-1)], 1, sum)
+  LS.2$sum = apply(LS.2[ , 1:(ncol(LS.2)-1)], 1, sum)
+  DG.1$sum = apply(DG.1, 1, sum)
+  DG.2$sum = apply(DG.2, 1, sum)
+
+  LS.names = unique( c(LS.names, rownames(LS.1[LS.1$sum>0, ]), rownames(LS.2[LS.2$sum>0, ])) )
+  DG.names = unique( c(DG.names, rownames(DG.1[DG.1$sum>0, ]), rownames(DG.2[DG.2$sum>0, ])) )
+}
+################################################################################
+
+# Infer signaling paths
+CAOC = CA_net0_infer(object = CAOC,
+                     DB = OrganChatDB, 
+                     LS = LS.names, 
+                     receptor = DG.names, 
+                     tf = DG.names,
+                     target = target)
+
+# Analysis
+CAOC = CA_net_analysis(object = CAOC,
+                       K = 0.1, 
+                       N = 1,
+                       R = 100,
+                       CI = 0.95,
+                       CA_cutoff_value = c(0, 0.1, 0.1, 0.1),
+                       CA_cutoff_chatP = NULL,
+                       CA_cutoff_sd = NULL,
+                       CA_cutoff_CI = 0)
+
+# Infer DEpath
+CAOC = DEpath_table(object = CAOC,
+                    Sender.group = NULL,
+                    Receiver.group = NULL,
+                    Direction = NULL,
+                    p_cutoff = NULL,
+                    sd_cutoff = NULL,
+                    DI_cutoff = NULL,
+                    top = NULL)
+
+# save the "object_list"
+# saveRDS(CAOC, file = paste0(data.path, "CAOC_NewAnalysis_LiverSkin_032026.rds"))
+```
+
+
+## Pathway filtering -- liver to adipose
+```{r}
+object = CAOC
+
+list_1 = object@net[[1]]$forward
+list_2 = object@net[[2]]$forward
+list.new = list()
+
+for (i in 1:length(list_1)) {
+  df1 = list_1[[i]]
+  df2 = list_2[[i]]
+  
+  df.new = df1[ , 1:10]
+  df.new$LS.value_Y = df1$LS.value
+  df.new$LS.value_O = df2$LS.value
+  df.new$Target.value_Y = df1$Target.value
+  df.new$Target.value_O = df2$Target.value
+  df.new$chatP_Y = df1$chatP
+  df.new$chatP_O = df2$chatP
+  
+  df.new = df.new[(df.new$chatP_Y>0.2 | df.new$chatP_O>0.2), ]
+  
+  list.new[[i]] = df.new
+}
+
+pathway_YO = rbindlist(list.new)
+pathway_YO$LS.change_YO = pathway_YO$LS.value_Y - pathway_YO$LS.value_O
+pathway_YO$Target.change_YO = pathway_YO$Target.value_Y - pathway_YO$Target.value_O
+pathway_YO$chatP.change_YO = pathway_YO$chatP_Y - pathway_YO$chatP_O
+
+pathway_YO = pathway_YO[ abs(pathway_YO$LS.change_YO)>0.05 & abs(pathway_YO$chatP.change_YO)>0.05, ]
+
+pathway_YO = pathway_YO[pathway_YO$LS.change_YO*pathway_YO$chatP.change_YO>0 & pathway_YO$Target.change_YO*pathway_YO$chatP.change_YO>0, ]
+```
+
+
+```{r}
+pathway_YO$LS_changeinOld = "up"
+pathway_YO$LS_changeinOld[pathway_YO$LS.change_YO>0] = "down"
+
+pathway_YO$Target_changeinOld = "up"
+pathway_YO$Target_changeinOld[pathway_YO$Target.change_YO>0] = "down"
+
+df = data.frame(LS_name = pathway_YO$LS_name, Receptior = pathway_YO$Receptor, 
+                Sender.group = pathway_YO$Sender.group, Receiver.group = pathway_YO$Receiver.group,
+                LS_changeinOld = pathway_YO$LS_changeinOld, Target_changeinOld = pathway_YO$Target_changeinOld)
+df = df[!duplicated(df),]
+```
+
+Save the results
+```{r}
+# write.csv(pathway_YO, file = paste0(output.path, "Liver_Skin_YoungOld_032026.csv"))
+# write.csv(df, file = paste0(output.path, "Liver_Skin_YoungOld_LS_R_032026.csv"))
+```
+
+
