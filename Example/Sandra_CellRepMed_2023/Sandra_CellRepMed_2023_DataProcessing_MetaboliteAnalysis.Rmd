@@ -170,7 +170,7 @@ Load metabolite dictionary data
 ```{r, include=FALSE}
 setwd("~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Sandra_2023_mouse/")
 
-hmdb_dictionary <- read_csv("hmdb_dictionary_20240129.csv")
+OrganChatDB_hmdb_dictionary <- read_csv("hmdb_dictionary_20240129.csv")
 METAFlux_lookup <- read_csv("METAFlux_lookup_20240131.csv")
 ```
 

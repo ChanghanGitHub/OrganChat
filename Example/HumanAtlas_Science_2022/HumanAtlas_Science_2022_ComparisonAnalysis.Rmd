@@ -36,7 +36,7 @@ output.dir = "~/Documents/OrganChat_v3/HumanAtlas_Science_2022/Outputs/"
 
 Load metabolite dictionary data
 ```{r, include=FALSE}
-hmdb_dictionary <- read_csv(paste0(Dictionary.path, "hmdb_dictionary_20240129.csv"))
+OrganChatDB_hmdb_dictionary <- read_csv(paste0(Dictionary.path, "hmdb_dictionary_20240129.csv"))
 METAFlux_lookup <- read_csv(paste0(Dictionary.path, "METAFlux_lookup_20240131.csv"))
 ```
 

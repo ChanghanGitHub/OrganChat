@@ -11,7 +11,8 @@ OCnet0_infer(
   receptor = NULL,
   tf = NULL,
   target = NULL,
-  single.condition = TRUE
+  single.condition = TRUE,
+  hmdb_dictionary = OrganChatDB_hmdb_dictionary
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ OCnet0_infer(
 \item{target}{the list of Target used for inferring the pathways, the input is NULL by default, which means all will be used}
 
 \item{single.condition}{the input is TRUE by default.}
+
+\item{hmdb_dictionary}{OrganChat-provided database matching "metabolite name" and the HMDB ID.}
 }
 \value{
 a data frame

@@ -1,0 +1,337 @@
+---
+title: "Comparison analysis of the OOC between conditions via OrganChat"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Comparison_Analysis_Tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Overview
+
+This tutorial will walk through the process of inferring, analyzing, and comparing the organ-organ communication (OOC) between different conditions using OrganChat. 
+
+Typically, when multi-organ data under different conditions are available, OrganChat infers OOC by performing pairwise analyses between each organ pair. For a given organ pair, OrganChat first infers communication between all cell groups across the two organs and then integrates these cell group-level interactions into the overall communication between the organs. This procedure is applied consistently across conditions, enabling direct comparison of OOC patterns under different biological states.
+
+Here we use a subset of the mouse collagen-induced arthritis (CIA) data (Lilja, Sandra et al., Cell reports. Medicine, 2023) for joint and muscle, as an example.
+
+OrganChat requires the single-cell transcriptomics data of both organs. single-cell metabolite data can also be implemented to infer metabolite-driven communications. If not available (as this example), users can utilize the metabolite flux inference module OrganChat integrates from METAFlux (Huang, Yuefan et al., Nature communications, 2023) to estimate the release and uptake rates of each metabolite in different cell groups based on chemical reactions using scRNA-seq data, which is included in a separate vignette.
+
+
+# Preparing OrganChatDB, input data, and communication targets
+
+```{r message=FALSE,warning=FALSE}
+library(OrganChat)
+
+library(Seurat)
+library(readr)
+library(forcats)
+library(ggalluvial)
+```
+
+Users may set their own paths to the data, OrganChatDB, and outputs.
+```{r}
+data.path = "~/Documents/OrganChat/Tutorial_data/"     # your path to the data
+DB.path = "~/Documents/OrganChat/Tutorial_data/"                   # your path to the OrganChatDB
+output.dir = "~/Documents/OrganChat/Tutorial_data/"    # your path to the ouput folder
+```
+
+## Load OrganChatDB
+
+OrganChatDB is a curated, literature-supported database that serves as prior knowledge for inferring organ-organ communication mediated by LSs on both human and mouse. The required files to run the analysis includes (1) a newly constructed LS-receptor signaling database; (2) a downstream gene interactions database of receptor-SE, SE-target interactions integrated from our published work; (3) a comprehensive “metabolite synonymous - HMDB ID” dictionary comprising 1,412,559 metabolite synonyms and 217,920 HMDB IDs from the Human Metabolome Database.
+```{r, include=FALSE}
+# load database
+load(paste0(DB.path, "LSR_layer1_mouse.rda"))
+load(paste0(DB.path, "RSE_layer2_mouse.rda"))
+load(paste0(DB.path, "SET_layer3_mouse.rda"))
+
+OrganChatDB <- list()
+OrganChatDB[[1]] <- LSR_layer1_mouse
+OrganChatDB[[2]] <- RSE_layer2_mouse
+OrganChatDB[[3]] <- SET_layer3_mouse
+
+OrganChatDB_hmdb_dictionary <- read_csv(paste0(DB.path, "hmdb_dictionary_20240129.csv"))
+```
+
+## Load the single-cell transcriptomics data
+
+The easiest way to input the data into OrganChat is through its Seurat object.
+```{r}
+Sandra_2023_RNA <- readRDS(paste0(data.path, "Sandra_2023_mouse_filtered.rds") )
+```
+
+## Load the target gene list
+
+It is highly recommended to have a small number of user-selected targets ready for OrganChat analysis. Since the inference process is finding all possible LS-R-SE-T pathways from the database, not selecting the targets or having a large number of targets may lead to an extensive run time. It is reasonable to use no more than 50 targets for each analysis, yet a powerful device may handle more targets.
+
+The target genes can be: biomarkers for the cell type, disease-related genes, or any gene of the user's interest. Here, we used the pro- and anti-inflammatory upstream regulators (URs), provided by the original study, which are also highly expressed (>1) in at least one cell type.
+```{r, include=FALSE}
+targets <- read_csv(paste0(data.path, "targets_highexpression.csv") )
+```
+
+
+# Preparing the OrganChat inputs: expression data and metadata
+
+Specify the organ names and condition labels, which must be the same as the metadata. Order matters -- OrganChat will use the same order of the names to label "organ1", "organ2", "condition1", "condition2".
+```{r}
+organs = c("joint", "muscle")
+conditions = c("Sick", "Healthy")
+```
+
+
+The expression data can be input as a list of two matrices for both organs (`data.list`). 
+
+OrganChat will accept the metadata as two lists: (1) a list with two factors of cluster labels for both organs (`idents.list`); (2) a list with two factors of cell condition labels for both organs (`conditions.list`). The factors must contain cell barcodes.
+```{r}
+data.list = list()
+idents.list = list()
+conditions.list = list()
+
+for (i in 1:length(organs)) {
+  
+  organ.select = organs[i]
+  
+  Data.input_organ <- subset(Sandra_2023_RNA, subset = organ == organ.select)
+  data.list[[i]] = Data.input_organ@assays$RNA@data
+
+  Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+  idents.list[[i]] = Data.input_organ@active.ident
+  
+  Idents(Data.input_organ) = Data.input_organ@meta.data$condition
+  conditions.list[[i]] = Data.input_organ@active.ident
+}
+```
+
+
+Metabolite flux data can be input as CSV files -- for each condition & organ, respectively, with minor formatting modifications.
+```{r, include=FALSE}
+metalist.1 = list()
+metalist.2 = list()
+
+for (i in 1:length(organs)) {
+  organ.select = organs[i]
+  metalist.1[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[1],".csv") )
+  metalist.1[[i]] <- as.data.frame(metalist.1[[i]])
+  rownames(metalist.1[[i]]) <- metalist.1[[i]][, 1]
+  metalist.1[[i]] <- metalist.1[[i]][, -1]
+  
+  metalist.2[[i]] = read_csv( paste0(data.path, organ.select, "_flux_", conditions[2],".csv"))
+  metalist.2[[i]] <- as.data.frame(metalist.2[[i]])
+  rownames(metalist.2[[i]]) <- metalist.2[[i]][, 1]
+  metalist.2[[i]] <- metalist.2[[i]][, -1]
+}
+```
+
+# Comparison analysis of the OOC
+
+Usually, a function name starts with "CAOC" means this function is designed for comparison analysis/visualization, while "OC" means it handles single-condition analysis/visualization. It is also normal to use some OC-started functions when users are exploring the results under a certain condition, such as presenting the top LS-T pathways under the sick(CIA) condition, etc.
+
+Create the OrganChat object for comparison analysis, to distinguish from single-condition analysis, we name it "CAOC".
+```{r}
+CAOC = create_OrganChat(object = data.list, 
+                          organs = organs, 
+                          idents.list = idents.list,
+                          ComparisonAnalysis = TRUE, # be sure to set it to TRUE
+                          conditions = conditions,
+                          conditions.list = conditions.list)
+```
+
+
+Integrate the cluster-level metabolite flux data. Make sure to set `type = "flux"` -- OrganChat accepts two types of measurements, "amount" and "flux", and the default type is "amount", which means the data should be non-negative values. The "flux" data may have both negative (uptake) and positive (release) values.
+
+To reduce the batch effect, users can scale both the metabolite and transcriptomics data to the same maximum through the argument `scale.max`.
+```{r}
+CAOC = CA_merge_metabolite.bygroup(object = CAOC,
+                                   metabolitedata.list.condition1 = metalist.1,
+                                   metabolitedata.list.condition2 = metalist.2,
+                                   type = "flux",
+                                   scale.max = 10)
+```
+
+
+Calculate the mean expression level from single-cell transcriptomics data of each cluster for both conditions. 
+
+`mean_method`: it is NULL by default and a weighted mean will be calculated (which is statisticallt more robust against noise). If the input is "mean", then the arithmetic mean will be calculated.
+```{r}
+CAOC = CA_cal_scRNA.bygroup(object = CAOC,
+                            DB = OrganChatDB,
+                            mean_method = NULL,
+                            scale.max = 10)
+```
+
+
+Infer LS-R-SE-T pathways using OrganChatDB, pathways with duplicated genes will be removed. Users can specify which LS/R/Se/T to be used for infererence, the input is NULL by default, which means all will be used.
+```{r}
+target = targets$targets[1:10] # here we use the first 10 targets as an example
+
+CAOC = CA_net0_infer(object = CAOC,
+                     DB = OrganChatDB, 
+                     LS = NULL, 
+                     receptor = NULL, 
+                     tf = NULL,
+                     target = target,
+                     hmdb_dictionary = OrganChatDB_hmdb_dictionary)
+```
+
+
+Calculate the communication probability, perform bootstrap tests, and filter the LS-T pathways for each organ and condition. OrganChat predicts it signaling probability using a diffusion-integrated Hill function-based model by considering the diffusion level of the LS (see METHOD section for more details).
+
+Some arguments of this process are:
+
+`K`: half-saturation constant of the Hill function, the default value is 0.5.
+
+`N`: Hill coefficient, the default value is 2.
+
+`R`: the number of bootstrap testing to perfomr, the default value is 5.
+
+`CA_cutoff_value`: a vector of 4 cutoff values for LS, R, SE, T, respectively. For each LS-T pathway, each component must have a higher expression than the cutoff value in **at least** one condition. The default value is NULL.
+
+`CA_cutoff_chatP`: LS-T pathways with a communication probability lower than this cutoff value under **both** conditions will be removed. The default value is NULL.
+```{r}
+CAOC = CA_net_analysis(object = CAOC,
+                       K = 0.1, 
+                       N = 1,
+                       R = 100,
+                       CA_cutoff_value = c(0, 0.2, 0.2, 0.2),
+                       CA_cutoff_chatP = 0.2)
+```
+
+
+Generate a data frame for the LS-T pathways for comparison between conditions, calculating their differentia index (DI) -- a metric that quantifies the cross-condition change using an empirical-weighted and baseline-corrected model (see METHOD section for more details).
+```{r}
+CAOC = DEpath_table(object = CAOC)
+```
+
+
+# Results visualization
+
+## Some important arguments
+
+Noting that based on our input `organs = c("joint", "muscle")`, direction `forward` means communication from organ1 (joint) to organ2 (muscle); `backward` means communication from organ2 (muscle) to organ1 (joint); `self-organ1` means communication from organ1 (joint) itself.
+
+The argument `category` is used to specify the type of LS. Its input should be one of the following: "All", "hormone_peptide", "cytokines", "hormone_nonpeptide", "metabolite". The default value is "All", meaning all the LS will be included.
+
+The argument `style` can be used to select which metric to showcase using the edge width, the input should be one of the following: "ave.weight" -- the average communication probability, "total.counts" -- total number of LS-T pathways, "total.chatP" -- total communication probability, "ave.sd" -- the average standard deviation of the bootstrap testing, or NULL (default, meaning "total.counts" will be used).
+
+## Cluster-level communication comparison
+
+Chord diagrams of sick vs. healthy conditions, comparing the joint-to-muscle communication. The edge with indicates the total number of LS-T pathways with communication probability > 0.3.
+
+```{r}
+CAOC_chorddiagram(object = CAOC,
+                  dir = "forward",
+                  category = "All",
+                  style = "total.counts",
+                  chatP_cutoff = 0.3)
+```
+
+
+Chord diagrams of sick vs. healthy conditions, comparing the muscle-to-joint communication. The edge with indicates the total number of metabolite-driven LS-T pathways with communication probability > 0.4.
+
+```{r}
+CAOC_chorddiagram(object = CAOC,
+                  dir = "backward",
+                  category = "metabolite",
+                  style = "total.counts",
+                  chatP_cutoff = 0.4)
+```
+
+
+Bubble heat map comparing the cluster-level joint-to-muscle communication between sick and healthy conditions. The dot size indecates the total number of LS-T pathways; the color represents the average commnuication probability.
+```{r}
+CAOC_bubbleheatmap(object = CAOC,
+                  dir = "forward",
+                  category = "All",
+                  size = "total.counts",
+                  color = "ave.weight",
+                  ncol = 2)
+```
+
+
+
+## Identification of critical LS–T pathways with the highest signaling probabilities
+
+
+River plot showing the top 20 LS-T pathways (under the selected preference) in communications from joint (Fibroblasts) to muscle (Neutrophils) under the sick condition.
+
+`pref`: a char indicating the preference when selecting the pathways, the input should be one of the following: "chatP", "LS", "Receptor", "TF", "Target" The default value is "LS", meaning OrganChat will try to cover as many LS as possible, by selecting one LS-T pathway of each LS (ranked by the communication probability) until reaching the limit n.path. If the input is "chatP", then OrganChat will select the top n.path LS-T pathways based on the communication probability.
+```{r}
+df.plot = CAOC@net$Sick$forward$Fibroblasts_to_Neutrophils
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "All",
+             n.path = 20,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+## Discovery of dominant signal senders and receivers within an LS–T signaling network
+
+Rose diagram showing the components in communications from joint (Fibroblasts) to muscle (Neutrophils) under the sick condition with the highest signaling inflow and outflow, respectively.
+
+Noting that receptors and signaling effectors will have both inflow and outflow calculated, while LS and targets only have outflow and inflow, respectively. 
+```{r}
+components_rosediagram(df = df.plot, 
+                       category = "All",
+                       n = 5)
+```
+
+## Identify the LS-T pathways with drastic change between conditions
+
+Bar plot of the top 5 LS-T pathways with the highest differential index (DI), from joint (Neutrophils) to muscle, driven by Adenine.
+```{r}
+df.plot = CAOC@DEpath[CAOC@DEpath$Direction == "forward" & 
+                        CAOC@DEpath$Receiver.group == "Neutrophils" & 
+                        CAOC@DEpath$LS_name %in% c("Adenine"), ]
+
+CAOC_DI_barplot(df = df.plot,
+                n = 5,
+                axis.text.size = 50)
+```
+
+
+## Reveal the top associated biological processes through GO enrichment analysis
+
+GO enrichment analysis of the targets in joint (Fibroblasts) to muscle (Neutrophils) communication under the sick condition.
+
+`layer`: specify which of these will be included: "Receptor", "TF", or "Target". The default value is NULL, meaning all will be used.
+```{r}
+x = OC_GOanalysis(df = CAOC@net$Sick$forward$Fibroblasts_to_Neutrophils,
+                  LS = NULL,
+                  layer = "Target")
+
+# plot top 10 GO terms
+GOanalysis_scatterplot(df = x$result,
+                       n = 5,
+                       size=6)
+```
+
+
+## Construction of the regulatory network connecting user-selected LS and targets.
+
+Construct the regulatory network connecting Lgals1 to all inferred targets within the joint (Fibroblasts) to muscle (Neutrophils) communication under the sick condition.
+```{r}
+df.plot = CAOC@net$Sick$forward$Fibroblasts_to_Neutrophils
+
+x = construct_Network_df(df = df.plot,
+                         category = "All",
+                         restrict.by = "LS")
+
+# Lgals1
+network_treeplot(x[4])
+```
+
+```{r}
+library(devtools)
+session_info()
+```
+

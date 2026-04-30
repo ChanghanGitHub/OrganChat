@@ -1,0 +1,1649 @@
+﻿"ReactionID","ReactionName","Name","Status"
+"HMR_7108",NA,"benzo[a]pyrene",0
+"HMR_7110",NA,"naphthalene",1
+"HMR_7112",NA,"aflatoxin B1",1
+"HMR_7114",NA,"trichloroethene",1
+"HMR_7116",NA,"bromobenzene",1
+"HMR_7118",NA,"7,12-dimethylbenz[a]anthracene",0
+"HMR_7120",NA,"4-(n-nitrosomethylamino)-1-(3-pyridyl)-1-butanone",0
+"HMR_7122",NA,"1-nitronaphthalene",1
+"HMR_7124",NA,"1,1-dichloroethylene",1
+"HMR_7126",NA,"1,2-dibromoethane",0
+"HMR_9023",NA,"TAG-extraction",0
+"HMR_9024",NA,"chylomicron",0
+"HMR_9032",NA,"SMCFA-blood-pool",0
+"HMR_9808",NA,"propanoate",1
+"HMR_9809",NA,"butyrate",1
+"HMR_9810",NA,"valeric acid",1
+"HMR_9811",NA,"hexanoic acid",1
+"HMR_9812",NA,"heptylic acid",1
+"HMR_9813",NA,"octanoic acid",1
+"HMR_9814",NA,"nonanoic acid",1
+"HMR_9815",NA,"decanoic acid",1
+"HMR_9816",NA,"undecylic acid",1
+"HMR_9033",NA,"NEFA blood pool in",0
+"HMR_9034",NA,"glucose",1
+"HMR_9035",NA,"linoleate",1
+"HMR_9036",NA,"linolenate",1
+"HMR_9037",NA,"phytanic acid",1
+"HMR_9038",NA,"histidine",1
+"HMR_9039",NA,"isoleucine",1
+"HMR_9040",NA,"leucine",1
+"HMR_9041",NA,"lysine",1
+"HMR_9042",NA,"methionine",1
+"HMR_9043",NA,"phenylalanine",1
+"HMR_9044",NA,"threonine",1
+"HMR_9045",NA,"tryptophan",1
+"HMR_9046",NA,"valine",1
+"HMR_9047",NA,"H2O",1
+"HMR_9048",NA,"O2",1
+"HMR_9049",NA,"VLDL",0
+"HMR_9050",NA,"HDL",0
+"HMR_9051",NA,"LDL",0
+"HMR_9052",NA,"chylomicron remnant",0
+"HMR_9053",NA,"VLDL remnant",0
+"HMR_9054",NA,"HDL remnant",0
+"HMR_9055",NA,"LDL remnant",0
+"HMR_9056",NA,"NEFA blood pool out",0
+"HMR_9058",NA,"CO2",1
+"HMR_9061",NA,"alanine",1
+"HMR_9062",NA,"asparagine",1
+"HMR_9063",NA,"glutamine",1
+"HMR_9064",NA,"tyrosine",1
+"HMR_9065",NA,"cysteine",1
+"HMR_9066",NA,"arginine",1
+"HMR_9067",NA,"glycine",1
+"HMR_9068",NA,"proline",1
+"HMR_9069",NA,"serine",1
+"HMR_9070",NA,"aspartate",1
+"HMR_9071",NA,"glutamate",1
+"HMR_9072",NA,"Pi",1
+"HMR_9073",NA,"NH3",1
+"HMR_9074",NA,"sulfate",1
+"HMR_9075",NA,"urate",1
+"HMR_9076",NA,"Fe2+",1
+"HMR_9077",NA,"Na+",1
+"HMR_9078",NA,"HCO3-",0
+"HMR_9079",NA,"H+",1
+"HMR_9080",NA,"zinc",1
+"HMR_9081",NA,"K+",1
+"HMR_9082",NA,"Ca2+",1
+"HMR_9083",NA,"choline",1
+"HMR_9084",NA,"ethanolamine",1
+"HMR_9085",NA,"glycerol",1
+"HMR_9086",NA,"acetate",1
+"HMR_9087",NA,"ornithine",1
+"HMR_9088",NA,"sulfite",1
+"HMR_9089",NA,"phospholipids extracellular pool",0
+"HMR_9090",NA,"methylimidazoleacetic acid",1
+"HMR_9091",NA,"4-aminobutyrate",1
+"HMR_9092",NA,"dopamine",1
+"HMR_9093",NA,"noradrenaline",1
+"HMR_9094",NA,"5-hydroxy-L-tryptophan",0
+"HMR_9095",NA,"adrenaline",1
+"HMR_9096",NA,"Fe3+",0
+"HMR_9097",NA,"D-aspartate",1
+"HMR_9098",NA,"D-alanine",1
+"HMR_9099",NA,"ethanol",1
+"HMR_9100",NA,"5-formyl-THF",0
+"HMR_9101",NA,"PNP",1
+"HMR_9102",NA,"lactose",1
+"HMR_9103",NA,"H2S",1
+"HMR_9104",NA,"1-methylnicotinamide",1
+"HMR_9105",NA,"thiamin-P",1
+"HMR_9106",NA,"thiamin-PPP",0
+"HMR_9107",NA,"heme",1
+"HMR_9108",NA,"dihydroneopterin",1
+"HMR_9109",NA,"biotin",1
+"HMR_9110",NA,"biocytin",1
+"HMR_9111",NA,"heparan sulfate proteoglycan",0
+"HMR_9113",NA,"keratan sulfate I",1
+"HMR_9114",NA,"keratan sulfate I, degradation product 1",0
+"HMR_9115",NA,"keratan sulfate II (core 2-linked)",0
+"HMR_9116",NA,"keratan sulfate II (core 4-linked)",0
+"HMR_9117",NA,"chondroitin sulfate A (GalNAc4S-GlcA) proteoglycan",0
+"HMR_9118",NA,"chondroitin sulfate B - dermatan sulfate (IdoA2S-GalNAc4S) proteoglycan",0
+"HMR_9119",NA,"chondroitin sulfate C (GalNAc6S-GlcA) proteoglycan",0
+"HMR_9120",NA,"chondroitin sulfate D (GlcNAc6S-GlcA2S) proteoglycan",0
+"HMR_9121",NA,"chondroitin sulfate E (GalNAc4,6diS-GlcA) proteoglycan",0
+"HMR_9122",NA,"hyaluronate",0
+"HMR_9123",NA,"hyaluronan biosynthesis, precursor 1",0
+"HMR_9124",NA,"de-Fuc form of PA6",0
+"HMR_9125",NA,"PA6",0
+"HMR_9126",NA,"n2m2nmasn",0
+"HMR_9127",NA,"sialyl-Tn antigen",0
+"HMR_9128",NA,"disialyl-T antigen",0
+"HMR_9129",NA,"estradiol-17beta 3-glucuronide",1
+"HMR_9130",NA,"LPL",1
+"HMR_9131",NA,"sarcosine",1
+"HMR_9132",NA,"acetoacetate",1
+"HMR_9133",NA,"pyruvate",1
+"HMR_9134",NA,"(R)-3-hydroxybutanoate",0
+"HMR_9135",NA,"L-lactate",1
+"HMR_9136",NA,"D-lactate",1
+"HMR_9137",NA,"mannose",1
+"HMR_9138",NA,"xylitol",1
+"HMR_9139",NA,"fructose",1
+"HMR_9140",NA,"galactose",1
+"HMR_9141",NA,"ADP-ribose",1
+"HMR_9142",NA,"nicotinate",1
+"HMR_9143",NA,"riboflavin",1
+"HMR_9144",NA,"pyridoxine",1
+"HMR_9145",NA,"pantothenate",1
+"HMR_9146",NA,"folate",1
+"HMR_9147",NA,"retinol",1
+"HMR_9148",NA,"iodide",1
+"HMR_9149",NA,"nitrite",1
+"HMR_9150",NA,"chloride",1
+"HMR_9151",NA,"alpha-tocopherol",1
+"HMR_9152",NA,"alpha-tocotrienol",1
+"HMR_9153",NA,"gamma-tocopherol",1
+"HMR_9154",NA,"gamma-tocotrienol",1
+"HMR_9155",NA,"ITP",1
+"HMR_9156",NA,"dITP",1
+"HMR_9157",NA,"hemoglobin",1
+"HMR_9158",NA,"ascorbate",1
+"HMR_9159",NA,"thiamin",1
+"HMR_9160",NA,"hydrogen-cyanide",0
+"HMR_9161",NA,"homoserine",1
+"HMR_9162",NA,"lepidimoide",0
+"HMR_9163",NA,"leukotriene F4",0
+"HMR_9164",NA,"malonate",1
+"HMR_9165",NA,"oxalate",1
+"HMR_9166",NA,"chitin-component",0
+"HMR_9167",NA,"lipoic acid",1
+"HMR_9168",NA,"glucosamine",1
+"HMR_9169",NA,"selenate",1
+"HMR_9171",NA,"2-acetyl-1-alkyl-sn-glycero-3-phosphocholine",0
+"HMR_9172",NA,"1-organyl-2-lyso-sn-glycero-3-phosphocholine",0
+"HMR_9201",NA,"citrulline",1
+"HMR_9202",NA,"apoC-lys",0
+"HMR_9203",NA,"D-xylose",1
+"HMR_9204",NA,"glycophosphatidylinositol-(GPI)-anchored-protein-precursor",0
+"HMR_9205",NA,"10-formyl-THF",1
+"HMR_9206",NA,"10-formyl-THF-glu(5)",0
+"HMR_9207",NA,"10-formyl-THF-glu(6)",0
+"HMR_9208",NA,"10-formyl-THF-glu(7)",0
+"HMR_9209",NA,"fatty acid pool",0
+"HMR_9210",NA,"13-cis-retinoyl-glucuronide",0
+"HMR_9211",NA,"24R,25-dihyoxyvitamin D2",0
+"HMR_9212",NA,"(24R)-24,25-dihydroxycalciol",0
+"HMR_9213",NA,"4-nitrocatechol",0
+"HMR_9214",NA,"25-hydroxyvitamin D2",1
+"HMR_9215",NA,"calcidiol",1
+"HMR_9216",NA,"2-hydroxybutyrate",1
+"HMR_9217",NA,"2-methylcitrate",1
+"HMR_9218",NA,"3,4-dihydroxyphenylethyleneglycol",0
+"HMR_9219",NA,"L-dopa",1
+"HMR_9220",NA,"cGMP",1
+"HMR_9221",NA,"L-3-amino-isobutanoate",0
+"HMR_9222",NA,"D-3-amino-isobutanoate",0
+"HMR_9223",NA,"4-hydroxy-debrisoquine",0
+"HMR_9224",NA,"4-hydroxyphenylacetate",1
+"HMR_9225",NA,"isocaproic-aldehyde",0
+"HMR_9226",NA,"4-hydroxy-tolbutamide",0
+"HMR_9227",NA,"4-nitrophenyl-sulfate",0
+"HMR_9228",NA,"4-pyridoxate",1
+"HMR_9229",NA,"5-alpha-dihydrotestosterone",0
+"HMR_9230",NA,"5alpha-dihydrotestosterone-glucuronide",0
+"HMR_9231",NA,"5alpha-dihydrotestosterone-sulfate",0
+"HMR_9232",NA,"pentaglutamyl-folate(DHF)",0
+"HMR_9233",NA,"5-hydroxy-omeprazole",0
+"HMR_9234",NA,"5-methyl-THF",0
+"HMR_9235",NA,"pentaglutamyl-folate(THF)",0
+"HMR_9236",NA,"hexaglutamyl-folate(DHF)",0
+"HMR_9237",NA,"6beta-hydroxytestosterone",0
+"HMR_9238",NA,"hexaglutamyl-folate(THF)",0
+"HMR_9239",NA,"heptaglutamyl-folate(DHF)",0
+"HMR_9240",NA,"heptaglutamyl-folate(THF)",0
+"HMR_9241",NA,"L-arabitol",1
+"HMR_9242",NA,"acetaldehyde",1
+"HMR_9243",NA,"acetone",1
+"HMR_9244",NA,"type III A glycolipid",0
+"HMR_9245",NA,"type IIIAb",0
+"HMR_9246",NA,"N-acetylglucosamine",1
+"HMR_9247",NA,"acetylcholine",1
+"HMR_9248",NA,"sialyl(1,3)-sialyl(2,6)-galactosylgloboside",0
+"HMR_9249",NA,"sialyl(2,3)-sialyl(2,6)-galactosylgloboside",0
+"HMR_9250",NA,"3,8-LD1",0
+"HMR_9251",NA,"disialylgalactosylgloboside",0
+"HMR_9252",NA,"VI3NeuAc-nLc6Cer",0
+"HMR_9253",NA,"adenine",1
+"HMR_9254",NA,"adenosine",1
+"HMR_9255",NA,"ADP",1
+"HMR_9256",NA,"ADP-ribose-2-phosphate",0
+"HMR_9257",NA,"etiocholan-3alpha-ol-17-one 3-glucuronide",0
+"HMR_9258",NA,"1-alkyl-2-lysoglycerol-3-phosphocholine",0
+"HMR_9259",NA,"AKG",1
+"HMR_9260",NA,"beta-alanine",1
+"HMR_9261",NA,"aldosterone",1
+"HMR_9262",NA,"AMP",1
+"HMR_9263",NA,"androsterone",1
+"HMR_9264",NA,"androsterone-glucuronide",0
+"HMR_9265",NA,"antipyrine",1
+"HMR_9266",NA,"alpha-pinene-oxide",1
+"HMR_9267",NA,"(+)-alpha-pinene",1
+"HMR_9268",NA,"20alpha-hydroxy-4-pregnen-3-one",0
+"HMR_9269",NA,"aquacob(III)alamin",0
+"HMR_9270",NA,"L-arabinose",1
+"HMR_9271",NA,"bilirubin-bisglucuronoside",0
+"HMR_9272",NA,"bilirubin-monoglucuronoside",0
+"HMR_9273",NA,"bilirubin",1
+"HMR_9275",NA,"cAMP",1
+"HMR_9276",NA,"beta-carotene",1
+"HMR_9277",NA,"(-)-trans-carveol",0
+"HMR_9278",NA,"calcitroic acid",1
+"HMR_9279",NA,"cys-gly",1
+"HMR_9280",NA,"cholate",1
+"HMR_9281",NA,"glycocholate",1
+"HMR_9282",NA,"taurocholate",1
+"HMR_9283",NA,"glycochenodeoxycholate",1
+"HMR_9284",NA,"taurochenodeoxycholate",1
+"HMR_9285",NA,"cholesterol",1
+"HMR_9286",NA,"citrate",1
+"HMR_9287",NA,"CMP",1
+"HMR_9288",NA,"CO",1
+"HMR_9289",NA,"coumarin",1
+"HMR_9290",NA,"creatine",1
+"HMR_9291",NA,"cytosine",1
+"HMR_9292",NA,"L-carnitine",1
+"HMR_9293",NA,"cortisol",1
+"HMR_9294",NA,"corticosterone",1
+"HMR_9295",NA,"cytidine",1
+"HMR_9296",NA,"deoxycytidine",1
+"HMR_9297",NA,"deoxyadenosine",1
+"HMR_9298",NA,"5-deoxyadenosine",0
+"HMR_9299",NA,"debrisoquin",1
+"HMR_9300",NA,"deoxyguanosine",1
+"HMR_9301",NA,"dehydroascorbic acid",1
+"HMR_9302",NA,"dehydroepiandrosterone sulfate",0
+"HMR_9303",NA,"dihydrofolate",1
+"HMR_9304",NA,"digalactosylceramidesulfate",0
+"HMR_9305",NA,"deoxyinosine",1
+"HMR_9306",NA,"edaravone",1
+"HMR_9307",NA,"2,6-dimethylheptanoyl-carnitine",0
+"HMR_9308",NA,"dopamine-3-O-sulfate",0
+"HMR_9309",NA,"deoxyribose",1
+"HMR_9310",NA,"deoxyuridine",1
+"HMR_9311",NA,"aflatoxin B1-exo-8,9-epoxide",0
+"HMR_9312",NA,"ebastine",1
+"HMR_9313",NA,"hydroxylated-ebastine",0
+"HMR_9314",NA,"estradiol-17beta",1
+"HMR_9315",NA,"16-glucuronide-estriol",0
+"HMR_9316",NA,"estrone-glucuronide",0
+"HMR_9317",NA,"estrone 3-sulfate",1
+"HMR_9318",NA,"formate",1
+"HMR_9319",NA,"III3Fuc-nLc6Cer",0
+"HMR_9320",NA,"glycolipid",1
+"HMR_9321",NA,"fucacgalfucgalacglcgalgluside heparan sulfate",0
+"HMR_9322",NA,"IV3NeuAc,III3Fuc-nLc4Cer",0
+"HMR_9323",NA,"IV3Neu5Ac,III4Fuc-Lc4Cer",0
+"HMR_9324",NA,"fucfuc132galacglcgal14acglcgalgluside heparan sulfate",0
+"HMR_9325",NA,"fucfucfucgalacglc13galacglcgal14acglcgalgluside heparan sulfate",0
+"HMR_9326",NA,"fucfucfucgalacglcgal14acglcgalgluside heparan sulfate",0
+"HMR_9327",NA,"lacto-N-fucopentaosyl-III-ceramide",0
+"HMR_9328",NA,"fucgalfucgalacglcgalgluside heparan sulfate",0
+"HMR_9329",NA,"fucosyl-galactosylgloboside",0
+"HMR_9330",NA,"6-deoxy-L-galactose",1
+"HMR_9331",NA,"gal-glcnac-gal-globoside",0
+"HMR_9332",NA,"galfuc12gal14acglcgalgluside heparan sulfate",0
+"HMR_9333",NA,"galfucgalacglcgal14acglcgalgluside heparan sulfate",0
+"HMR_9334",NA,"galgalfucfucgalacglcgalacglcgal14acglcgalgluside heparan sulfate",0
+"HMR_9335",NA,"galgalgalthcrm heparan sulfate",0
+"HMR_9336",NA,"globoside",1
+"HMR_9337",NA,"GD1beta",0
+"HMR_9338",NA,"(5-L-glutamyl)-L-amino acid",0
+"HMR_9339",NA,"GD1c",0
+"HMR_9340",NA,"GDP",1
+"HMR_9341",NA,"betaine",1
+"HMR_9342",NA,"glycerate",1
+"HMR_9343",NA,"GMP",1
+"HMR_9344",NA,"GP1c",0
+"HMR_9345",NA,"GP1calpha",0
+"HMR_9346",NA,"GQ1b",0
+"HMR_9347",NA,"GQ1balpha",0
+"HMR_9348",NA,"guanosine",1
+"HMR_9349",NA,"GT1a",0
+"HMR_9350",NA,"GSSG",1
+"HMR_9351",NA,"GSH",1
+"HMR_9352",NA,"GTP",1
+"HMR_9353",NA,"guanine",1
+"HMR_9354",NA,"H2O2",1
+"HMR_9355",NA,"4-hydroxy-17beta-estradiol",1
+"HMR_9356",NA,"umbelliferone",1
+"HMR_9357",NA,"6-hydroxypaclitaxel",0
+"HMR_9358",NA,"hypoxanthine",1
+"HMR_9359",NA,"IDP",1
+"HMR_9360",NA,"IMP",1
+"HMR_9361",NA,"inositol",1
+"HMR_9362",NA,"inosine",1
+"HMR_9363",NA,"cystine",1
+"HMR_9364",NA,"leukotriene A4",1
+"HMR_9365",NA,"leukotriene B4",1
+"HMR_9366",NA,"leukotriene C4",1
+"HMR_9367",NA,"LTD4",1
+"HMR_9368",NA,"leukotriene E4",1
+"HMR_9369",NA,"limonene",1
+"HMR_9370",NA,"maltose",1
+"HMR_9371",NA,"maltotriose",1
+"HMR_9372",NA,"methanol",1
+"HMR_9373",NA,"L-metanephrine",1
+"HMR_9374",NA,"3-mercaptolactate-cysteine-disulfide",0
+"HMR_9375",NA,"methylglyoxal",1
+"HMR_9376",NA,"NAD+",1
+"HMR_9377",NA,"NADP+",1
+"HMR_9378",NA,"nicotinamide",1
+"HMR_9379",NA,"nifedipine",1
+"HMR_9380",NA,"hydroxy-nifedipine",0
+"HMR_9381",NA,"NO",1
+"HMR_9382",NA,"norepinephrine sulfate",0
+"HMR_9383",NA,"O2-",1
+"HMR_9384",NA,"9-O-acetylated-GD3",0
+"HMR_9385",NA,"9-O-acetylated-GT3",0
+"HMR_9386",NA,"hydroxide",1
+"HMR_9387",NA,"omeprazole",1
+"HMR_9388",NA,"(1R,2S)-naphthalene 1,2-oxide",0
+"HMR_9389",NA,"[protein]-L-lysine",1
+"HMR_9390",NA,"perillyl alcohol",1
+"HMR_9391",NA,"phenylacetylglutamine",1
+"HMR_9392",NA,"phylloquinone",1
+"HMR_9393",NA,"progesterone",1
+"HMR_9394",NA,"D-proline",1
+"HMR_9395",NA,"prostaglandin D2",1
+"HMR_9396",NA,"prostaglandin E1",1
+"HMR_9397",NA,"prostaglandin E2",1
+"HMR_9398",NA,"prostaglandin F2alpha",1
+"HMR_9399",NA,"pyridoxamine",1
+"HMR_9400",NA,"pyridoxal",1
+"HMR_9401",NA,"ribitol",1
+"HMR_9404",NA,"retinoate",1
+"HMR_9405",NA,"retinoyl-glucuronide",0
+"HMR_9406",NA,"ribose",1
+"HMR_9407",NA,"D-serine",1
+"HMR_9408",NA,"(S)-3-sulfolactate",0
+"HMR_9409",NA,"sphingosylphosphorylcholine",1
+"HMR_9410",NA,"sphinganine-1-phosphate",0
+"HMR_9411",NA,"sphingosine-1-phosphate",1
+"HMR_9412",NA,"serotonin",1
+"HMR_9413",NA,"starch structure 1",0
+"HMR_9414",NA,"starch structure 2",0
+"HMR_9415",NA,"succinate",1
+"HMR_9416",NA,"sucrose",1
+"HMR_9417",NA,"D-tagatose",1
+"HMR_9418",NA,"taurine",1
+"HMR_9419",NA,"paclitaxel",1
+"HMR_9420",NA,"thiocyanate",1
+"HMR_9421",NA,"THF",1
+"HMR_9422",NA,"thymine",1
+"HMR_9423",NA,"thymidine",1
+"HMR_9424",NA,"thyroxine",1
+"HMR_9425",NA,"tolbutamide",1
+"HMR_9426",NA,"trehalose",1
+"HMR_9427",NA,"triiodothyronine",1
+"HMR_9428",NA,"3,5,3-triiodothyronine-4-sulfate",0
+"HMR_9429",NA,"testosterone",1
+"HMR_9430",NA,"testosterone glucuronide",1
+"HMR_9431",NA,"testosterone sulfate",1
+"HMR_9432",NA,"thiosulfate",1
+"HMR_9433",NA,"thromboxane A2",1
+"HMR_9434",NA,"tyramine-O-sulfate",0
+"HMR_9435",NA,"UDP",1
+"HMR_9436",NA,"UMP",1
+"HMR_9437",NA,"uracil",1
+"HMR_9438",NA,"urea",1
+"HMR_9439",NA,"uridine",1
+"HMR_9440",NA,"UTP",1
+"HMR_9441",NA,"vitamin D2",1
+"HMR_9442",NA,"vitamin D3",1
+"HMR_9443",NA,"12-hydroxydodecanoic acid",1
+"HMR_9444",NA,"14-hydroxytetradecanoic acid",0
+"HMR_9445",NA,"16-hydroxyhexadecanoic acid",1
+"HMR_9446",NA,"19-hydroxytestosterone",0
+"HMR_9447",NA,"galactosylglycerol",1
+"HMR_9448",NA,"maltodecaose",0
+"HMR_9449","Exchange of phenylacetylglycine","phenylacetylglycine",1
+"HMR_9450",NA,"XTP",1
+"HMR_9451",NA,"itaconate",1
+"HMR_9452",NA,"estriol",1
+"HMR_9453",NA,"etiocholanolone",1
+"HMR_9454",NA,"D-ornithine",0
+"HMR_9455",NA,"D-arginine",1
+"HMR_9456",NA,"ADP-glucose",1
+"HMR_9457",NA,"ADP-mannose",0
+"HMR_9458",NA,"D-ribulose",1
+"HMR_9460",NA,"creatinine",1
+"HMR_9461",NA,"glucose-1,6-bisphosphate",0
+"HMR_9462",NA,"hyodeoxycholate",1
+"HMR_9463",NA,"glycodeoxycholate",1
+"HMR_9681",NA,"L-iduronic acid",1
+"HMR_9682",NA,"4-nitrophenyl-phosphate",0
+"HMR_9683",NA,"5-L-gamma-glutamyl",0
+"HMR_9684",NA,"agmatine",1
+"HMR_9685",NA,"D-glucitol",1
+"HMR_9686",NA,"G00022",0
+"HMR_9687",NA,"G00032",0
+"HMR_9688",NA,"G00086",0
+"HMR_9689",NA,"N-acetyl-D-mannosamine",1
+"HMR_9690",NA,"orotate",1
+"HMR_9691",NA,"pyridoxal-phosphate",0
+"HMR_9692",NA,"spermine dialdehyde",0
+"HMR_9693",NA,"xanthurenate",1
+"HMR_9694",NA,"homovanillate",1
+"HMR_9695",NA,"G00040",0
+"HMR_9696",NA,"G00079",0
+"HMR_9697",NA,"G00082",0
+"HMR_9698",NA,"G00083",0
+"HMR_9699",NA,"V3(NeuAc)2-Gb5Cer",0
+"HMR_9700",NA,"n5m2masn",0
+"HMR_9701",NA,"coproporphyrin I",1
+"HMR_9702",NA,"coproporphyrin III",1
+"HMR_9703",NA,"gpi_sig",0
+"HMR_9704",NA,"dgpi_prot heparan sulfate",0
+"HMR_9705",NA,"dem2emgacpail_prot heparan sulfate",0
+"HMR_9706",NA,"glcnac-alpha-1,4-core 2",0
+"HMR_9707",NA,"3-deoxy-D-glycero-D-galacto-2-nonulosonic acid",0
+"HMR_9708",NA,"eumelanin",1
+"HMR_9709",NA,"core 5",0
+"HMR_9710",NA,"core 7",0
+"HMR_9711",NA,"core 8",0
+"HMR_9712",NA,"mem2emgacpail_prot heparan sulfate",0
+"HMR_9713",NA,"4-hydroxyretinoic acid",1
+"HMR_9714",NA,"m3gacpail_prot heparan sulfate",0
+"HMR_9715",NA,"spermine",1
+"HMR_9721",NA,"dolichol",1
+"HMR_9729",NA,"glycogen",1
+"HMR_9730",NA,"albumin",0
+"EX_1glyc_hs[e]","Exchange of 1 Acyl Phosphoglycerol","1-Acyl Phosphoglycerol",0
+"EX_9_cis_retfa[e]","Exchange of Fatty Acid 9-Cis-Retinol","Fatty Acid 9-Cis-Retinol",0
+"EX_adrn[e]","Exchange of Adrenic Acid","adrenic acid",1
+"EX_arach[e]","Exchange of Arachidate","eicosanoate",1
+"EX_arachd[e]","Exchange of Nc20:4","arachidonate",1
+"EX_atp[e]","Exchange of ATP","ATP",1
+"EX_bvite[e]","Exchange of Beta-Tocopherol","Beta-Tocopherol",1
+"EX_clpnd[e]","Exchange of Clupanodonic Acid (Docosapentaenoic (N-3))","DPA",1
+"EX_crmp_hs[e]","Exchange of Ceramide 1-Phosphate","ceramide-1P pool",0
+"EX_crvnc[e]","Exchange of Nc22:6","DHA",1
+"EX_dag_hs[e]","Exchange of Diglyceride","1,2-diacylglycerol-LD-TAG pool",0
+"EX_dcsptn1[e]","Exchange of Docosa-4, 7, 10, 13, 16-Pentaenoic Acid (N-6)","(4Z,7Z,10Z,13Z,16Z)-DPA",0
+"EX_dlnlcg[e]","Exchange of Dihomo-Gamma-Linolenic Acid (N-6)","dihomo-gamma-linolenate",1
+"EX_eicostet[e]","Exchange of Eicosatetranoic Acid","omega-3-arachidonic acid",0
+"EX_elaid[e]","Exchange of Elaidic Acid","elaidate",1
+"EX_fucfuc12gal14acglcgalgluside_hs[e]","Exchange of Ley Glycolipid","Ley Glycolipid",0
+"EX_fucfucgalacglcgalgluside_hs[e]","Exchange of Leb Glycolipid","Leb Glycolipid",0
+"EX_glyc_S[e]","Exchange of (S)-Glycerate","(S)-Glycerate",0
+"EX_glygn2[e]","Exchange of Glycogen, Structure 2 (Glycogenin-1, 6-{7[1, 4-Glc], 4[1, 4-Glc]})","glycogenin G4G7",0
+"EX_glygn4[e]","Exchange of Glycogen, Structure 4 (Glycogenin-1, 6-{2[1, 4-Glc], [1, 4-Glc]})","Glycogen, Structure 4 (Glycogenin-1,6-{2[1,4-Glc], [1,4-Glc]})",0
+"EX_glygn5[e]","Exchange of Glycogen, Structure 5 (Glycogenin-2[1, 4-Glc])","Glycogen, Structure 5 (Glycogenin-2[1,4-Glc])",0
+"EX_hdca[e]","Exchange of Hexadecanoate (N-C16:0)","palmitate",1
+"EX_hdcea[e]","Exchange of Hexadecenoate (N-C16:1)","palmitolate",0
+"EX_hexc[e]","Exchange of Hexacosanoate (N-C26:0)","cerotic acid",1
+"EX_hista[e]","Exchange of Histamine","histamine",1
+"EX_hpdca[e]","Exchange of Heptadecanoate","margaric acid",1
+"EX_lgnc[e]","Exchange of Lignoceric Acid","lignocerate",1
+"EX_lneldc[e]","Exchange of Linoelaidic Acid","(6Z,9Z)-octadecadienoic acid",1
+"EX_lnlncg[e]","Exchange of Gamma-Linolenic Acid","gamma-linolenate",1
+"EX_lpchol_hs[e]","Exchange of Lysophosphatidylcholine","2-lysolecithin pool",0
+"EX_mag_hs[e]","Exchange of Monoacylglycerol 2 (Homo Sapiens)","1-acylglycerol-3P pool",0
+"EX_nrvnc[e]","Exchange of Nervonic Acid","nervonic acid",1
+"EX_ocdca[e]","Exchange of Octadecanoate (N-C18:0)","stearate",1
+"EX_ocdcea[e]","Exchange of Octadecenoate (N-C18:1)","oleate",1
+"EX_pchol_hs[e]","Exchange of Phosphatidylcholine (Homo Sapiens)","PC-LD pool",0
+"EX_pe_hs[e]","Exchange of Phosphatidylethanolamine","PE-LD pool",0
+"EX_pglyc_hs[e]","Exchange of Phosphatidylglycerol (Homo Sapiens)","PG-CL pool",0
+"EX_phyt[e]","Exchange of Phytanic Acid","Phytanate",1
+"EX_ps_hs[e]","Exchange of Phosphatidylserine (Homo Sapiens)","PS-LD pool",0
+"EX_ptdca[e]","Exchange of Pentadecanoate","pentadecylic acid",1
+"EX_retfa[e]","Exchange of Fatty Acid Retinol","retinyl-ester",0
+"EX_retinol_9_cis[e]","Exchange of 9-Cis-Retinol","9-cis-retinol",0
+"EX_retinol_cis_11[e]","Exchange of Cis-11-Retinol","11-cis-retinol",1
+"EX_strdnc[e]","Exchange of Stearidonic Acid","stearidonic acid",1
+"EX_tag_hs[e]","Exchange of Triacylglycerol (Homo Sapiens)","TAG-VLDL pool",0
+"EX_tethex3[e]","Exchange of Tetracosahexaenoic Acid, N-3","(6Z,9Z,12Z,15Z,18Z,21Z)-THA",0
+"EX_tetpent3[e]","Exchange of Tetracosapentaenoic Acid, N-3","(9Z,12Z,15Z,18Z,21Z)-TPA",0
+"EX_tetpent6[e]","Exchange of Tetracosapentaenoic Acid, N-6","(6Z,9Z,12Z,15Z,18Z)-TPA",0
+"EX_tettet6[e]","Exchange of Tetracosatetraenoic Acid N-6","(9Z,12Z,15Z,18Z)-TTA",0
+"EX_tmndnc[e]","Exchange of Timnodonic Acid","EPA",1
+"EX_ttdca[e]","Exchange of Tetradecanoate (N-C14:0)","myristic acid",1
+"EX_vacc[e]","Exchange of Vaccenic Acid","cis-vaccenic acid",0
+"EX_xolest_hs[e]","Exchange of Cholesterol Ester","Cholesterol Ester",1
+"EX_xolest2_hs[e]","Exchange of Cholesterol Ester (from FullR2)","cholesterol-ester pool",0
+"EX_xoltri24[e]","Exchange of 7-Alpha, 24(S)-Dihydroxycholesterol","cholest-5-ene-3beta,7alpha,24(S)-triol",0
+"EX_xoltri25[e]","Exchange of 7-Alpha, 25-Dihydroxycholesterol","cholest-5-ene-3beta,7alpha,25-triol",0
+"EX_xoltri27[e]","Exchange of 7-Alpha, 27-Dihydroxycholesterol","cholest-5-ene-3beta,7alpha,27-triol",0
+"EX_4abutn[e]","Exchange of 4-Ammoniobutanal","4-aminobutanal",1
+"EX_ahdt[e]","Exchange of 7, 8-Dihydroneopterin 3-Triphosphate","6-[(1S,2R)-1,2-dihydroxy-3-triphosphooxypropyl]-7,8-dihydropterin",0
+"EX_ctp[e]","Exchange of CTP","CTP",1
+"EX_dgmp[e]","Exchange of dGMP","dGMP",1
+"EX_dgtp[e]","Exchange of dGTP","dGTP",1
+"EX_dha[e]","Exchange of Glycerone","glycerone",1
+"EX_dhap[e]","Exchange of Glycerone Phosphate","DHAP",1
+"EX_dtmp[e]","Exchange of dTMP","dTMP",1
+"EX_dttp[e]","Exchange of dTTP","dTTP",0
+"EX_fad[e]","Exchange of Flavin Adenine Dinucleotide Oxidized","FAD",1
+"EX_fald[e]","Exchange of Formaldehyde","formaldehyde",1
+"EX_g1p[e]","Exchange of Alpha-D-Glucose 1-Phosphate","glucose-1-phosphate",1
+"EX_HC00229[e]","Exchange of Isomaltose","isomaltose",1
+"EX_HC01440[e]","Exchange of 3-Keto-Beta-D-Galactose","3-keto-beta-D-galactose",0
+"EX_HC01441[e]","Exchange of Lactose-6P","lactose-6-phosphate",1
+"EX_HC01446[e]","Exchange of 3-Ketolactose","3-ketolactose",0
+"EX_HC01577[e]","Exchange of Gamma-Glutamyl-Beta-Cyanoalanine","gamma-glutamyl-beta-cyanoalanine",0
+"EX_HC01609[e]","Exchange of Uroporphyrinogeni","uroporphyrinogen I",1
+"EX_HC01610[e]","Exchange of Coproporphyrinogeni","coproporphyrinogen I",1
+"EX_HC01700[e]","Exchange of Gamma-Glutamyl-3-Aminopropiononitrile","gamma-glutamyl-3-aminopropiononitrile",0
+"EX_HC02160[e]","Exchange of Gm2-Pool","GM2",1
+"EX_HC02161[e]","Exchange of Gm1-Pool","GM1",1
+"EX_prpp[e]","Exchange of 5-O-Phosphonato-Alpha-D-Ribofuranosyl Diphosphate","PRPP",0
+"EX_udpg[e]","Exchange of [ (2R, 3S, 4R, 5R)-5- (2, 4-Dioxo-1, 2, 3, 4-Tetrahydropyrimidin-1-Yl)-3, 4-Dihydroxyoxolan-2-Yl]Methyl {[ (3R, 4S, 5S, 6R)-3, 4, 5-Trihydroxy-6- (Hydroxymethyl)Oxan-2-Yl Phosphonato]Oxy}Phosphonate","UDP-glucose",0
+"EX_prostgh2[e]","Exchange of Prostaglandin H2","prostaglandin H2",1
+"EX_prostgi2[e]","Exchange of Prostaglandin I2","prostaglandin I2",1
+"EX_cdp[e]","Exchange of CDP","CDP",1
+"EX_dtdp[e]","Exchange of ({[ (2R, 3S, 5R)-3-Hydroxy-5- (5-Methyl-2, 4-Dioxo-1, 2, 3, 4-Tetrahydropyrimidin-1-Yl)Oxolan-2-Yl]Methyl Phosphonato}Oxy)Phosphonate","dTDP",1
+"EX_HC00955[e]","Exchange of L-3-Cyanoalanine","L-3-cyanoalanine",0
+"EX_HC00002[e]","Exchange of Antichymotrypsin","antichymotrypsin",0
+"EX_HC00003[e]","Exchange of Antitrypsin","antitrypsin",0
+"EX_HC00004[e]","Exchange of Apoa1","apoA1",0
+"EX_HC01852[e]","Exchange of Fibrinogen","fibrinogen",0
+"EX_HC01939[e]","Exchange of Haptoglobin","haptoglobin",0
+"EX_HC01942[e]","Exchange of Plasminogen","plasminogen",1
+"EX_HC01943[e]","Exchange of Prothrombin","prothrombin",0
+"EX_HC01944[e]","Exchange of Apotransferin","[apotransferin]",1
+"EX_HC00822[e]","Exchange of Chitobiose","chitobiose",1
+"EX_C02528[e]","Exchange of Chenodeoxycholate","Chenodeoxycholate",1
+"EX_HC02192[e]","Exchange of Taurolithocholate","taurolithocholate",1
+"EX_HC02193[e]","Exchange of Glycolithocholate","glycolithocholate",1
+"EX_HC02195[e]","Exchange of Tauroursodeoxycholate","tauroursodeoxycholate",0
+"EX_HC02196[e]","Exchange of Glycoursodeoxycholate","glycoursodeoxycholate",1
+"EX_HC02220[e]","Chenodeoxycholic acid 3-sulfate exchange","sulfochenodeoxycholate",0
+"EX_HC02154[e]","Exchange","Gm4-Pool",0
+"EX_HC02199[e]","Exchange of Glutathionyl-Leuc4","glutathionyl-leukotriene C4",0
+"EX_HC02200[e]","Exchange of S-Glutathionyl-2-4-Dinitrobenzene","S-glutathionyl-2-4-dinitrobenzene",0
+"EX_HC02201[e]","Exchange of S-Glutathionyl-Ethacrynic-Acid","S-glutathionyl-ethacrynic acid",0
+"EX_HC02191[e]","Exchange of Lithocholate","lithocholate",1
+"EX_HC02194[e]","Ursodeoxycholic acid exchange","ursodeoxycholate",1
+"EX_HC02197[e]","Exchange of Sulfoglycolithocholate","sulfoglycolithocholate",1
+"EX_HC02198[e]","Exchange of 2-[ (4R)-4-[ (1S, 2S, 5R, 7R, 10R, 11S, 14R, 15R)-2, 15-Dimethyl-5- (Sulfonatooxy)Tetracyclo[8.7.0.0^{2, 7}.0^{11, 15}]Heptadecan-14-Yl]Pentanamido]Ethane-1-Sulfonate","sulfotaurolithocholate",0
+"EX_HC02187[e]","Exchange of Reverse-Triiodthyronine","reverse triiodthyronine",0
+"EX_HC02202[e]","Exchange of Prostaglandin A1","prostaglandin A1",1
+"EX_HC02203[e]","Exchange of Prostaglandin-A2","prostaglandin A2",1
+"EX_HC02204[e]","Exchange of Prostaglandin-B1","prostaglandin B1",1
+"EX_HC02205[e]","Exchange of Prostaglandin-B2","prostaglandin B2",0
+"EX_HC02206[e]","Exchange of Prostaglandin C1","prostaglandin C1",1
+"EX_HC02207[e]","Exchange of Prostaglandin-C2","prostaglandin C2",0
+"EX_HC02208[e]","Exchange of Prostaglandin-D1","prostaglandin D1",0
+"EX_HC02210[e]","Exchange of Prostaglandin-D3","prostaglandin D3",0
+"EX_HC02213[e]","Exchange of Prostaglandin-E3","prostaglandin E3",1
+"EX_HC02214[e]","Exchange of Prostaglandin-F1Alpha","prostaglandin F1alpha",1
+"EX_HC02216[e]","Exchange of Prostaglandin-F2Beta","prostaglandin F2beta",1
+"EX_HC02217[e]","Exchange of Prostaglandin-G2","prostaglandin G2",1
+"EX_malcoa[e]","Exchange of Malonyl Coenzyme A","malonyl-CoA",1
+"EX_arachcoa[e]","Exchange of Arachidyl Coenzyme A","eicosanoyl-CoA",1
+"EX_coa[e]","Exchange of Coenzyme A","CoA",1
+"EX_CE2250[e]","Exchange of 3-Oxodocosanoyl Coenzyme A","3-oxodocosanoyl-CoA",0
+"EX_CE1935[e]","Exchange of Spermine Monoaldehyde","spermine monoaldehyde",0
+"EX_CE1940[e]","Exchange of Spermidine Monoaldehyde 2","spermidine monoaldehyde 2",0
+"EX_CE1943[e]","Exchange of Spermidine Dialdehyde","spermidine dialdehyde",0
+"EX_CE2011[e]","Exchange of Hypothiocyanite","hypothiocyanite",1
+"EX_CE1939[e]","Exchange of Spermidine Monoaldehyde 1","spermidine monoaldehyde 1",0
+"EX_maltpt[e]","Exchange of Maltopentaose","maltopentaose",1
+"EX_CE2915[e]","Exchange of Beta-Casomorphin","beta-casomorphin",1
+"EX_CE4722[e]","Exchange of Beta-Casomorphin (1-6)","beta-casomorphin (1-6)",0
+"EX_CE2916[e]","Exchange of Neocasomorphin","neocasomorphin",1
+"EX_CE4723[e]","Exchange of Neocasomorphin (1-5)","neocasomorphin (1-5)",0
+"EX_CE2917[e]","Exchange of Apelin-13","apelin-13",1
+"EX_CE4724[e]","Exchange of Apelin (1-12)","apelin-(1-12)",0
+"EX_malthp[e]","Exchange of Maltoheptaose","maltoheptaose",1
+"EX_CE2838[e]","Exchange of Maltononaose","maltononaose",0
+"EX_CE1950[e]","Exchange of Cyanosulfurous Acid Anion","Cyanosulfurous Acid Anion",0
+"EX_cynt[e]","Exchange of Cyanate","Cyanate",1
+"EX_23cump[e]","Exchange of 2',3'-Cyclic UMP","2,3-cyclic-UMP",0
+"EX_3ump[e]","Exchange of 3'-UMP","3-UMP",0
+"EX_CE5786[e]","Exchange of Kinetensin","kinetensin",1
+"EX_CE5788[e]","Exchange of Kinetensin 1-7","kinetensin 1-7",0
+"EX_CE5789[e]","Exchange of Kinetensin 1-8","kinetensin 1-8",0
+"EX_CE5797[e]","Exchange of Neuromedin N","neuromedin N",1
+"EX_CE5798[e]","Exchange of Neuromedin N (1-4)","neuromedin N(1-4)",0
+"EX_CE5787[e]","Exchange of Kinetensin 1-3","kinetensin 1-3",0
+"EX_CE5791[e]","Exchange of Kinetensin 4-8","kinetensin 4-8",0
+"EX_CE5867[e]","Exchange of N-Acetyl-Seryl-Aspartyl-Lysyl-Proline","N-acetyl-seryl-aspartyl-lysyl-proline",0
+"EX_CE5868[e]","Exchange of N-Acetyl-Seryl-Aspartate","N-acetyl-seryl-aspartate",0
+"EX_CE5869[e]","Exchange of Lysyl-Proline","lysyl-proline",1
+"EX_CE4633[e]","Exchange of Hypochlorous Acid","hypochlorite",1
+"EX_CE4881[e]","Exchange of Nitryl Chloride","nitryl-chloride",0
+"EX_CE5854[e]","Exchange of Gama-Cehc-Glucuronide","gamma-CEHC-glucuronide",0
+"EX_CE1926[e]","Exchange of Gama-Carboxyethyl-Hydroxychroman","gamma-carboxyethyl-hydroxychroman",0
+"EX_udpgal[e]","Exchange of UDP-D-Galactose","UDP-galactose",1
+"EX_crm_hs[e]","Exchange of N-Acylsphingosine","ceramide pool",0
+"EX_galside_hs[e]","Exchange of D-Galactosyl-N-Acylsphingosine","D-galactosyl-N-acylsphingosine",1
+"EX_CE0074[e]","Exchange of Alloxan","alloxan",1
+"EX_cdpea[e]","Exchange of CDP-Ethanolamine","CDP-ethanolamine",0
+"EX_12dgr120[e]","Exchange of 1, 2-Diacyl-Sn-Glycerol (Didodecanoyl, N-C12:0)","1,2-Diacyl-Sn-Glycerol (Didodecanoyl, N-C12:0)",0
+"EX_CE5853[e]","Exchange of Alpha-Cehc-Glucuronide","alpha-CEHC-glucuronide",0
+"EX_CE1925[e]","Exchange of 3'-Carboxy-Alpha-Chromanol","3-carboxy-alpha-chromanol",0
+"EX_C04849[e]","Exchange of (5Z, 9E, 14Z)- (8Xi, 11R, 12S)-11, 12-Epoxy-8-Hydroxyicosa-5, 9, 14-Trienoate","hepoxilin A3",1
+"EX_3bcrn[e]","Exchange of 3-Hydroxy Butyryl Carnitine","3-Hydroxy Butyryl Carnitine",0
+"EX_3ddcrn[e]","Exchange of 3-Hydroxydodecanoyl Carnitine","3-Hydroxydodecanoylcarnitine",0
+"EX_3deccrn[e]","Exchange of 3-Hydroxydecanoyl Carnitine","3-Hydroxydecanoylcarnitine",0
+"EX_3hdececrn[e]","Exchange of 3-Hydroxyhexadecenoyl Carnitine","3-Hydroxyhexadecenoylcarnitine",0
+"EX_3hexdcrn[e]","Exchange of 3-Hydroxyhexadecanoyl Carnitine","3-Hydroxyhexadecanoylcarnitine",1
+"EX_3ivcrn[e]","Exchange of 3-Hydroxy-Isovaleryl Carnitine","3-Hydroxy-Isovaleryl Carnitine",0
+"EX_3octdec2crn[e]","Exchange of 3-Hydroxyoctadecadienoyl Carnitine","3-Hydroxyoctadecadienoylcarnitine",0
+"EX_3octdeccrn[e]","Exchange of 3-Hydroxyoctadecanoyl Carnitine","3-Hydroxyoctadecanoyl Carnitine",0
+"EX_3octdece1crn[e]","Exchange of 3-Hydroxy-Octadecenoyl Carnitine","3-Hydroxy-Octadecenoyl Carnitine",0
+"EX_3tdcrn[e]","Exchange of 3-Hydroxy-Tetradecanoyl Carnitine","3-Hydroxy-Tetradecanoyl Carnitine",0
+"EX_3tetd7ecoacrn[e]","Exchange of 3-Hydroxy Tetradecenoyl-7-Carnitine","3-Hydroxy Tetradecenoyl-7-Carnitine",0
+"EX_3thexddcoacrn[e]","Exchange of 3-Hydroxy Trans7, 10-Hexadecadienoyl Carnitine","3-Hydroxy Trans7,10-Hexadecadienoyl Carnitine",0
+"EX_3ttetddcoacrn[e]","Exchange of 3-Hydroxy Trans5, 8Tetradecadienoyl Carnitine","3-Hydroxy Trans5,8Tetradecadienoyl Carnitine",0
+"EX_c101crn[e]","Exchange of Decenoyl Carnitine","Decenoyl Carnitine",1
+"EX_c10crn[e]","Exchange of Decanoyl Carnitine","Decanoyl Carnitine",1
+"EX_c10dc[e]","Exchange of Sebacoyl Carnitine","Sebacoyl Carnitine",0
+"EX_c12dc[e]","Exchange of Dodecanedioyl Carnitine","Dodecanedioyl Carnitine",0
+"EX_c16dc[e]","Exchange of Hexadecanedioic Acid Mono-L-Carnitine Ester","Hexadecanedioic Acid Mono-L-Carnitine Ester",0
+"EX_c3dc[e]","Exchange of Malonyl Carnitine","Malonyl Carnitine",0
+"EX_c4crn[e]","Exchange of Butyryl Carnitine","O-butanoylcarnitine",0
+"EX_c4dc[e]","Exchange of Succinyl Carnitine","Succinyl Carnitine",0
+"EX_c51crn[e]","Exchange of Tiglyl Carnitine","Tiglyl Carnitine",0
+"EX_c5dc[e]","Exchange of Glutaryl Carnitine","Glutaryl Carnitine",0
+"EX_c6crn[e]","Exchange of Hexanoyl Carnitine","Hexanoyl Carnitine",0
+"EX_c6dc[e]","Exchange of Adipoyl Carnitine","Adipoyl Carnitine",0
+"EX_c81crn[e]","Exchange of Octenoyl Carnitine","Octenoyl Carnitine",0
+"EX_c8crn[e]","Exchange of Octanoyl Carnitine","L-octanoylcarnitine",0
+"EX_c8dc[e]","Exchange of Suberyl Carnitine","Suberyl Carnitine",0
+"EX_ddece1crn[e]","Exchange of Dodecenoyl Carnitine","Dodecenoyl Carnitine",0
+"EX_ddecrn[e]","Exchange of Lauroyl Carnitine","Lauroyl Carnitine",0
+"EX_decdicrn[e]","Exchange of Decadienoyl Carnitine","Decadienoyl Carnitine",0
+"EX_doco13ac[e]","Exchange of Docosenoic Acid (C22:1)","cis-erucic acid",0
+"EX_docosac[e]","Exchange of Behenic Acid","behenic acid",1
+"EX_docosdiac[e]","Exchange of Docosanedioic Acid","Docosanedioicacid",0
+"EX_ivcrn[e]","Exchange of Isovaleryl Carnitine","Isovaleryl Carnitine",0
+"EX_tetdec2crn[e]","Exchange of Tetradecadienoyl Carnitine","Tetradecadienoyl Carnitine",0
+"EX_tetdece1crn[e]","Exchange of Tetradecenoyl Carnitine","Tetradecenoyl Carnitine",0
+"EX_4hpro[e]","Exchange of Hydroxy Proline","trans-4-hydroxy-L-proline",1
+"EX_adpcbl[e]","Exchange of Adenosylcobalamin","cobamide-coenzyme",0
+"EX_alaala[e]","Exchange of Alanylalanine","D-alanyl-D-alanine",1
+"EX_bglc[e]","Exchange of Beta Glucans","Beta-Glucans",0
+"EX_carn[e]","Exchange of Carnosine","carnosine",1
+"EX_dchac[e]","Exchange of Deoxycholic Acid","3alpha,12alpha-dihydroxy-5beta-cholanate",0
+"EX_glgchlo[e]","Exchange of Beta Glucan-Glycocholate Complex","Beta Glucan-Glycocholate Complex",0
+"EX_gltcho[e]","Exchange of Beta Glucan-Taurocholic Acid Complex","Beta Glucan-Taurocholic Acid Complex",0
+"EX_gltdechol[e]","Exchange of Beta Glucan-Taurodeoxycholic Acid Complex","Beta Glucan-Taurodeoxycholic Acid Complex",0
+"EX_glygly[e]","Exchange of Glycylglycine","Glycyl-Glycine",1
+"EX_glysar[e]","Exchange of Glycylsarcosine","Glycylsarcosine",1
+"EX_gum[e]","Exchange of Guar Gums","Gums",0
+"EX_gumdchac[e]","Exchange of Guar Gum-Deoxyxholic Acid Complex","Guar Gum-Deoxyxholic Acid Complex",0
+"EX_gumgchol[e]","Exchange of Guar Gum-Glycocholate Complex","Guar Gum-Glycocholate Complex",0
+"EX_gumtchol[e]","Exchange of Guar Gum-Taurocholic Acid Complex","Guar Gum-Taurocholic Acid Complex",0
+"EX_leugly[e]","Exchange of Leucylglycine","Leucyl-Glycine",1
+"EX_leuleu[e]","Exchange of Leucylleucine","Leucylleucine",1
+"EX_pect[e]","Exchange of Pectins","Pectin",1
+"EX_pectindchac[e]","Exchange of Pectin-Deoxycholic Acid Complex","Pectin-Deoxycholic Acid Complex",0
+"EX_pectingchol[e]","Exchange of Pectin-Glycocholate Complex","Pectin-Glycocholate Complex",0
+"EX_pectintchol[e]","Exchange of Pectin-Taurocholic Acid Complex","Pectin-Taurocholic Acid Complex",0
+"EX_psyl[e]","Exchange of Psyllium","Psyllium",0
+"EX_psylchol[e]","Exchange of Psyllium-Glycocholic Acid Complex","Psillium-Glycocholic Acid Complex",0
+"EX_psyltchol[e]","Exchange of Psyllium-Taurocholic Acid Complex","Psyllium-Taurocholic Acid Complex",0
+"EX_psyltdechol[e]","Exchange of Psyllium-Taurodeoxycholic Acid Complex","Psyllium-Taurodeoxycholic Acid Complex",0
+"EX_sfcys[e]","Exchange of Sulfocysteine","S-Sulfo-L-Cysteine",0
+"EX_tdechola[e]","Exchange of Taurodeoxycholic Acid","taurodeoxycholate",1
+"EX_cysam[e]","Exchange of Cysteaminium","cysteamine",1
+"EX_dpcoa[e]","Exchange of Dephospho Coenzyme A","dephospho-CoA",1
+"EX_fmn[e]","Exchange of FMN","FMN",1
+"EX_hyptaur[e]","Exchange of Hypotaurine","hypotaurine",0
+"EX_pan4p[e]","Exchange of Pantetheine 4-Phosphate","phosphopantetheine",1
+"EX_ptth[e]","Exchange of Pantetheine","pantetheine",1
+"EX_q10[e]","Exchange of Ubiquinone","ubiquinone",1
+"EX_q10h2[e]","Exchange of Ubiquinol","ubiquinol",1
+"EX_34hpp[e]","Exchange of 3- (4-Hydroxyphenyl)Pyruvate","4-hydroxyphenylpyruvate",1
+"EX_3mob[e]","Exchange of 3-Methyl-2-Oxobutanoate","3-methyl-2-oxobutyrate",0
+"EX_3mop[e]","Exchange of 3-Methyl-2-Oxopentanoate","2-oxo-3-methylvalerate",0
+"EX_4mop[e]","Exchange of 4-Methyl-2-Oxopentanoate","4-methyl-2-oxopentanoate",1
+"EX_5mta[e]","Exchange of 5-S-Methyl-5-Thioadenosine","5-methylthioadenosine",0
+"EX_5oxpro[e]","Exchange of 5-Oxoprolinate","5-oxoproline",1
+"EX_ahcys[e]","Exchange of S-Adenosyl-L-Homocysteine","SAH",1
+"EX_aicar[e]","Exchange of 5-Amino-1- (5-Phospho-D-Ribosyl)Imidazole-4-Carboxamide","AICAR",1
+"EX_anth[e]","Exchange of Anthranilate","anthranilate",1
+"EX_cbasp[e]","Exchange of N-Carbamoyl-L-Aspartate","N-carbamoyl-L-aspartate",0
+"EX_2pg[e]","Exchange of 2-Phospho-D-Glycerate","2-phospho-D-glycerate",1
+"EX_5hoxindoa[e]","Exchange of 5-Hydroxyindoleacetate","5-hydroxyindoleacetate",0
+"EX_cala[e]","Exchange of N-Carbamoyl-Beta-Alaninate","3-ureidopropionate",1
+"EX_cholp[e]","Exchange of Choline Phosphate","phosphocholine",1
+"EX_cyst_L[e]","Exchange of L-Cystathionine","L-cystathionine",1
+"EX_dcmp[e]","Exchange of Deoxycytidylic Acid","dCMP",0
+"EX_dmgly[e]","Exchange of N,N-Dimethylglycine","dimethylglycine",1
+"EX_ethamp[e]","Exchange of Ethanolamine Phosphate","ethanolamine-phosphate",0
+"EX_g3pc[e]","Exchange of Glycerophosphocholine","sn-glycerol-3-PC",0
+"EX_glyald[e]","Exchange of D-Glyceraldehyde","glyceraldehyde",1
+"EX_gudac[e]","Exchange of Guanidinoacetic Acid","guanidinoacetate",1
+"EX_hcys_L[e]","Exchange of L-Homocysteine","homocysteine",1
+"EX_icit[e]","Ex_icit[e]","isocitrate",1
+"EX_kynate[e]","Exchange of Kynurenic Acid","4-hydroxy-2-quinolinecarboxylic acid",0
+"EX_L2aadp[e]","Exchange of L-2-Aminoadipate","L-2-aminoadipate",1
+"EX_Lkynr[e]","Exchange of L-Kynurenine","kynurenine",1
+"EX_pep[e]","Exchange of Phosphoenolpyruvate","PEP",1
+"EX_quln[e]","Exchange of Quinolinic Acid","quinolinate",0
+"EX_xmp[e]","Exchange of Xanthylic Acid","xanthosine-5-phosphate",0
+"EX_xtsn[e]","Exchange of Xanthosine","xanthosine",1
+"EX_3pg[e]","Exchange of 3-Phospho-D-Glycerate","3-phospho-D-glycerate",1
+"EX_3hanthrn[e]","Exchange","3-hydroxyanthranilate",1
+"EX_udpglcur[e]","Exchange","UDP-glucuronate",0
+"EX_hLkynr[e]","Exchange","3-hydroxy-L-kynurenine",1
+"EX_nicrnt[e]","Exchange","nicotinate ribonucleotide",0
+"EX_orot5p[e]","Exchange","orotidine-5-phosphate",0
+"EX_glyc3p[e]","Exchange of Glycerophosphoric Acid","sn-glycerol-3-phosphate",1
+"EX_argsuc[e]","Exchange of L-Arginosuccinic Acid","argininosuccinate",1
+"EX_acrn[e]","Exchange of O-Acetylcarnitine","O-acetylcarnitine",1
+"EX_pcrn[e]","Exchange of O-Propanoylcarnitine","O-propanoylcarnitine",0
+"EX_lneldccrn[e]","Exchange of 6Z,9Z-Octadecadienoylcarnitine","(6Z,9Z)-octadecadienoylcarnitine",0
+"EX_odecrn[e]","Exchange of L-Oleoylcarnitine","octadecenoylcarnitine(5)",0
+"EX_stcrn[e]","Exchange of O-Octadecanoyl-R-Carnitine","stearoylcarnitine",1
+"EX_pmtcrn[e]","Exchange of L-Palmitoylcarnitine","L-palmitoylcarnitine",1
+"EX_hdcecrn[e]","Exchange of Palmitoleoyl-Carnitine","palmitoleoyl-carnitine",0
+"EX_3mtp[e]","Exchange of 3-Methyl-Thio-Propionate","3-Methyl-Thio-Propionate",0
+"EX_C14769[e]","Exchange of 8, 9-EET","8,9-EET",1
+"EX_12HPET[e]","Exchange of 12-Hydroperoxyeicosa-5, 8, 10, 14-Tetraenoate","12(S)-HPETE",0
+"EX_15HPET[e]","Exchange of 15(S)-HPETE","15(S)-HPETE",0
+"EX_15kprostgf2[e]","Exchange of 15-Keto-Prostaglandin F2A","15-Keto-Prostaglandin F2A",1
+"EX_21hprgnlone[e]","Exchange of 21-Hydroxypregnenolone","21-hydroxypregnenolone",0
+"EX_2oxoadp[e]","Exchange of 2-Oxoadipate","2-oxoadipate",0
+"EX_34hpl[e]","Exchange of 3- (4-Hydroxyphenyl)Lactate","4-hydroxyphenyllactate",1
+"EX_3hmp[e]","Exchange of 3-Hydroxy-2-Methylpropanoate","3-hydroxyisobutyrate",1
+"EX_3hpp[e]","Exchange of 3-Hydroxypropionate","hydracrylate",1
+"EX_3hpppnohgluc[e]","Exchange of 3- (3-Hydroxy-Phenyl)Propionate Hydroxy Derivative Glucuronide","3-(3-Hydroxy-Phenyl)Propionate Hydroxy Derivative Glucuronide",0
+"EX_3mhis[e]","Exchange of Methyl-Histidine","3-Methylhistidine",1
+"EX_3uib[e]","Exchange of 3-Ureidoisobutyrate","3-ureidoisobutyrate",1
+"EX_4aabutn[e]","Exchange of 4-Acetamidobutanoate","4-acetamidobutanoate",0
+"EX_4tmeabutn[e]","Exchange of 4- (Trimethylammonio)Butanoate","gamma-butyrobetaine",0
+"EX_56dthm[e]","Exchange of 5, 6-Dihydrothymine","dihydrothymine",1
+"EX_56dura[e]","Exchange of 5, 6-Dihydrouracil","5,6-Dihydrouracil",1
+"EX_5HPET[e]","Exchange of 5(S)-HPETE","5(S)-HPETE",1
+"EX_7dhchsterol[e]","Exchange of Cholesta-5, 7-Dien-3Beta-Ol","provitamin D3",1
+"EX_acgly[e]","Exchange of Acetyl-Glycine","Acetyl-Glycine",1
+"EX_aclys[e]","Exchange of Acetyl-Lysine","Acetyl-L-Lysine",1
+"EX_acorn[e]","Exchange of N (2)-Acetyl-L-Ornithine","N-acetylornithine",1
+"EX_acthr_L[e]","Exchange of Acetyl-Threonine","Acetyl-Threonine",0
+"EX_adpac[e]","Exchange of Adipic Acid","Adipic Acid",1
+"EX_adpoh[e]","Exchange of 2-Hydroxyadipic Acid","2-Hydroxyadipic Acid",1
+"EX_amet[e]","Exchange of S-Adenosyl-L-Methionine","SAM",1
+"EX_and19one[e]","Exchange of 19-Hydroxyandrost-4-Ene-3, 17-Dione","19-Hydroxyandrost-4-Ene-3,17-Dione",0
+"EX_aracheth[e]","Exchange of O-Arachidonoyl Ethanolamine","O-Arachidonoyl Ethanolamine",1
+"EX_biliverd[e]","Exchange of Biliverdin","biliverdin",1
+"EX_C02356[e]","(S)-2-Aminobutanoate","(S)-2-aminobutanoate",0
+"EX_C02712[e]","Exchange of N-Acetylmethionine","N-acetylmethionine",1
+"EX_C04717[e]","Exchange of 13(S)-HPODE","13(S)-HPODE",0
+"EX_C04805[e]","Exchange of 5(S)-HETE","5(S)-HETE",1
+"EX_C05957[e]","Exchange of Prostaglandin J2","prostaglandin J2",1
+"EX_C06314[e]","Exchange of Lipoxin A4","lipoxin A4",1
+"EX_C06315[e]","Exchange of Lipoxin B4","lipoxin B4",1
+"EX_C11695[e]","Exchange of Anandamide","anandamide",1
+"EX_C14768[e]","Exchange of 5, 6-EET","5,6-EET",1
+"EX_C14770[e]","Exchange of 11, 12-EET","11,12-EET",1
+"EX_C14771[e]","Exchange of 14, 15-EET","14,15-EET",1
+"EX_C14825[e]","Exchange of 9 (10)-Epome","9(10)-EpOME",0
+"EX_C14826[e]","Exchange of 12 (13)-Epome","12(13)-EpOME",0
+"EX_CE0955[e]","6-Oxo-Prostaglandin F1Alpha","6-oxo-prostaglandin F1alpha",1
+"EX_CE1273[e]","Transport of 5Beta-Cholestane-3Alpha, 7Alpha, 12Alpha, 24S, 25-Pentol, ABC Transport","5beta-cholestane-3alpha,7alpha,12alpha,24s,25-pentol",0
+"EX_CE1297[e]","Exchange of 8-Dehydrocholesterol","8-Dehydrocholesterol",1
+"EX_CE1554[e]","Exchange of Acetyl-Alanine","N-acetyl-L-alanine",1
+"EX_CE1557[e]","Exchange of N-Acetyl-L-Asparagine","N-acetyl-L-asparagine",0
+"EX_CE2028[e]","Exchange of Beta-Hydroxy-Beta-Methylbutyrate","beta-hydroxy-beta-methylbutyrate",0
+"EX_CE2176[e]","Exchange of 3-O-Methyldopa","3-O-methyldopa",1
+"EX_CE2445[e]","Exchange of 6-Trans-Leukotriene B4","6-trans-LTB4",1
+"EX_CE2537[e]","Exchange of 15-Hydroxy- (8Z, 11Z, 13E)-Eicosatrienoate","15(S)-HETrE",0
+"EX_CE5304[e]","Exchange of 15-Deoxy-Pgd2","15-deoxy-PGD2",0
+"EX_CE6031[e]","Exchange of Androsterone Sulfate","androsterone sulfate",1
+"EX_CE6247[e]","Exchange of 5, 12, 20-Trihete","5,12,20-TriHETE",1
+"EX_CE7082[e]","Exchange of 15(S)-HEPE","15(S)-HEPE",0
+"EX_CE7083[e]","Exchange of Leukotriene B5","leukotriene B5",1
+"EX_CE7172[e]","Exchange of 14, 15-DIHETE","14,15-DiHETE",0
+"EX_cortsn[e]","Exchange of Cortisone","cortisone",1
+"EX_didecaeth[e]","Exchange of C12:0-Ethanolamide, Didecanoyl Ethanolamide","C12:0-Ethanolamide, Didecanoyl Ethanolamide",0
+"EX_diholineth[e]","Exchange of Dihomo-Gamma-Linolenoyl Ethanolamide","Dihomo-Gamma-Linolenoyl Ethanolamide",0
+"EX_docohxeth[e]","Exchange of Docosahexaenoyl Ethanolamide","Docosahexaenoyl Ethanolamide",0
+"EX_docteteth[e]","Exchange of Docosatetraenoyl Ethanolamide (22:4, Delta 7, 10, 13, 16)","Docosatetraenoyl Ethanolamide (22:4, Delta 7, 10, 13, 16)",0
+"EX_dodecanac[e]","Exchange of Dodecanedioic Acid","Dodecanedioic Acid",1
+"EX_elaidcrn[e]","Exchange of Elaidic Carnitine","(9E)-octadecenoylcarnitine",0
+"EX_forglu[e]","Exchange of N-Formimidoyl-L-Glutamate","N-formimino-L-glutamate",0
+"EX_HC00900[e]","Exchange of Methylmalonate","methylmalonate",1
+"EX_hepdeceth[e]","Exchange of Heptadecanoyl Thanolamide (C17:0)","Heptadecanoyl Thanolamide (C17:0)",0
+"EX_hexdeceeth[e]","Exchange of Hexadecenoyl Ethanolamide, C16:1-Ethanolamide (Delta 9)","Hexadecenoyl Ethanolamide, C16:1-Ethanolamide (Delta 9)",0
+"EX_hexdiac[e]","Exchange of Hexadecanediocacid","Hexadecanediocacid",0
+"EX_hgentis[e]","Exchange of Homogentisate","homogentisate",1
+"EX_hmcarn[e]","Exchange of Homocarnosine","homocarnosine",1
+"EX_hmcr[e]","Exchange of Homocitrulline","Homocitrulline",1
+"EX_hxcoa[e]","Exchange of Hexanoate","hexanoyl-CoA",1
+"EX_leuktrB4wcooh[e]","Exchange of W-Carboxy Leukotriene B4","20-COOH-LTB4",1
+"EX_leuktrB4woh[e]","Exchnage for W-Hydroxyl Leukotriene B4","20-OH-LTB4",0
+"EX_lineth[e]","Exchange of Linoleoyl Ethanolamide","Linoleoyl Ethanolamide",1
+"EX_lnlccrn[e]","Exchange of Linoleyl Carnitine","linoleic-carnitine",0
+"EX_Lpipecol[e]","Exchange of L-Pipecolic Acid","L-pipecolate",1
+"EX_magarachi_hs[e]","Exchange of 1-Arachidonoyl Glycerol","1-Arachidonoyl Glycerol",0
+"EX_maglinl_hs[e]","Exchange of 1-Linoleoylglycerol","1-Linoleoylglycerol",1
+"EX_magole_hs[e]","Exchange of 1-Oleoylglycerol","1-Oleoylglycerol",0
+"EX_magpalm_hs[e]","Exchange of 1-Palmitoylglycerol","1-Palmitoylglycerol",1
+"EX_magste_hs[e]","Exchange of 1-Stearoylglycerol","1-Stearoylglycerol",1
+"EX_mev_R[e]","Exchange of (R)-Mevalonate","(R)-mevalonate",0
+"EX_mi1p_D[e]","Exchange of Myo-Inositol 1-Phosphate","inositol-1-phosphate",1
+"EX_Nacasp[e]","Exchange of N-Acetyl-L-Aspartate","N-acetyl-L-aspartate",0
+"EX_nwharg[e]","Exchange of N- (Omega)-Hydroxyarginine","N-(omega)-hydroxyarginine",0
+"EX_oleth[e]","Exchange of Oleoyl Ethanolamide","Oleoyl Ethanolamide",1
+"EX_pailar_hs[e]","Exchange of 1-Arachidonoylglycerophosphoinositol","1-Arachidonoylglycerophosphoinositol",0
+"EX_pailpalm_hs[e]","Exchange of 1-Palmitoylglycerophosphoinositol","1-Palmitoylglycerophosphoinositol",0
+"EX_pailste_hs[e]","Exchange of 1-Stearoylglycerophosphoinositol","1-Stearoylglycerophosphoinositol",0
+"EX_pchol2linl_hs[e]","Exchange of 2-Linoleoylglycerophosphocholine","2-Linoleoylglycerophosphocholine",0
+"EX_pchol2ole_hs[e]","Exchange of 2-Oleoylglycerophosphocholine","2-Oleoylglycerophosphocholine",0
+"EX_pchol2palm_hs[e]","Exchange of 2-Palmitoylglycerophosphocholine","2-Palmitoylglycerophosphocholine",0
+"EX_pchol2ste_hs[e]","Exchange of 2-Stearoylglycerophosphocholine","2-Stearoylglycerophosphocholine",0
+"EX_pcholar_hs[e]","Exchange of 1-Arachidonoyl-Glycero-3-Phosphocholine","1-Arachidonoyl-Glycero-3-Phosphocholine",0
+"EX_pcholdoc_hs[e]","Exchange of 1-Docosahexaenoylglycerophosphocholine","1-Docosahexaenoylglycerophosphocholine",0
+"EX_pcholeic_hs[e]","Exchange of 1-Eicosadienoylglycerophosphocholine (Delta 11, 14)","1-Eicosadienoylglycerophosphocholine (Delta 11,14)",0
+"EX_pcholet_hs[e]","Exchange of 1-Eicosatrienoylglycerophosphocholine (Delta 11, 14, 17)","1-Eicosatrienoylglycerophosphocholine (Delta 11, 14, 17)",0
+"EX_pcholhep_hs[e]","Exchange of 1-Heptadecanoylglycerophosphocholine","1-Heptadecanoylglycerophosphocholine",0
+"EX_pchollinl_hs[e]","Exchange of 1-Linoleoylglycerophosphocholine (Delta 9, 12)","1-Linoleoylglycerophosphocholine (Delta 9,12)",0
+"EX_pcholmyr_hs[e]","Exchange of 1-Myristoylglycerophosphocholine","1-Myristoylglycerophosphocholine",0
+"EX_pcholn15_hs[e]","Exchange of 1-Pentadecanoylglycerophosphocholine, Sn1-Lpc (15:0)","1-Pentadecanoylglycerophosphocholine, Sn1-Lpc (15:0)",0
+"EX_pcholn183_hs[e]","Exchange of 1-Octadeca-Trienoylglycerophosphocholine, Sn1-Lpc (18:3, Delta 9, 12, 15)","1-Octadeca-Trienoylglycerophosphocholine, Sn1-Lpc (18:3, Delta 9, 12, 15)",0
+"EX_pcholn1836_hs[e]","Exchange of 1-Octadeca-Trienoylglycerophosphocholine, Sn1-Lpc (18:3, Delta 6, 9, 12)","1-Octadeca-Trienoylglycerophosphocholine, Sn1-Lpc (18:3, Delta 6, 9, 12)",0
+"EX_pcholn19_hs[e]","Exchange of 1-NoNADecanoylglycerophosphocholine, Sn1-Lpc (19:0)","1-Nonadecanoylglycerophosphocholine, Sn1-Lpc (19:0)",0
+"EX_pcholn201_hs[e]","Exchange of 1-Eicosenoylglycerophosphocholine (Delta 11) , Sn1-Lpc (20:1)","1-Eicosenoylglycerophosphocholine (Delta 11) ,Sn1-Lpc (20:1)",0
+"EX_pcholn203_hs[e]","Exchange of 1-Dihomo-Linolenoylglycerophosphocholine (20:3, Delta 8, 11, 14), Lysopc A C20:3","1-Dihomo-Linolenoylglycerophosphocholine (20:3, Delta 8, 11, 14), Lysopc A C20:3",0
+"EX_pcholn204_hs[e]","Exchange of 1-Eicosatetraenoylglycerophosphocholine (Delta 8, 11, 14, 17), Sn1-Lpc (20:4)","1-Eicosatetraenoylglycerophosphocholine (Delta 8, 11, 14, 17), Sn1-Lpc (20:4)",0
+"EX_pcholn205_hs[e]","Exchange of 1-Eicosapentenoylglycerophosphocholine (Delta 5, 8, 11, 14, 17), Sn1-Lpc (20:5)","1-Eicosapentenoylglycerophosphocholine (Delta 5, 8, 11, 14, 17), Sn1-Lpc (20:5)",0
+"EX_pcholn224_hs[e]","Exchange of 1-Docosatetraenoylglycerophosphocholine (Delta 7, 10, 13, 16), Sn1-Lpc (22:4)","1-Docosatetraenoylglycerophosphocholine (Delta 7, 10, 13, 16), Sn1-Lpc (22:4)",0
+"EX_pcholn225_hs[e]","Exchange of 1-Docosapentenoylglycerophosphocholine (Delta 7, 10, 13, 16, 19), Sn1-Lpc (22:5)-W3","1-Docosapentenoylglycerophosphocholine (Delta 7, 10, 13, 16, 19), Sn1-Lpc (22:5)-W3",0
+"EX_pcholn2254_hs[e]","Exchange of 1-Docosapentenoylglycerophosphocholine (Delta 4, 7, 10, 13, 16), Sn1-Lpc (22:5)-W6","1-Docosapentenoylglycerophosphocholine (Delta 4, 7, 10, 13, 16), Sn1-Lpc (22:5)-W6",0
+"EX_pcholn226_hs[e]","Exchange of 1-Docosahexenoylglycerophosphocholine (Delta 4, 7, 10, 13, 16, 19), Sn1-Lpc (22:6)","1-Docosahexenoylglycerophosphocholine (Delta 4, 7, 10, 13, 16, 19), Sn1-Lpc (22:6)",0
+"EX_pcholn24_hs[e]","Exchange of 1-Lignocericylglycerophosphocholine (24:0), Lysopc A C24","1-Lignocericylglycerophosphocholine (24:0), Lysopc A C24",0
+"EX_pcholn261_hs[e]","Exchange of Lysopc A C26:1 (Delta 5)","Lysopc A C26:1 (Delta 5)",0
+"EX_pcholn28_hs[e]","Exchange of Lysopc A C28:0","Lysopc A C28:0",0
+"EX_pcholn281_hs[e]","Exchange of Lysopc A C28:1 (Delta 5)","Lysopc A C28:1 (Delta 5)",0
+"EX_pcholole_hs[e]","Exchange of 1-Oleoylglycerophosphocholine (Delta 9)","1-Oleoylglycerophosphocholine (Delta 9)",0
+"EX_pcholpalm_hs[e]","Exchange of 1-Palmitoylglycerophosphocholine","1-Palmitoylglycerophosphocholine",0
+"EX_pcholpalme_hs[e]","Exchange of 1-Palmitoleoylglycerophosphocholine (Delta 9)","1-Palmitoleoylglycerophosphocholine (Delta 9)",0
+"EX_pcholste_hs[e]","Exchange of 1-Stearoylglycerophosphocholine","1-Stearoylglycerophosphocholine",1
+"EX_pcollg5hlys[e]","Exchange of Erythro-5-Hydroxy-L-Lysinium","L-hydroxylysine",1
+"EX_pe12_hs[e]","Exchange of 1-Didecanoylglycerophosphoethanolamine (C12:0 Pe)","1-Didecanoylglycerophosphoethanolamine (C12:0 Pe)",0
+"EX_pe13_hs[e]","Exchange of 1-Tridecanoylglycerophosphoethanolamine (C13:0 Pe)","1-Tridecanoylglycerophosphoethanolamine (C13:0 Pe)",0
+"EX_pe14_hs[e]","Exchange of 1-Myristoylglycerophosphoethanolamine (C14:0 Pe)","1-Myristoylglycerophosphoethanolamine (C14:0 Pe)",0
+"EX_pe15_hs[e]","Exchange of 1-Pentadecanoylglycerophosphoethanolamine (C15:0 Pe)","1-Pentadecanoylglycerophosphoethanolamine (C15:0 Pe)",0
+"EX_pe161_hs[e]","Exchange of 1-Hexadecenoylglycerophosphoethanolamine (C16:1 Pe, Delta 9)","1-Hexadecenoylglycerophosphoethanolamine (C16:1 Pe, Delta 9)",0
+"EX_pe17_hs[e]","Exchange of 1-Heptadecanoylglycerophosphoethanolamine (C17:0 Pe)","1-Heptadecanoylglycerophosphoethanolamine (C17:0 Pe)",0
+"EX_pe203_hs[e]","Exchange of 1-Eicosatrienoylglycerophosphoethanolamine (Delta 11, 14, 17), Lpe (20:3)","1-Eicosatrienoylglycerophosphoethanolamine (Delta 11, 14, 17), Lpe (20:3)",0
+"EX_pe224_hs[e]","Exchange of 1-Docosatetraenoyglycerophosphoethanolamine (22:4, Delta 7, 10, 13, 16)","1-Docosatetraenoyglycerophosphoethanolamine (22:4, Delta 7, 10, 13, 16)",0
+"EX_pe226_hs[e]","Exchange of 1-Docosahexenoylglyceroethanolamine (Delta 4, 7, 10, 13, 16, 19), Lpe (22:6)","1-Docosahexenoylglyceroethanolamine (Delta 4, 7, 10, 13, 16, 19), Lpe (22:6)",0
+"EX_pe2linl_hs[e]","Exchange of 2-Linoleoylglycerophosphoethanolamine","2-Linoleoylglycerophosphoethanolamine",0
+"EX_pear_hs[e]","Exchange of 1-Arachidonoyl-Sn-Glycero-3-Phosphoethanolamine","1-Arachidonoyl-Sn-Glycero-3-Phosphoethanolamine",0
+"EX_pedh203_hs[e]","Exchange of 1-Dihomo-Linolenoylglycerophosphoethanolamine (20:3, Delta 8, 11, 14)","1-Dihomo-Linolenoylglycerophosphoethanolamine (20:3, Delta 8, 11, 14)",0
+"EX_pelinl_hs[e]","Exchange of 1-Linoleoylglycerophosphoethanolamine (Delta 9, 12)","1-Linoleoylglycerophosphoethanolamine (Delta 9,12)",0
+"EX_pendecaeth[e]","Exchange of Pentadecanoyl Thanolamide (C15:0)","Pentadecanoyl Thanolamide (C15:0)",0
+"EX_peole_hs[e]","Exchange of 1-Oleoylglycerophosphoethanolamine (Delta 9)","1-Oleoylglycerophosphoethanolamine (Delta 9)",0
+"EX_pepalm_hs[e]","Exchange of 1-Palmitoylglycerophosphoethanolamine","1-Palmitoylglycerophosphoethanolamine",0
+"EX_peste_hs[e]","Exchange of 1-Stearoylglycerophosphoethanolamine","1-Stearoylglycerophosphoethanolamine",0
+"EX_pmeth[e]","Exchange of Palmitoylethanolamide","Palmitoylethanolamide",0
+"EX_saccrp_L[e]","Exchange of L-Saccharopinate","saccharopine",1
+"EX_sebacid[e]","Exchange of Sebacic Acid","Sebacicacid",0
+"EX_sphmyln180241_hs[e]","Exchange of Sphingomyelin (D18:0/24:1)","Sm (D18:0/24:1), Sphingomyelin",0
+"EX_sphmyln18114_hs[e]","Exchange of Sphingomyelin (D18:1/14:0)","Sm (D18:1/14:0), Sphingomyelin",0
+"EX_sphmyln18115_hs[e]","Exchange of Sphingomyelin (D18:1/15:0)","Sm (D18:1/15:0), Sphingomyelin",0
+"EX_sphmyln18116_hs[e]","Exchange of Sphingomyelin (D18:1/16:0)","Sm (D18:1/16:0), Sphingomyelin",0
+"EX_sphmyln181161_hs[e]","Exchange of Sphingomyelin (D18:1/16:1)","Sm (D18:1/16:1), Sphingomyelin",0
+"EX_sphmyln18117_hs[e]","Exchange of Sphingomyelin (D18:1/17:0)","Sm (D18:1/17:0), Sphingomyelin",0
+"EX_sphmyln18118_hs[e]","Exchange of Sphingomyelin (D18:1/18:0)","Sm (D18:1/18:0), Sphingomyelin",0
+"EX_sphmyln181181_hs[e]","Exchange of Sphingomyelin (D18:1/18:1)","Sm (D18:1/18:1), Sphingomyelin",0
+"EX_sphmyln18120_hs[e]","Exchange of Sphingomyelin (D18:1/20:0)","Sm (D18:1/20:0), Sphingomyelin",0
+"EX_sphmyln181201_hs[e]","Exchange of Sphingomyelin (D18:1/20:1)","Sm (D18:1/20:1), Sphingomyelin",0
+"EX_sphmyln18121_hs[e]","Exchange of Sphingomyelin (D18:1/21:0)","Sm (D18:1/21:0), Sphingomyelin",0
+"EX_sphmyln18122_hs[e]","Exchange of Sphingomyelin (D18:1/22:0)","Sm (D18:1/22:0), Sphingomyelin",0
+"EX_sphmyln181221_hs[e]","Exchange of Sphingomyelin (D18:1/22:1)","Sm (D18:1/22:1), Sphingomyelin",0
+"EX_sphmyln18123_hs[e]","Exchange of Sphingomyelin (D18:1/23:0)","Sm (D18:1/23:0), Sphingomyelin",0
+"EX_sphmyln1824_hs[e]","Exchange of Sphingomyelin (D18:0/24:0)","Sm (D18:0/24:0), Sphingomyelin",0
+"EX_sphmyln1825_hs[e]","Exchange of Sphingomyelin (D18:0/25:0)","Sm (D18:0/25:0), Sphingomyelin",0
+"EX_steeth[e]","Exchange of Stearoyl Ethanolamide","Stearoyl Ethanolamide",0
+"EX_subeac[e]","Exchange of Suberic Acid","Suberic Acid",1
+"EX_tetdeca511ac[e]","Exchange of Cis-5, 8-Tetradecadienoic Acid","Cia-5,8, Tetradecadienoic Acid",0
+"EX_tetdecaeth[e]","Exchange of C14:0-Ethanolamide, Tetradecanoyl Ethanolamide","C14:0-Ethanolamide, Tetradecanoyl Ethanolamide",0
+"EX_thrnt[e]","Exchange of L-Threonate","threonate",1
+"EX_tmlys[e]","Exchange of N6, N6, N6-Trimethyl-L-Lysine","N6,N6,N6-trimethyl-L-lysine",1
+"EX_trideceth[e]","Exchange of Tridecanoyl Thanolamide (C13:0)","Tridecanoyl Thanolamide (C13:0)",0
+"EX_ttdcrn[e]","Exchange of Tetradecanoyl Carnitine","tetradecenoylcarnitine(5)",0
+"EX_txb2[e]","Exchange of Thromboxane B2","thromboxane B2",1
+"EX_urcan[e]","Exchange of Urocanate","urocanate",1
+"EX_wharachd[e]","Exchange of W-Hydroxyl Arachidonic Acid","10-HETE",0
+"EX_xolest181_hs[e]","Exchange of 1-Vaccenoyl-Cholesterol, Cholesterol-Ester (18:1, Delta 11)","1-Vaccenoyl-Cholesterol, Cholesterol-Ester (18:1, Delta 11)",0
+"EX_xolest182_hs[e]","Exchange of 1-Linoleoyl-Cholesterol, Cholesterol-Ester (18:2, Delta 9, 12)","1-Linoleoyl-Cholesterol, Cholesterol-Ester (18:2, Delta 9, 12)",0
+"EX_xolest183_hs[e]","Exchange of 1-Gamma-Linolenoyl-Cholesterol, Cholesterol-Ester (18:3, Delta 6, 9, 12)","1-Gamma-Linolenoyl-Cholesterol, Cholesterol-Ester (18:3, Delta 6, 9, 12)",0
+"EX_xolest204_hs[e]","Exchange of Cholesteryl Arachidonate, Cholesterol-Ester (20:4, Delta 5, 8, 11, 14)","Cholesteryl Arachidonate, Cholesterol-Ester (20:4, Delta 5,8,11,14)",0
+"EX_xolest205_hs[e]","Exchange of 1-Timnodnoyl-Cholesterol, Cholesterol-Ester (20:5, Delta 5, 8, 11, 14, 17)","1-Timnodnoyl-Cholesterol, Cholesterol-Ester (20:5, Delta 5,8,11,14,17)",0
+"EX_xolest226_hs[e]","Exchange of Cholesteryl Docosahexanoate, Cholesterol-Ester (22:6, Delta 4, 7, 10, 13, 16, 19)","Cholesteryl Docosahexanoate, Cholesterol-Ester (22:6, Delta 4,7,10,13,16,19)",0
+"MI1Pt","Transport of Myo-Inositol 1-Phosphate, Proton Symport","H+[s] + inositol-1-phosphate[s] <=> H+[c] + inositol-1-phosp",0
+"EX_acile_L[e]","Exchange of Acetyl Isoleucine","Acetyl Isoleucine (Chemspider Id: 9964364)",0
+"EX_acleu_L[e]","Exchange of Acetyl Leucine","N-Acetylleucine",0
+"EX_achom_L[e]","Exchange of Acetyl Homoserine","Acetylhomoserine",1
+"EX_phacgly[e]","Exchange of Phenylacetylglycine","Phenylacetylglycine_phacgly",0
+"EX_3hpppn[e]","Exchange of 3- (3-Hydroxy-Phenyl)Propionate","3-(3-Hydroxy-Phenyl)Propionate",0
+"EX_3moxtyr[e]","Exchange of 3-Methoxytyramine","3-methoxytyramine",1
+"EX_5aop[e]","Exchange of 5-Amino-4-Oxopentanoate","5-aminolevulinate",1
+"EX_abt_D[e]","Exchange of D-Arabitol","D-Arabitol",1
+"EX_acglu[e]","Exchange of N-Acetyl-L-Glutamate","N-acetyl-L-glutamate",1
+"EX_alltn[e]","Exchange of Allantoin","allantoin",1
+"EX_CE2510[e]","Exchange of 11-Cis-Eicosenoate","cis-gondoic acid",1
+"EX_CE2516[e]","Exchangefor (8Z, 11Z, 14Z)-Eicosatrienoic Acid","(8Z,11Z,14Z)-Eicosatrienoic Acid",1
+"EX_ddca[e]","Exchange of Laurate","lauric acid",1
+"EX_glyc2p[e]","Exchange of Glycerol-2-Phosphate","Glycerol 2-Phosphate",0
+"EX_glyclt[e]","Exchange of Glycolate","glycolate",1
+"EX_Lcyst[e]","Exchnage for L-Cysteate","L-cysteate",1
+"EX_oaa[e]","Exchange of Oxaloacetate","OAA",1
+"EX_pac[e]","Exchange of Phenylacetate","phenylacetate",1
+"EX_phlac[e]","Exchange of Phenyl Lactate","Phenyllactate",1
+"EX_pser_L[e]","Exchange of O-Phospho-L-Serine","3-phosphoserine",1
+"EX_ttdcea[e]","Exchange of Tetradecenoate (N-C14:1)","(9E)-tetradecenoic acid",1
+"EX_3hcinnm[e]","3-Hydroxycinnamic Acid Exchange","3-Hydroxycinnamic Acid",1
+"EX_3hppa[e]","3-Hydroxyphenylpropionic Acid Exchange","3-Hydroxyphenylpropionic Acid (3-Hppa)",0
+"EX_bgly[e]","Exchange of Hippurate (Benzoylglycinate)","hippurate",1
+"EX_bz[e]","Benzoic Acid Exchange","benzoate",1
+"EX_pcresol[e]","P-Cresol Exchange","P-Cresol",1
+"EX_pcs[e]","Exchange of P-Cresol Sulfate","P-Cresol Sulfate",0
+"EX_inds[e]","Exchange of Indoxyl Sulfate","Indoxyl Sulfate",1
+"EX_normete_L[e]","Exchange of L-Normetanephrine","normetanephrine",1
+"EX_C05300[e]","Exchange of 16Alpha-Hydroxyestrone","16alpha-hydroxyestrone",0
+"EX_retinal[e]","Exchange of Retinal","retinal",1
+"EX_maltttr[e]","Exchange of Maltotetraose","maltotetraose",1
+"EX_progly[e]","Exchange of L-Prolinylglycine","L-Prolinylglycine",0
+"EX_dhbpt[e]","Exchange of 6,7-Dihydrobiopterin","dihydrobiopterin",1
+"EX_thbpt[e]","Exchange of 5,6,7,8-Tetrahydrobiopterin","tetrahydrobiopterin",1
+"EX_alaargcys[e]","Exchange of AlaArgCys","Alanyl-Arginyl-Cysteine",0
+"EX_alaarggly[e]","Exchange of AlaArgGly","Alanyl-Arginyl-Glycine",0
+"EX_alaasnleu[e]","Exchange of AlaAsnLeu","Alanyl-Asparaginyl-Leucine",0
+"EX_alaglylys[e]","Exchange of AlaGlyLys","Alanyl-Glycyl-Lysine",0
+"EX_alahisala[e]","Exchange of AlaHisAla","Alanyl-Histidyl-Alanine",0
+"EX_alalysthr[e]","Exchange of AlaLysThr","Alanyl-Lysine-Threonine",0
+"EX_argalaala[e]","Exchange of ArgAlaAla","Arginyl-Alanyl-Alanine",0
+"EX_argalaphe[e]","Exchange of ArgAlaPhe","Arginyl-Alanine-Phenylalanine",0
+"EX_argalathr[e]","Exchange of ArgAlaThr","Arginyl-Alanyl-Threonine",0
+"EX_argarg[e]","Exchange of ArgArg","Arginyl-Arginine",0
+"EX_argarglys[e]","Exchange of ArgArgLys","Arginyl-Arginyl-Lysine",0
+"EX_argargmet[e]","Exchange of ArgArgMet","Arginyl-Arginyl-Metheonine",0
+"EX_argcysgly[e]","Exchange of ArgCysGly","Arginyl-Cystinyl-Glycine",0
+"EX_argcysser[e]","Exchange of ArgCysSer","Arginyl-Cystinyl-Serine",0
+"EX_arggluglu[e]","Exchange of ArgGluGlu","Arginyl-Glutamyl-Glutamate",0
+"EX_argglupro[e]","Exchange of ArgGluPro","Arginyl-Glutamyl-Proline",0
+"EX_argglygly[e]","Exchange of ArgGlyGly","Arginyl-Glycyl-Glycine",0
+"EX_arghisthr[e]","Exchange of ArgHisThr","Arginyl-Histidyl-Threonine",0
+"EX_argleuphe[e]","Exchange of ArgLeuPhe","Arginyl-Leucyl-Phenylalanine",0
+"EX_arglysasp[e]","Exchange of ArgLysAsp","Arginyl-Lysyl-Aspartate",0
+"EX_argphearg[e]","Exchange of ArgPheArg","Arginyl-Phenylalanine-Arginine",0
+"EX_argpromet[e]","Exchange of ArgProMet","Arginyl-Prolyl-Methionine",0
+"EX_argprothr[e]","Exchange of ArgProThr","Arginyl-Prolyl-Threonine",0
+"EX_argserser[e]","Exchange of ArgSerSer","Arginyl-Seryl-Serine",0
+"EX_argtyrval[e]","Exchange of ArgtyrVal","Argtyrval",0
+"EX_argvalcys[e]","Exchange of ArgValCys","Arginyl-Valyl-Cysteine",0
+"EX_argvaltrp[e]","Exchange of ArgValTrp","Arginyl-Valyl-Tryptophan",0
+"EX_asnasnarg[e]","Exchange of AsnAsnArg","Asparaginyl-Asparaginyl-Arginine",0
+"EX_asncyscys[e]","Exchange of AsnCysCys","Asparaginyl-Cysteinyl-Cysteine",0
+"EX_asnmetpro[e]","Exchange of AsnMetPro","Asparaginyl-Methionyl-Proline",0
+"EX_asnpheasp[e]","Exchange of AsnPheAsp","Asparaginyl-Phenylalanyl-Aspartate",0
+"EX_asnphecys[e]","Exchange of AsnPheCys","Asparaginyl-Phenylalanyl-Cysteine",0
+"EX_asntyrgly[e]","Exchange of AsntyrGly","Asparaginyl-Tyrosyl-Glycine",0
+"EX_asntyrphe[e]","Exchange of AsntyrPhe","Asparaginyl-Tyrosyl-Phenylalanine",0
+"EX_asntyrthr[e]","Exchange of AsntyrThr","Asparaginyl-Tyrosyl-Threonine",0
+"EX_aspalaarg[e]","Exchange of AspAlaArg","Asparaginyl-Alanyl-Arginine",0
+"EX_aspasnglu[e]","Exchange of AspAsnGlu","Aspartyl-Asparaginyl-Glutamate",0
+"EX_aspglu[e]","Exchange of AspGlu","Aspartyl-Glutamate",1
+"EX_aspglupro[e]","Exchange of AspGluPro","Aspartyl-Glutamyl-Proline",0
+"EX_aspglutrp[e]","Exchange of AspGluTrp","Aspartyl-Glutamyl-Tryptophan",0
+"EX_asphiscys[e]","Exchange of AspHisCys","Aspartyl-Histidyl-Cysteine",0
+"EX_asphispro[e]","Exchange of AspHisPro","Aspartyl-Histidyl-Proline",0
+"EX_asplysglu[e]","Exchange of AspLysGlu","Aspartyl-Lysyl-Glutamate",0
+"EX_asplyshis[e]","Exchange of AspLysHis","Aspartyl-Lysyl-Histidine",0
+"EX_aspmetasp[e]","Exchange of AspMetAsp","Aspartyl-Methionyl-Aspartate",0
+"EX_aspprolys[e]","Exchange of AspProLys","Aspartyl-Prolyl-Lysine",0
+"EX_aspvalasn[e]","Exchange of AspValAsn","Aspartyl-Valyl-Asparagine",0
+"EX_cysasnmet[e]","Exchange of CysAsnMet","Cystyl-Asparaginyl-Methionine",0
+"EX_cysaspphe[e]","Exchange of CysAspPhe","Cystyl-Aspartyl-Phenylalanine",0
+"EX_cyscys[e]","Exchange of CysCys","Cystyl-Cysteine",0
+"EX_cysglnmet[e]","Exchange of CysGlnMet","Cystyl-Glutaminyl-Methionine",0
+"EX_cysgluhis[e]","Exchange of CysGluHis","Cystyl-Glutamyl-Histidine",0
+"EX_cysglutrp[e]","Exchange of CysGluTrp","Cystyl-Glutamyl-Tryptophan",0
+"EX_cysleuthr[e]","Exchange of CysLeuThr","Cystyl-Leucyl-Threonine",0
+"EX_cyssermet[e]","Exchange of CysSerMet","Cystyl-Seryl-Methionine",0
+"EX_cystyrasn[e]","Exchange of CystyrAsn","Cystyl-Tyrosyl-Asparagine",0
+"EX_glnasngln[e]","Exchange of GlnAsnGln","Glutaminyl-Asparaginyl-Glutamine",0
+"EX_glnhishis[e]","Exchange of GlnHisHis","Glutaminyl-Histidyl-Histidine",0
+"EX_glnhislys[e]","Exchange of GlnHisLys","Glutaminyl-Histidyl-Lysine",0
+"EX_glnlyslys[e]","Exchange of GlnLysLys","Glutaminyl-Lysyl-Lysine",0
+"EX_glnlystrp[e]","Exchange of GlnLysTrp","Glutaminyl-Lysyl-Tryptophan",0
+"EX_glnproglu[e]","Exchange of GlnProGlu","Glutaminyl-Prolyl-Glutamate",0
+"EX_glntrpglu[e]","Exchange of GlnTrpGlu","Glutaminyl-Tryptophanyl-Glutamate",0
+"EX_glntyrleu[e]","Exchange of GlntyrLeu","Glutaminyl-Tyrosyl-Leucine",0
+"EX_gluargleu[e]","Exchange of GluArgLeu","Glutaminyl-Arginyl-Leucine",0
+"EX_gluasnleu[e]","Exchange of GluAsnLeu","Glutaminyl-Asparaginyl-Leucine",0
+"EX_gluglu[e]","Exchange of GluGlu","Glutamyl-Glutamate",1
+"EX_gluilelys[e]","Exchange of GluIleLys","Glutamyl-Isoleucyl-Lysine",0
+"EX_gluleu[e]","Exchange of GluLeu","Glutamyl-Leucine",1
+"EX_glumet[e]","Exchange of GluMet","Glutamyl-Methionine",0
+"EX_glumethis[e]","Exchange of GluMetHis","Glutamyl-Methioninyl-Histidine",0
+"EX_gluthr[e]","Exchange of GluThr","Glutamyl-Threonine",0
+"EX_gluthrlys[e]","Exchange of GluThrLys","Glutamyl-Threonyl-Lysine",0
+"EX_glutrpala[e]","Exchange of GluTrpAla","Glutamyl-Tryptophanyl-Alanine",0
+"EX_glyhisasn[e]","Exchange of GlyHisAsn","Glycyl-Histidyl-Asparagine",0
+"EX_glyhislys[e]","Exchange of GlyHisLys","Glycyl-Histidyl-Lysine",0
+"EX_glylyscys[e]","Exchange of GlyLysCys","Glycyl-Lysyl-Cysteine",0
+"EX_glylysphe[e]","Exchange of GlyLysPhe","Glycyl-Lysyl-Phenylalanine",0
+"EX_glytyrlys[e]","Exchange of GlytyrLys","Glycyl-Tyrosyl-Lysine",0
+"EX_glyvalhis[e]","Exchange of GlyValHis","Glycyl-Valyl-Histidine",0
+"EX_hisargcys[e]","Exchange of HisArgCys","Histidyl-Arginyl-Cysteine",0
+"EX_hisargser[e]","Exchange of HisArgSer","Histidyl-Arginyl-Serine",0
+"EX_hisasp[e]","Exchange of HisAsp","Histidyl-Aspartate",0
+"EX_hiscyscys[e]","Exchange of HisCysCys","Histidyl-Cystyl-Cysteine",0
+"EX_hisglnala[e]","Exchange of HisGlnAla","Histidyl-Glutaminyl-Alanine",0
+"EX_hisglu[e]","Exchange of HisGlu","Histidyl-Glutamate",0
+"EX_hisglugln[e]","Exchange of HisGluGln","Histidyl-Glutamyl-Glutamine",0
+"EX_hisglylys[e]","Exchange of HisGlyLys","Histidyl-Lysyl-Lysine",0
+"EX_hishislys[e]","Exchange of HisHisLys","Histidyl-Histidyl-Lysine",0
+"EX_hislysala[e]","Exchange of HisLysAla","Histidyl-Lysyl-Alanine",0
+"EX_hislysglu[e]","Exchange of HisLysGlu","Histidyl-Lysyl-Glutamate",0
+"EX_hislysile[e]","Exchange of HisLysIle","Histidyl-Lysyl-Isoleucine",0
+"EX_hislysthr[e]","Exchange of HisLysThr","Histidyl-Lysyl-Threonine",0
+"EX_hislysval[e]","Exchange of HisLysVal","Histidyl-Lysyl-Valine",0
+"EX_hismet[e]","Exchange of HisMet","Histidyl-Methionine",0
+"EX_hismetgln[e]","Exchange of HisMetGln","Histidyl-Methionyl-Glutamine",0
+"EX_hisphearg[e]","Exchange of HisPheArg","Histidyl-Phenylalanyl-Arginine",0
+"EX_hisprolys[e]","Exchange of HisProLys","Histidyl-Prolyl-Lysine",0
+"EX_histrphis[e]","Exchange of HisTrpHis","Histidyl-Tryptophanyl-Histidine",0
+"EX_ileargile[e]","Exchange of IleArgIle","Isoleucyl-Arginyl-Isoleucine",0
+"EX_ileasnhis[e]","Exchange of IleAsnHis","Isoleucyl-Asparaginyl-Histidine",0
+"EX_ileasp[e]","Exchange of IleAsp","Isolecyl-Aspartate",0
+"EX_ileglnglu[e]","Exchange of IleGlnGlu","Isolecyl-Glutaminyl-Glutamate",0
+"EX_ileglyarg[e]","Exchange of IleGlyArg","Isolecyl-Glycyl-Arginine",0
+"EX_ileprolys[e]","Exchange of IleProLys","Isolecyl-Prolyl-Lysine",0
+"EX_ileserarg[e]","Exchange of IleSerArg","Isolecyl-Seryl-Arginine",0
+"EX_iletrptyr[e]","Exchange of IleTrptyr","Isolecyl-Tryptophanyl-Tyrosine",0
+"EX_leualaarg[e]","Exchange of LeuAlaArg","Leucyl-Alanyl-Arginine",0
+"EX_leuasnasp[e]","Exchange of LeuAsnAsp","Leucyl-Asparaginyl-Aspartate",0
+"EX_leuasplys[e]","Exchange of LeuAspLys","Leucyl-Aspartyl-Lysine",0
+"EX_leuleutrp[e]","Exchange of LeuLeuTrp","Leucyl-Leucyl-Tryptophan",0
+"EX_leupro[e]","Exchange of LeuPro","Leucyl-Proline",1
+"EX_leuproarg[e]","Exchange of LeuProArg","Leucyl-Prolyl-Arginine",0
+"EX_leusertrp[e]","Exchange of LeuSerTrp","Leucyl-Seryl-Tryptophan",0
+"EX_leutrp[e]","Exchange of LeuTrp","Leucyl-Tryptophan",1
+"EX_leutrparg[e]","Exchange of LeuTrpArg","Leucyl-Tryptophanyl-Arginine",0
+"EX_leutyrtyr[e]","Exchange of Leutyrtyr","Leucyl-Tyrosyl-Tyrosine",0
+"EX_leuval[e]","Exchange of LeuVal","Leucyl-Valine",1
+"EX_lysargleu[e]","Exchange of LysArgLeu","Lysyl-Arginyl-Leucine",0
+"EX_lyscyshis[e]","Exchange of LysCysHis","Lysyl-Cysteinyl-Histidine",0
+"EX_lysglnphe[e]","Exchange of LysGlnPhe","Lysyl-Glutaminyl-Phenylalanine",0
+"EX_lysgluglu[e]","Exchange of LysGluGlu","Lysyl-Glutamyl-Glutamate",0
+"EX_lyslyslys[e]","Exchange of LysLysLys","Lysyl-Lysyl-Lysine",0
+"EX_lyspheile[e]","Exchange of LysPheIle","Lysyl-Phenylalanyl-Isoleucine",0
+"EX_lystrparg[e]","Exchange of LysTrpArg","Lysyl-Tryptophanyl-Arginine",0
+"EX_lystyrile[e]","Exchange of LystyrIle","Lysyl-Tyrosyl-Isoleucine",0
+"EX_lysvalphe[e]","Exchange of LysValPhe","Lysyl-Valyl-Phenylalanine",0
+"EX_lysvaltrp[e]","Exchange of LysValTrp","Lysyl-Valyl-Tryptophan",0
+"EX_metargleu[e]","Exchange of MetArgLeu","Methionyl-Arginyl-Leucine",0
+"EX_metasntyr[e]","Exchange of MetAsntyr","Methionyl-Asparaginyl-Tyrosine",0
+"EX_metglntyr[e]","Exchange of MetGlntyr","Methionyl-Glutaminyl-Tyrosine",0
+"EX_metglyarg[e]","Exchange of MetGlyArg","Methionyl-Glycyl-Arginine",0
+"EX_methislys[e]","Exchange of MetHisLys","Methionyl-Histidyl-Lysine",0
+"EX_metmetile[e]","Exchange of MetMetIle","Methionyl-Methionyl-Isoleucine",0
+"EX_metphearg[e]","Exchange of MetPheArg","Methionyl-Phenylalanyl-Arginine",0
+"EX_mettrpphe[e]","Exchange of MetTrpPhe","Methionyl-Tryptophanyl-Phenylalanine",0
+"EX_pheasnmet[e]","Exchange of PheAsnMet","Phenylalanyl-Asparaginyl-Methionine",0
+"EX_pheasp[e]","Exchange of PheAsp","Phenylalanyl-Aspartate",0
+"EX_pheglnphe[e]","Exchange of PheGlnPhe","Phenylalanyl-Glutaminyl-Phenylalanine",0
+"EX_pheleu[e]","Exchange of PheLeu","Phenylalanyl-Leucine",1
+"EX_pheleuasp[e]","Exchange of PheLeuAsp","Phenylalanyl-Leucyl-Aspartate",0
+"EX_pheleuhis[e]","Exchange of PheLeuHis","Phenylalanyl-Leucyl-Histidine",0
+"EX_phelysala[e]","Exchange of PheLysAla","Phenylalanyl-Lysyl-Alanine",0
+"EX_phelyspro[e]","Exchange of PheLysPro","Phenylalanyl-Lysyl-Proline",0
+"EX_phephe[e]","Exchange of PhePhe","Phenylalanyl-Phenylalanine",0
+"EX_phepheasn[e]","Exchange of PhePheAsn","Phenylalanyl-Phenylalaninyl-Asparagine",0
+"EX_phephethr[e]","Exchange of PhePheThr","Phenylalanyl-Phenylalaninyl-Threonine",0
+"EX_pheproarg[e]","Exchange of PheProArg","Phenylalanyl-Prolyl-Arginine",1
+"EX_phesertrp[e]","Exchange of PheSerTrp","Phenylalanyl-Seryl-Tryptophan",0
+"EX_phethrlys[e]","Exchange of PheThrLys","Phenylalanyl-Threonyl-Lysine",0
+"EX_phetrpleu[e]","Exchange of PheTrpLeu","Phenylalanyl-Tryptophanyl-Leucine",0
+"EX_phetyr[e]","Exchange of Phetyr","Phenylalanyl-Tyrosine",0
+"EX_phetyrgln[e]","Exchange of PhetyrGln","Phenylalanyl-Tyrosinyl-Glutamine",0
+"EX_phetyrlys[e]","Exchange of PhetyrLys","Phenylalanyl-Tyrosinyl-Lysine",0
+"EX_proargasp[e]","Exchange of ProArgAsp","Prolyl-Arginyl-Aspartate",0
+"EX_proargcys[e]","Exchange of ProArgCys","Prolyl-Arginyl-Cysteine",0
+"EX_proasncys[e]","Exchange of ProAsnCys","Prolyl-Asparaginyl-Cysteine",0
+"EX_procys[e]","Exchange of ProCys","Prolyl-Cysteine",1
+"EX_proglnpro[e]","Exchange of ProGlnPro","Prolyl-Glutaminyl-Proline",0
+"EX_proglulys[e]","Exchange of ProGluLys","Prolyl-Glutamatsyl-Lysine",0
+"EX_prohis[e]","Exchange of ProHis","Prolyl-Histidine",1
+"EX_prohistyr[e]","Exchange of ProHistyr","Prolyl-Histidyl-Tyrosine",0
+"EX_proleuarg[e]","Exchange of ProLeuArg","Prolyl-Leucyl-Arginine",0
+"EX_prolyspro[e]","Exchange of ProLysPro","Prolyl-Lysyl-Proline",0
+"EX_prophe[e]","Exchange of ProPhe","Prolyl-Phenylalanine",1
+"EX_proproarg[e]","Exchange of ProProArg","Prolyl-Prolyl-Arginine",0
+"EX_propropro[e]","Exchange of ProProPro","Prolyl-Prolyl-Proline",0
+"EX_protrplys[e]","Exchange of ProTrpLys","Prolyl-Tryptophanyl-Lysine",0
+"EX_protrpthr[e]","Exchange of ProTrpThr","Prolyl-Tryptophanyl-Threonine",0
+"EX_provalgln[e]","Exchange of ProValGln","Prolyl-Valyl-Glutamine",0
+"EX_serargala[e]","Exchange of SerArgAla","Seryl-Arginyl-Alanine",0
+"EX_serargtrp[e]","Exchange of SerArgTrp","Seryl-Arginyl-Tryptophan",0
+"EX_sercysarg[e]","Exchange of SerCysArg","Seryl-Cysteinyl-Arginine",0
+"EX_serglyglu[e]","Exchange of SerGlyGlu","Seryl-Glycyl-Glutamate",0
+"EX_serlyshis[e]","Exchange of SerLysHis","Seryl-Lysyl-Histidine",0
+"EX_serphelys[e]","Exchange of SerPheLys","Seryl-Phenylalanyl-Lysine",0
+"EX_sertrphis[e]","Exchange of SerTrpHis","Seryl-Tryptophanyl-Histidine",0
+"EX_thrargtyr[e]","Exchange of ThrArgtyr","Threonyl-Arginyl-Tyrosine",0
+"EX_thrasntyr[e]","Exchange of ThrAsntyr","Threonyl-Asparaginyl-Tyrosine",0
+"EX_thrglnglu[e]","Exchange of ThrGlnGlu","Threonyl-Glutaminyl-Glutamate",0
+"EX_thrglntyr[e]","Exchange of ThrGlntyr","Threonyl-Glutaminyl-Tyrosine",0
+"EX_thrhishis[e]","Exchange of ThrHisHis","Threonyl-Histidinyl-Histidine",0
+"EX_thrilearg[e]","Exchange of ThrIleArg","Threonyl-Isoleucyl-Arginine",0
+"EX_thrmetarg[e]","Exchange of ThrMetArg","Threonyl-Methionyl-Arginine",0
+"EX_thrphearg[e]","Exchange of ThrPheArg","Threonyl-Phenylalanyl-Arginine",0
+"EX_thrserarg[e]","Exchange of ThrSerArg","Threonyl-Seryl-Arginine",0
+"EX_thrthrarg[e]","Exchange of ThrThrArg","Threonyl-Threonyl-Arginine",0
+"EX_thrtyrmet[e]","Exchange of ThrtyrMet","Threonyl-Tyrosyl-Methionine",0
+"EX_trpalapro[e]","Exchange of TrpAlaPro","Tryptophanyl-Alanyl-Proline",0
+"EX_trpargala[e]","Exchange of TrpArgAla","Tryptophanyl-Arginyl-Alanine",0
+"EX_trpaspasp[e]","Exchange of TrpAspAsp","Tryptophanyl-Aspartyl-Aspartate",0
+"EX_trpglngln[e]","Exchange of TrpGlnGln","Tryptophanyl-Glutaminyl-Glutamine",0
+"EX_trpglugly[e]","Exchange of TrpGluGly","Tryptophanyl-Glutamyl-Glycine",0
+"EX_trpgluleu[e]","Exchange of TrpGluLeu","Tryptophanyl-Glutamyl-Leucine",0
+"EX_trpglupro[e]","Exchange of TrpGluPro","Tryptophanyl-Glutamyl-Proline",0
+"EX_trpglutyr[e]","Exchange of TrpGlutyr","Tryptophanyl-Glutamyl-Tyrosine",0
+"EX_trpglyleu[e]","Exchange of TrpGlyLeu","Tryptophanyl-Glycyl-Leucine",0
+"EX_trpglyphe[e]","Exchange of TrpGlyPhe","Tryptophanyl-Glycyl-Phenylalanine",0
+"EX_trpglyval[e]","Exchange of TrpGlyVal","Tryptophanyl-Glycyl-Valine",0
+"EX_trphismet[e]","Exchange of TrpHisMet","Tryptophanyl-Histidyl-Methionine",0
+"EX_trpilelys[e]","Exchange of TrpIleLys","Tryptophanyl-Isoleucyl-Lysine",0
+"EX_trpiletrp[e]","Exchange of TrpIleTrp","Tryptophanyl-Isoleucyl-Tryptophan",0
+"EX_trpleuval[e]","Exchange of TrpLeuVal","Tryptophanyl-Leucyl-Valine",0
+"EX_trplys[e]","Exchange of TrpLys","Tryptophanyl-Lysine",0
+"EX_trpmetarg[e]","Exchange of TrpMetArg","Tryptophanyl-Methionyl-Arginine",0
+"EX_trpmetval[e]","Exchange of TrpMetVal","Tryptophanyl-Methionyl-Valine",0
+"EX_trpphe[e]","Exchange of TrpPhe","Tryptophanyl-Phenylalanine",0
+"EX_trpprogly[e]","Exchange of TrpProGly","Tryptophanyl-Prolyl-Glycine",0
+"EX_trpproleu[e]","Exchange of TrpProLeu","Tryptophanyl-Prolyl-Leucine",0
+"EX_trpproval[e]","Exchange of TrpProVal","Tryptophanyl-Prolyl-Valine",0
+"EX_trpsertyr[e]","Exchange of TrpSertyr","Tryptophanyl-Seryl-Tyrosine",0
+"EX_trpthrglu[e]","Exchange of TrpThrGlu","Tryptophanyl-Threonyl-Glutamate",0
+"EX_trpthrile[e]","Exchange of TrpThrIle","Tryptophanyl-Threonyl-Isoleucine",0
+"EX_trpthrtyr[e]","Exchange of TrpThrtyr","Tryptophanyl-Threonyl-Tyrosine",0
+"EX_trptyrgln[e]","Exchange of TrptyrGln","Tryptophanyl-Tyrosyl-Glutamine",0
+"EX_trptyrtyr[e]","Exchange of Trptyrtyr","Tryptophanyl-Tyrosyl-Tyrosine",0
+"EX_trpvalasp[e]","Exchange of TrpValAsp","Tryptophanyl-Valyl-Aspartate",0
+"EX_tyrala[e]","Exchange of TyrAla","Tyrosyl-Alanine",0
+"EX_tyralaphe[e]","Exchange of TyrAlaPhe","Tyrosyl-Alaninyl-Phenylalanine",0
+"EX_tyrargglu[e]","Exchange of TyrArgGlu","Tyrosyl-Arginyl-Glutamate",0
+"EX_tyrargser[e]","Exchange of TyrArgSer","Tyrosyl-Arginyl-Serine",0
+"EX_tyrasparg[e]","Exchange of TyrAspArg","Tyrosyl-Aspartyl-Arginine",0
+"EX_tyrcysgly[e]","Exchange of TyrCysGly","Tyrosyl-Cysteinyl-Glycine",0
+"EX_tyrcysthr[e]","Exchange of TyrCysThr","Tyrosyl-Cysteinyl-Threonine",0
+"EX_tyrglu[e]","Exchange of TyrGlu","Tyrosyl-Glutamate",0
+"EX_tyrleuarg[e]","Exchange of TyrLeuArg","Tyrosyl-Leucyl-Arginine",0
+"EX_tyrphetyr[e]","Exchange of TyrPhetyr","Tyrosyl-Phenylalanyl-Tyrosine",0
+"EX_tyrthr[e]","Exchange of TyrThr","Tyrosyl-Threonine",0
+"EX_tyrtrpphe[e]","Exchange of TyrTrpPhe","Tyrosyl-Tryptophanyl-Phenylalanine",0
+"EX_tyrtyr[e]","Exchange of Tyrtyr","Tyrosyl-Tyrosine",0
+"EX_tyrvalmet[e]","Exchange of TyrValMet","Tyrosyl-Valyl-Methionine",0
+"EX_valarggly[e]","Exchange of ValArgGly","Valyl-Arginyl-Glycine",0
+"EX_valhisasn[e]","Exchange of ValHisAsn","Valyl-Histidyl-Asparagine",0
+"EX_valleuphe[e]","Exchange of ValLeuPhe","Valyl-Leucyl-Phenylalanine",0
+"EX_vallystyr[e]","Exchange of ValLystyr","Valyl-Lysyl-Tyrosine",0
+"EX_valphearg[e]","Exchange of ValPheArg","Valyl-Phenylalanyl-Arginine",0
+"EX_valprotrp[e]","Exchange of ValProTrp","Valyl-Prolyl-Tryptophan",0
+"EX_valserarg[e]","Exchange of ValSerArg","Valyl-Seryl-Arginine",0
+"EX_valtrpphe[e]","Exchange of ValTrpPhe","Valyl-Tryptophanyl-Phenylalanine",0
+"EX_valtrpval[e]","Exchange of ValTrpVal","Valyl-Tryptophanyl-Valine",0
+"EX_valval[e]","Exchange of ValVal","Valyl-Valine",1
+"EX_trpglyasp[e]","Exchange of TrpGlyAsp","Tryptophanyl-Glycyl-Aspartate",0
+"EX_sphmyln_hs[e]","Exchange of Sphingomyelin","SM pool",0
+"EX_hxa[e]","Exchange of Hexanoate (N-C6:0)","Hexanoate (N-C6:0)",0
+"EX_Lhcystin[e]","Exchange of Homocystine","L-Homocystine",1
+"EX_core4[e]","Exchange of Core 4 (Mucin O-Glycan)","core 4",0
+"EX_f1a[e]","Exchange of F1Alpha (Mucin O-Glycan)","F1alpha",1
+"EX_galam[e]","Exchange of Galactosamine","D-Galactosamine",1
+"EX_gncore1[e]","Exchange of gncore 1 (Mucin O-Glycan)","glcnac-alpha-1,4-core 1",0
+"EX_mqn10[e]","Exchange of Menaquinone 10","Menaquinone-10",0
+"EX_mqn11[e]","Exchange of Menaquinone 11","Menaquinone-11",0
+"EX_mqn7[e]","Exchange of Menaquinone 7","Menaquinone-7",0
+"EX_mqn9[e]","Exchange of Menaquinone 9","Menaquinone-9",0
+"EX_s2l2n2m2m[e]","Exchange of De-Fuc Form of Pa6 (W/O Peptide Linkage)","de-Fuc form of PA6 (wo peptide linkage)",0
+"EX_lpam[e]","Exchange of Lipoamide","lipoamide",1
+"EX_acgal[e]","Exchange of N-Acetylgalactosamine","N-acetylgalactosamine",1
+"EX_acnam[e]","Exchange of N-Acetylneuraminate","N-acetylneuraminate",1
+"EX_pcreat[e]","Exchange of Phosphocreatine","creatine-phosphate",0
+"EX_HC00342[e]","Exchange of Cis-Aconitate","cis-aconitate",1
+"EX_C08261[e]","Exchange of Azelaic Acid","azelaic acid",1
+"EX_pa_hs[e]","Exchange of Phosphatidate","phosphatidate-LD-TAG pool",0
+"EX_CE2934[e]","Exchange of O-Methylhippurate","O-methylhippurate",0
+"EX_dxtrn[e]","Exchange of Phosphorylase-Limit Dextrin","glycogenin G4G4",0
+"EX_dhcholestanate[e]","Exchange of 3Alpha, 7Alpha-Dihydroxy-5Beta-Cholestanate","3alpha,7alpha-dihydroxy-5beta-cholestanate",0
+"EX_thcholstoic[e]","Exchange of 3Alpha, 7Alpha, 12Alpha-Trihydroxy-5Beta-Cholestanoate","3alpha,7alpha,12alpha-trihydroxy-5beta-cholestanate",0
+"EX_xol7ah3[e]","Exchange of 5Beta-Cholestane-3Alpha, 7Alpha, 26-Triol","5beta-cholestane-3alpha,7alpha,26-triol",1
+"EX_xol7aone[e]","Exchange of 7Alpha-Hydroxycholest-4-En-3-One","7alpha-hydroxycholest-4-en-3-one",0
+"EX_xoldiolone[e]","Exchange of 7Alpha, 12Alpha-Dihydroxycholest-4-En-3-One","7alpha,12alpha-dihydroxycholest-4-en-3-one",0
+"EX_7klitchol[e]","Exchange of 7-Ketolithocholate","7-Ketolithocholate",1
+"EX_2obut[e]","Exchange of 2-Oxobutanoate","2-oxobutyrate",1
+"EX_glutar[e]","Exchange of Glutarate","Glutarate",1
+"EX_glcn[e]","Exchange of D-Gluconate","D-gluconic acid",1
+"EX_fum[e]","Exchange of Fumarate","fumarate",1
+"EX_glyleu[e]","Exchange of Glycylleucine","Glycylleucine",1
+"EX_glyphe[e]","Exchange of Glycylphenylalaine","Glycyl-Phenylalanine",1
+"EX_glypro[e]","Exchange of Glypro","Glycylproline",1
+"EX_mal_L[e]","Exchange of L-Malate","malate",1
+"EX_ppi[e]","Exchange of Ppi","PPi",1
+"EX_ind3ac[e]","Exchange of Indole-3-Acetate","indoleacetate",1
+"EX_nh4[e]","Exchange of Ammonia","NH4+",1
+"EX_galt[e]","Exchange of Galactitol","galactitol",1
+"EX_glcr[e]","Exchange of Glcr","D-glucarate",0
+"EX_glcur[e]","Exchange of D-Glucuronate","glucuronate",1
+"EX_malthx[e]","Exchange of Maltohexaose","maltohexaose",1
+"EX_ptrc[e]","Exchange of 1, 4-Butanediammonium","putrescine",1
+"EX_spmd[e]","Exchange of Spermidine","spermidine",1
+"EX_xan[e]","Exchange of Xanthine","xanthine",1
+"EX_4hbz[e]","Exchange of 4-Hydroxybenzoate","4-hydroxybenzoate",1
+"EX_34dhpha[e]","Exchange of 34Dhpha","3,4-dihydroxyphenylacetate",0
+"EX_mqn8[e]","Exchange of Menaquinone 8","Menaquinone-8",0
+"EX_indole[e]","Exchange of Indole","Indole",1
+"EX_ch4s[e]","Exchange of Methanethiol","Methanethiol",1
+"EX_phpyr[e]","Exchange of Phenylpyruvate","phenylpyruvate",1
+"EX_tym[e]","Exchange of Tyramine","tyramine",1
+"EX_2hyoxplac[e]","2-Hydroxyphenylacetate","2-hydroxyphenylacetate",1
+"EX_lanost[e]","Exchange of Lanosterol","lanosterol",1
+"EX_3mox4hoxm[e]","Exchange of 3-Methoxy-4-Hydroxymandelate","vanillylmandelate",1
+"EX_glx[e]","Exchange of Glyoxylate","glyoxalate",1
+"EX_CE4970[e]","Exchange of 2-Methylbutyrylglycine","2-methylbutyrylglycine",0
+"EX_CE2026[e]","Exchange of 3-Methyl-Crotonyl-Glycine","3-methylcrotonoylglycine",0
+"EX_CE4968[e]","Exchange of Isovalerylglycine","isovalerylglycine",1
+"EX_actyr[e]","Exchange of N-Acetyl-Tyrosine","N-Acetyl-Tyrosine",1
+"EX_sucaceto[e]","Exchange of Succinylacetone","Succinylacetone",0
+"EX_vanillac[e]","Exchange of Vanil-Lactate","Vanil-Lactate",0
+"EX_nacvanala[e]","Exchange of Acetyl-Vanilalanine","N-Acetylvanilalanine",0
+"EX_2h3mv[e]","Exchange of 2-Hydroxy-3-Methyl-Valerate","2-Hydroxy-3-Methyl-Valerate",0
+"EX_2hiv[e]","Exchange of 2-Hydroxy-Isovalerate","2-Hydroxy-Isovalerate",0
+"EX_2m3hbu[e]","Exchange of 2-Methyl-3-Hydroxy-Butyrate","2-Methyl-3-Hydroxy-Butyrate",0
+"EX_2m3hvac[e]","Exchange of 2-Methyl-3-Hydroxy-Valerate","2-Methyl-3-Hydroxy-Valerate",0
+"EX_3h3mglt[e]","Exchange of 3-Hydroxy-3-Methyl-Glutarate","3-Hydroxy-3-Methyl-Glutarate",0
+"EX_3mglutac[e]","Exchange of 3-Methyl-Glutaconate","3-Methyl-Glutaconate",0
+"EX_3mglutr[e]","Exchange of 3-Methyl-Glutarate","3-Methyl-Glutarate",1
+"EX_ppiogly[e]","Exchange of Propionyl-Glycine","Propionyl-Glycine",0
+"EX_mvlac[e]","Exchange of Mevalonate-Lactone","Mevalonate-Lactone",0
+"EX_tiggly[e]","Exchange of Tiglylglycine","Tiglyl Glycine",0
+"EX_3ohglutac[e]","Excahnge of 3-Hydroxy-Glutarate","3-Hydroxy-Glutarate",1
+"EX_glutcon[e]","Exchange of Glutaconate","Glutaconate",1
+"EX_3hivac[e]","Exchange of 3-Hydroxy-Isovalerate","3-Hydroxyisovaleric Acid",1
+"EX_3hadpac[e]","Exchange of 3-Hydroxy-Adipate","3-Hydroxy-Adipate",0
+"EX_3ohsebac[e]","Exchange of 3-Hydroxy-Sebacic Acid","3-Hydroxy-Sebacic Acid",0
+"EX_3ohsubac[e]","Exchange of 3-Hydoxy-Suberic Acid","3-Hydoxy-Suberic Acid",0
+"EX_5ohhexa[e]","Exchange of 5-Hydroxy-Hexanoate","5-Hydroxyhexanoic Acid",1
+"EX_7ohocata[e]","Exchange of 7-Hydroxy-Octanoate","7-Hydroxy-Octanoate",0
+"EX_ethmalac[e]","Exchange of Ethylmalonic Acid","Ethylmalonic Acid",1
+"EX_hexgly[e]","Exchange of Hexanoyl-Glycine","Hexanoyl-Glycine",0
+"EX_methsucc[e]","Exchange of Methyl-Succinate","Methyl-Succinate",1
+"EX_subgly[e]","Exchange of Suberyl-Glycine","Suberyl-Glycine",0
+"EX_4ohbut[e]","Exchange of 4-Hydroxy-Butyrate","4-Hydroxy-Butyrate",1
+"EX_2hxic_L[e]","Exchange of 2-Hydroxy-Isocaproate","2-Hydroxy-Isocaproate",0
+"EX_2hydog[e]","Exchnage of 2-Hydroxy-Glutarate","2-Hydroxy-Glutarate",0
+"EX_thexdd[e]","Exchange of 7Z, 10Z-Hexadecadienoic Acid","7Z,10Z-Hexadecadienoic Acid",0
+"EX_hexdtr[e]","Exchange of 7, 10, 13-Hexadecatrienoic Acid","(Z,Z,Z)-7,10,13-Hexadecatrienoic Acid",0
+"EX_hpdece[e]","Exchange of Trans-Delta-2-Heptadecanoic Acid","Trans-Delta-2-Heptadecanoic Acid",0
+"EX_eic21114tr[e]","Exchange of Trans, Cis, Cis-2, 11, 14-Eicosatrienoic Acid","Trans,Cis,Cis-2,11,14-Eicosatrienoic Acid",0
+"EX_5eipenc[e]","Exchange of 5, 8, 11, 14, 17-Eicosapentenoic Acid","5,8,11,14,17-Eicosapentenoic Acid",0
+"EX_CE4969[e]","Exchange of Isobutyrylglycine","isobutyrylglycine",1
+"EX_CE1310[e]","Exchange of N-Acetyl-L-Cysteine","N-acetyl-L-cysteine",1
+"EX_T4hcinnm[e]","Exchange of Trans-4-Coumarate","4-coumarate",1
+"EX_sucsal[e]","Exchange of Succinic Semialdehyde","succinate semialdehyde",1
+"EX_CE7081[e]","Exchange of 15(R)-HEPE","15(R)-HEPE",0
+"EX_egme[e]","Exchange of Succinic Semialdehyde","ecgonine-methyl ester",0
+"EX_12harachd[e]","Exchange of 12 Hydroxy Arachidonic Acid","12-hydroxy-arachidonate",0
+"EX_18harachd[e]","Exchange of 18 Hydroxy Arachidonic Acid","18-hydroxy-arachidonate",0
+"EX_sql[e]","Exchange of Squalene","squalene",1
+"EX_5g2oxpt[e]","Exchange of 5-Guanidino-2-Oxopentanoic Acid","5-guanidino-2-oxopentanoate",0
+"EX_andrstndn[e]","Exchange of Androst-4-Ene-3, 17-Dione","4-androstene-3,17-dione",1
+"EX_dhea[e]","Exchange of 3Beta-Hydroxyandrost-5-En-17-One","dehydroepiandrosterone",1
+"EX_eandrstrn[e]","Exchange of 16Alpha-Hydroxydehydroepiandrosterone","16alpha-hydroxydehydroepiandrosterone",0
+"EX_andrstandn[e]","Exchange of 5Alpha-Androstane-3, 17-Dione","5alpha-androstane-3,17-dione",1
+"EX_CE2209[e]","Exchange of 5Alpha-Androstane-3Alpha, 17Beta-Diol","5alpha-androstane-3alpha,17beta-diol",1
+"EX_estrone[e]","Exchange of Estrone","estrone",1
+"EX_C05298[e]","Exchange of 2-Hydroxyestrone","2-hydroxyestrone",1
+"EX_C05301[e]","Exchange of 2-Hydroxyestradiol-17Beta","2-hydroxyestradiol-17beta",0
+"EX_C05299[e]","Exchange of 2-Methoxyestrone","2-methoxyestrone",1
+"EX_C05302[e]","Exchange of 2-Methoxyestradiol-17Beta","2-methoxyestradiol-17beta",0
+"EX_CE5072[e]","Exchange of 21-Hydroxyallopregnanolone","21-hydroxyallopregnanolone",0
+"EX_11docrtsl[e]","Exchange of 11-Deoxycortisol","11-deoxycortisol",1
+"EX_11docrtstrn[e]","Exchange of 11-Deoxycorticosterone","11-deoxycorticosterone",1
+"EX_prgnlone[e]","Exchange of Pregnenolone","pregnenolone",1
+"EX_CE2211[e]","Exchange of Allopregnanolone","allopregnanolone",1
+"EX_17ahprgstrn[e]","Exchange of 17Alpha-Hydroxyprogesterone","17alpha-hydroxyprogesterone",1
+"EX_17ahprgnlone[e]","Exchange of 17Alpha-Hydroxypregnenolone","17alpha-hydroxypregnenolone",1
+"EX_C03681[e]","Exchange of 5Alpha-Pregnane-3, 20-Dione","5alpha-pregnane-3,20-dione",0
+"EX_HC02020[e]","Exchange of Cholesterol-Ester-Palm","cholesterol-ester-palm",0
+"EX_prgnlones[e]","Exchange of Pregnenolone Sulfate","pregnenolone sulfate",1
+"EX_CE1352[e]","Exchange of 17Alpha-Hydroxypregnenolone Sulfate","17alpha-hydroxypregnenolone sulfate",0
+"EX_xol24oh[e]","Exchange of (24S)-24-Hydroxycholesterol","24-hydroxycholesterol",1
+"EX_xol27oh[e]","Exchange of 26-Hydroxycholesterol","26-hydroxycholesterol",1
+"EX_xol25oh[e]","Exchange of 25-Hydroxycholesterol","25-hydroxycholesterol",0
+"EX_dsmsterol[e]","Exchange of Desmosterol","desmosterol",1
+"EX_chsterols[e]","Exchange of Cholesterol Sulfate","cholesterol-sulfate",0
+"EX_3ityr_L[e]","Exchange of 3-Iodo-L-Tyrosine","3-iodo-L-tyrosine",1
+"EX_35diotyr[e]","Exchange of 3, 5-Diiodo-L-Tyrosine","3,5-diiodo-L-tyrosine",1
+"EX_13_cis_retn[e]","Exchange of 13-Cis-Retinoate","13-cis-retinoate",1
+"EX_CE1617[e]","Exchange of 9-Cis-Retinoate","9-cis-retinoate",0
+"EX_HC00460[e]","Exchange of 2,5-Dihydroxybenzoate","2,5-dihydroxybenzoate",1
+"EX_34dhoxmand[e]","Exchange of 3,4-Dihydroxymandelate","3,4-dihydroxymandelate",0
+"EX_fna5moxam[e]","Exchange of Formyl-N-Acetyl-5-Methoxykynurenamine","formyl-N-acetyl-5-methoxykynurenamine",0
+"EX_CE5643[e]","Exchange of Peroxynitrite","peroxynitrite",1
+"EX_CE7090[e]","Exchange of 18R-Hydroxy-5Z,8Z,11Z,14Z,16E-Eicosapentaenoic Acid","(18R)-HEPE",1
+"EX_CE7085[e]","Exchange of (+-)-5-Hydroxy-6E,8Z,11Z,14Z,17Z-Eicosapentaenoic Acid","5(S)-HEPE",0
+"EX_CE7096[e]","Exchange of 5,15-Dihydroxyeicosatetraenoic Acid","5,15-DiHETE",1
+"EX_CE4877[e]","Exchange of 15-Deoxy-Prostaglandin J2","15-deoxy-prostaglandin J2",0
+"EX_CE1447[e]","Exchange of 11-Dehydrothromboxane B2","11-dehydro-thromboxane B2",1
+"EX_CE2006[e]","Exchange of 4-Hydroxy-2-Nonenal","4-hydroxy-2-nonenal",1
+"EX_CE1401[e]","Exchange of Homocysteine Thiolactone","homocysteine-thiolactone",0
+"EX_glucys[e]","Exchange of Gamma-L-Glutamyl-L-Cysteine","gamma-glutamyl-cysteine",0
+"EX_n8aspmd[e]","Exchange of N(8)-Acetylspermidine","N8-acetylspermidine",0
+"EX_CE6205[e]","Exchange of 5-Methoxytryptophol","5-methoxytryptophol",1
+"EX_melatn[e]","Exchange of Melatonine","melatonin",1
+"EX_6hoxmelatn[e]","Exchange of 6-Hydroxymelatonin","6-hydroxymelatonin",1
+"EX_trypta[e]","Exchange of Tryptamine","tryptamine",1
+"EX_C10164[e]","Exchange of Picolinic Acid","picolinic acid",1
+"EX_CE4890[e]","Exchange of N-Methylsalsolinol","N-methylsalsolinol",1
+"EX_C09642[e]","Exchange of (-)-Salsolinol","salsolinol",1
+"EX_C05767[e]","Exchange of Uroporphyrin I","uroporphyrin I",1
+"EX_mhista[e]","Exchange of N(Tele)-Methylhistaminium","N-methylhistamine",1
+"EX_ppbng[e]","Exchange of Porphobilinogen","porphobilinogen",0
+"EX_13dampp[e]","Exchange of Trimethylenediaminium","1,3-diaminopropane",1
+"EX_mma[e]","Exchange of Methylammonium","methylamine",1
+"EX_12ppd_R[e]","Exchange of (R)-Propane-1,2-Diol","propane-1,2-diol",1
+"EX_ametam[e]","Exchange of S-Adenosylmethioninamine","S-adenosylmethioninamine",0
+"EX_xylu_L[e]","Exchange of L-Xylulose","L-xylulose",0
+"EX_xylu_D[e]","Exchange of Xylu_D","D-xylulose",1
+"EX_CE0737[e]","Exchange of Malonic Dialdehyde","malonic-dialdehyde",0
+"EX_sphings[e]","Exchange of Sphingosine","sphingosine",1
+"EX_hdd2crn[e]","Exchange of Trans-Hexadec-2-Enoyl Carnitine","hexadecenoylcarnitine(9)",0
+"EX_im4ac[e]","Exchange of Imidazol-4-Ylacetate","imidazole-4-acetate",1
+"EX_CE1918[e]","Exchange of 5-Hydroxytryptophol","5-hydroxytryptophol",1
+"EX_mlthf[e]","Exchange of 5,10-Methylenetetrahydrofolate","5,10-methylene-THF",0
+"EX_ppp9[e]","Exchange of Protoporphyrin","protoporphyrin",1
+"EX_aact[e]","Exchange of Ammonioacetone","aminoacetone",1
+"EX_CE2705[e]","Exchange of Quinonoid Dihydrobiopterin","quinonoid dihydrobiopterin",1
+"EX_sphgn[e]","Exchange of Sphinganine","sphinganine",1
+"EX_selmeth[e]","Exchange of Selenomethionine","selenomethionine",1
+"EX_N1aspmd[e]","Exchange of N(1)-Acetylspermidine","N1-acetylspermidine",0
+"EX_1a25dhvitd3[e]","Exchange of Calcitriol","calcitriol",1
+"EX_prist[e]","Exchange of Pristanic Acid","pristanic acid",1
+"EX_CE2049[e]","Exchange of 12,13-Hydroxyoctadec-9(Z)-Enoate","12,13-hydroxyoctadec-9(z)-enoate",0
+"EX_CE2047[e]","Exchange of 9,10-Hydroxyoctadec-12(Z)-Enoate","9,10-hydroxyoctadec-12(Z)-enoate",0
+"EX_fdp[e]","Exchange of D-Fructose 1,6-Bisphosphate","fructose-1,6-bisphosphate",0
+"EX_coke[e]","Exchange of Cocaine","cocaine",1
+"EX_5a2opntn[e]","Exchange of 5-Amino-2-Oxopentanoic Acid","5-amino-2-oxopentanoic acid",0
+"EX_vldl_hs[e]","Exchange of VLDL_Hs","Very Low Density Lipoprotein",0
+"EX_idl_hs[e]","Exchange of IDL_Hs","Intermediate Density Lipoprotein",0
+"EX_ldl_hs[e]","Exchange of LDL_Hs","Low Density Lipoprotein",0
+"EX_hdl_hs[e]","Exchange of HDL_Hs","High Density Lipoprotein",0
+"EX_HC00005[e]","Exchange of ApoB100","apoB100",0
+"EX_HC00006[e]","Exchange of Apo C1","apoC1",0
+"EX_HC00007[e]","Exchange of Apo C2","apoC2",0
+"EX_HC00008[e]","Exchange of Apo C3","apoC3",0
+"EX_HC00009[e]","Exchange of Apo E","apoE",0
+"EX_dopa4sf[e]","Exchange of Dopamine 4-O-Sulfate","Dopamine 4-O-Sulphate",0
+"EX_dopa4glcur[e]","Exchange of Dopamine 4-O-Glucuronide","Dopamine-4-O-Glucuronide",0
+"EX_dopa3glcur[e]","Exchange of Dopamine 3-O-Glucuronide","Dopamine-3-O-Glucuronide",0
+"EX_4glu56dihdind[e]","Exchange of 4-S-Glutathionyl-5, 6-Dihydroxyindoline","4-S-Glutathionyl-5,6-Dihydroxyindoline",0
+"EX_5cysdopa[e]","Exchange of 5-S-Cysteinyldopamine","5-S-Cysteinyldopamine",0
+"EX_CE5025[e]","Exchange of 5-S-Glutathionyl-Dopamine","5-S-glutathionyl-dopamine",0
+"EX_CE2172[e]","Exchange of 6, 7-Dihydroxy-1, 2, 3, 4-Tetrahydroisoquinoline","6,7-dihydroxy-1,2,3,4-tetrahydroisoquinoline",1
+"EX_CE5629[e]","Exchange of 6, 7-Dihydroxy-1, 2, 3, 4-Tetrahydroisoquinoline","1,2-dehydrosalsolinol",0
+"EX_gd3_hs[e]","Exchange/Demand Reaction","GD3",1
+"EX_gluside_hs[e]","Exchange/Demand Reaction","glucosylceramide pool",0
+"EX_gm3_hs[e]","Exchange/Demand Reaction","GM3",1
+"EX_cmpacna[e]","Exchange of CMP-N-Acetyl-Beta-Neuraminate","CMP-N-acetylneuraminate",0
+"EX_gd2_hs[e]","Exchange of Gd2","GD2",1
+"EX_gd1a_hs[e]","Exchange of Gd1A","GD1a",1
+"EX_34dhpe[c]","Exchange of 3, 4-Dihydroxyphenylethanol","3,4-Dihydroxyphenylethanol",1
+"EX_12dhchol[e]","EX_12dhchol(e)","12-Dehydrocholic acid; 12-Oxodeoxycholic acid; 12oxo-3alpha,7alpha-Dihydroxy-5beta-cholan-24-oic acid",0
+"EX_3dhcdchol[e]","EX_3dhcdchol(e)","3-Dehydrochenodeoxychollyc acid; 7oxo-3alpha-hydroxy-5beta-cholan-24-oic acid",0
+"EX_3dhchol[e]","EX_3dhchol(e)","3-Dehydrocholic acid; 3oxo-7alpha,12alpha-Dihydroxy-5beta-cholan-24-oic acid",0
+"EX_3dhdchol[e]","EX_3dhdchol(e)","3-dehydro-Deoxycholate",0
+"EX_3dhlchol[e]","EX_3dhlchol(e)","3-dehydro-Lithocholate",0
+"EX_7dhcdchol[e]","EX_7dhcdchol(e)","7-Dehydrochenodeoxycholic acid; 7oxo-3alpha-hydroxy-5beta-cholan-24-oic acid",0
+"EX_7dhchol[e]","EX_7dhchol(e)","7-Dehydrocholic acid; 7-Oxodeoxycholic acid; 7oxo-3alpha,12alpha-Dihydroxy-5beta-cholan-24-oic acid",0
+"EX_ca24g[e]","EX_ca24g(e)","Cholic acid-24glucuronide, CA-24G",0
+"EX_ca3s[e]","EX_ca3s(e)","Cholic acid 3-sulfate",1
+"EX_cdca24g[e]","EX_cdca24g(e)","Chenodeoxycholic acid-24glucuronide, CDCA-24G",0
+"EX_cdca3g[e]","EX_cdca3g(e)","Chenodeoxycholic acid-3glucuronide, CDCA-3G",0
+"EX_coprost[e]","EX_coprost(e)","Coprostanol",1
+"EX_dca24g[e]","EX_dca24g(e)","Deoxycholic acid-24glucuronide, CDA-24G",0
+"EX_dca3g[e]","EX_dca3g(e)","Deoxycholic acid-3glucuronide, CDA-3G",0
+"EX_dca3s[e]","EX_dca3s(e)","Deoxycholic acid 3-sulfate",1
+"EX_gca3s[e]","EX_gca3s(e)","Glycocholic acid 3-sulfate",0
+"EX_gcdca3s[e]","EX_gcdca3s(e)","Glycochenodeoxycholic acid 3-sulfate",0
+"EX_gdca3s[e]","EX_gdca3s(e)","Glycodeoxycholic acid 3-sulfate",0
+"EX_gudca3s[e]","EX_gudca3s(e)","Glycoursodeoxycholic acid 3-sulfate",0
+"EX_hca24g[e]","EX_hca24g(e)","Hyocholic acid-24glucuronide, HCA-24G",0
+"EX_hca6g[e]","EX_hca6g(e)","Hyocholic acid-6glucuronide, HCA-6G",0
+"EX_hdca24g[e]","EX_hdca24g(e)","Hyodeoxycholic acid-24glucuronide, HDCA-24G",0
+"EX_hdca6g[e]","EX_hdca6g(e)","Hyodeoxycholic acid-6glucuronide, HDCA-6G",0
+"EX_hyochol[e]","EX_hyochol(e)","Hyocholic acid; gamma-Muricholate",0
+"EX_icdchol[e]","EX_icdchol(e)","Isochenodeoxycholic acid; 3beta,7alpha-Dihydroxy-5beta-cholanic acid",0
+"EX_isochol[e]","EX_isochol(e)","Isochenodeoxycholic acid; 3beta,7alpha,12alpha-Trihydroxy-5beta-cholanic acid",0
+"EX_lca24g[e]","EX_lca24g(e)","Lithocholic acid-24glucuronide, CDCA-24G",0
+"EX_lca3g[e]","EX_lca3g(e)","Lithocholic acid-3glucuronide, CDCA-3G",0
+"EX_lca3s[e]","EX_lca3s(e)","Lithocholic acid 3-sulfate",1
+"EX_tca3s[e]","EX_tca3s(e)","Taurocholic acid 3-sulfate",0
+"EX_tcdca3s[e]","EX_tcdca3s(e)","Taurochenodeoxycholic acid 3-sulfate",0
+"EX_tdca3s[e]","EX_tdca3s(e)","Taurodeoxycholic acid 3-sulfate",0
+"EX_thyochol[e]","EX_thyochol(e)","Taurohyocholic acid; N-(3alpha,6alpha,7alpha-Trihydroxy-5beta-cholan-24-oyl)taurine",0
+"EX_tudca3s[e]","EX_tudca3s(e)","Tauroursodeoxycholic acid 3-sulfate",0
+"EX_uchol[e]","EX_uchol(e)","Ursocholic acid; 3alpha,7beta,12alpha-Trihydroxy-5beta-cholan-24-oic acid; 3alpha,7beta,12alpha-Trihydroxy-5beta-cholanic acid; 7beta-Hydroxyisocholic acid; 7-Epicholic acid",0
+"EX_udca3s[e]","EX_udca3s(e)","Ursodeoxycholic acid 3-sulfate",1
+"EX_12htacr[e]","exchange reaction for 12-hydroxy tacrolimus in intestinal lumen","12-HT or M-VI, 12-hydroxy tacrolimus",0
+"EX_1331tacr[e]","exchange reaction for 13,31-O-Didesmethyl-tacrolimus in hepatic vein","13,31-O-Didesmethyl-tacrolimus",0
+"EX_13dmt[e]","exchange reaction for 13-O-desmethyl tacrolimus in intestinal lumen","13-O-desmethyl tacrolimus, 13-DMT or M-I",0
+"EX_14hmdz[e]","exchange reaction for 1,4-Dihydroxy-midazolam in hepatic vein","1,4-Dihydroxy-midazolam",0
+"EX_1513tacr[e]","exchange reaction for 13,15-O-didesmethyl tacrolimus in intestinal lumen","13,15-O-didesmethyl tacrolimus",0
+"EX_1531tacr[e]","exchange reaction for 15, 31-O-Didesmethyl-tacrolimus in hepatic vein","15,31-O-Didesmethyl-tacrolimus",0
+"EX_15dmt[e]","exchange reaction for 15-O-desmethyl tacrolimus in intestinal lumen","15-DMT or M-III, 15-O-desmethyl tacrolimus",0
+"EX_1hibup_S[e]","exchange reaction for 1-hydroxy-ibuprofen in hepatic vein","1-hydroxy S-ibuprofen",0
+"EX_1hibupglu_S[e]","exchange reaction for 1-hydroxy S-ibuprofen-glucuronide in hepatic vein","1-hydroxy S-ibuprofen-glucuronide",0
+"EX_1hmdgluc[e]","exchange reaction for 1-OH-midazolam-glucuronide in portal blood","1'-OH-midazolam-glucuronide",0
+"EX_1ohmdz[e]","exchange reaction for 1-OH-midazolam in portal blood","1'-OH-midazolam",0
+"EX_2hatvacid[e]","exchange reaction for 2-hydroxy-atorvastatin-acid in portal blood","2-hydroxy-atorvastatin-acid / ortho-hydroxy-atorvastatin acid",0
+"EX_2hatvacidgluc[e]","exchange reaction for 2-hydroxy-atorvastatin-acyl-glucuronide in bile","2-hydroxy-atorvastatin-acyl-glucuronide",0
+"EX_2hatvlac[e]","exchange reaction for 2-hydroxy-atorvastatin-lactone in portal blood","2-hydroxy-atorvastatin-lactone / ortho-hydroxy-atorvastatin lactone",0
+"EX_2hatvlacgluc[e]","exchange reaction for 2-hydroxy-atorvastatin-lactone-glucuronide in bile","2-hydroxy-atorvastatin-lactone-glucuronide",0
+"EX_2hibup_R[e]","exchange reaction for R-2-hydroxy-ibuprofen in hepatic vein","2-hydroxy-R-ibuprofen",0
+"EX_2hibup_S[e]","exchange reaction for S-2-hydroxy-ibuprofen in hepatic vein","2-hydroxy-S-ibuprofen",0
+"EX_2hibupglu_S[e]","exchange reaction for 2-hydroxy S-ibuprofen-glucuronide in hepatic vein","2-hydroxy S-ibuprofen-glucuronide",0
+"EX_31dmt[e]","exchange reaction for 31-O-desmethyl tacrolimus in intestinal lumen","31-DMT or M-II, 31-O-desmethyl tacrolimus",0
+"EX_35dhpvs[e]","exchange reaction for 3-alpha-5-beta-dihydroxy pravastatin in portal blood","3'-alpha,5'beta-dihydroxy-pravastatin / 3'-alpha5'beta6'beta-trihydroxy pravastatin",0
+"EX_35dsmv[e]","exchange reaction for 3,5-dihydrodiol-simvastatin-lactone form in bile","3',5'-dihydrodiol-simvastatin-lactone form",0
+"EX_3hibup_R[e]","exchange reaction for R-3-hydroxy-ibuprofen in hepatic vein","3-hydroxy R-ibuprofen",0
+"EX_3hibup_S[e]","exchange reaction for S-3-hydroxy-ibuprofen in hepatic vein","3-hydroxy S-ibuprofen",0
+"EX_3hibupglu_S[e]","exchange reaction for 3-hydroxy S-ibuprofen-glucuronide in hepatic vein","3-hydroxy S-ibuprofen-glucuronide",0
+"EX_3hlvstacid[e]","exchange reaction for 3-hydroxy-lovastatin acid form in bile","3''-hydroxy-lovastatin acid form",0
+"EX_3hpvs[e]","exchange reaction for 3-hydroxy pravastatin in portal blood","3'-S-hydroxy-pravastatin",0
+"EX_3hpvstet[e]","exchange reaction of 3-S-hydroxy-pravastatin-tetranor in hepatic vein","3'-S-hydroxy-pravastatin-tetranor",0
+"EX_3hsmvacid[e]","exchange reaction for 3-hydroxy-simvastatin-acid form form in bile","3'-hydroxy-simvastatin-acid form",0
+"EX_3ispvs[e]","exchange reaction for 3-alpha-iso-pravastatin in portal blood","3-alpha-iso-pravastatin",0
+"EX_3ohacmp[e]","exchange reaction for 3-OH-acetaminophen in hepatic vein","3-hydroxy-acetaminophen",0
+"EX_4bhglz[e]","exchange reaction for 4-beta-OH-gliclazide in hepatic vein","4-beta-OH-gliclazide",0
+"EX_4hatvacid[e]","exchange reaction for 4-hydroxy-atorvastatin-acid in portal blood","4-hydroxy-atorvastatin-acid / para-hydroxy-atorvastatin acid",0
+"EX_4hatvlac[e]","exchange reaction for 4-hydroxy-atorvastatin-lactone in portal blood","4-hydroxy-atorvastatin-lactone / para-hydroxy-atorvastatin lactone",0
+"EX_4hmdgluc[e]","exchange reaction for 4-OH-midazolam-glucuronide in hepatic vein","4-OH-midazolam-glucuronide",0
+"EX_4ohmdz[e]","exchange reaction for 4-OH-midazolam in hepatic vein","4-OH-midazolam",0
+"EX_56dhpvs[e]","exchange reaction of 3-keto-5,6,-dihydroxy-pravastatin in hepatic vein","3-keto-5,6,-dihydroxy-pravastatin",0
+"EX_56eppvs[e]","exchange reaction of 5,6-epoxy-3-alpha-iso-pravastatin in hepatic vein","5,6-epoxy-3-alpha-iso-pravastatin",0
+"EX_5ohfvs[e]","exchnage reaction for 5-hydroxy-fluvastatin in bile","5-hydroxy-fluvastatin",0
+"EX_5ohfvsglu[e]","exchnage reaction for 5-hydroxy-fluvastatin-glucuronide in hepatic vein","5-hydroxy-fluvastatin-glucuronide",0
+"EX_6ahglz[e]","exchange reaction for 6-alpha-OH-gliclazide in hepatic vein","6-alpha-OH-gliclazide",0
+"EX_6bhglz[e]","exchange reaction for 6-beta-OH-gliclazide in hepatic vein","6-beta-OH-gliclazide",0
+"EX_6bhglzglc[e]","exchange reaction for 6-beta-OH-gliclazide-glucuronide in hepatic vein","6-beta-OH-gliclazide-glucuronide",0
+"EX_6csmvacid[e]","exchange reaction for 6-beta-carboxy-simvastatin-acid form in bile","6'-beta-carboxy-simvastatin-acid form",0
+"EX_6epvs[e]","exchange reaction for 6-epi-pravastatin in portal blood","6-epipravastatin",0
+"EX_6hlvst[e]","exchange reaction for 6-beta-hydroxy-lovastatin in portal blood","6'-beta-hydroxy-lovastatin lactone form",0
+"EX_6hmsmvacid[e]","exchange reaction for6-beta-hydroxy-methyl-simvastatin-acid form in bile","6'-beta-hydroxy-methyl-simvastatin-acid form",0
+"EX_6hsmvacid[e]","exchange reaction for 6-beta-hydroxy simvastatin acid in bile","6'-beta-hydroxy simvastatin acid",0
+"EX_6melvacid[e]","exchange reaction for 6-exomethylene-lovastatin-acid form in bile","6'-exomethylene-lovastatin-acid form",0
+"EX_6melvst[e]","exchange reaction for 6-exomethylene-lovastatin in portal blood","6'-exomethylene-lovastatin lactone form",0
+"EX_6ohfvs[e]","exchnage reaction for 6-hydroxy-fluvastatin in bile","6-hydroxy-fluvastatin",0
+"EX_6ohfvsglu[e]","exchange reaction for 6-hydroxy-fluvastatin-glucuronide in hepatic vein","6-hydroxy-fluvastatin-glucuronide",0
+"EX_7ahglz[e]","exchange reaction for 7-alpha-OH-gliclazide in hepatic vein","7-alpha-OH-gliclazide",0
+"EX_7bhglz[e]","exchange reaction for 7-beta-OH-gliclazide in hepatic vein","7-beta-OH-gliclazide",0
+"EX_7bhglzglc[e]","exchange reaction for 7-beta-OH-gliclazide-glucuronide in hepatic vein","7-beta-OH-gliclazide-glucuronide",0
+"EX_7hpvs[e]","exchange reaction of 7-hydroxy-3-alpha-iso-pravastatin in hepatic vein","7-hydroxy-3-alpha-iso-pravastatin",0
+"EX_acmp[e]","exchange reaction for acetaminophen in small intestinal lumen","acetaminophen/paracetamol",0
+"EX_acmpglu[e]","exchange reaction for acetaminophen-glucuronide-conjugate in portal blood","Acetaminophen glucuronide",1
+"EX_acmpglut[e]","exchange reaction for acetaminophen-glutathione-conjugate in intestinal lumen","acetaminophen-glutathione-conjugate",0
+"EX_allop[e]","exchange reaction for allopurinol in intestinal lumen","allopurinol",1
+"EX_am19cs[e]","exchange reaction for AM19-cyclosporine in hepatic vein","AM19 (cyclosporine)",0
+"EX_am1a4ncs[e]","exchange reaction for AM1A4N-cyclosporine in bile","AM1A4N (cyclosporine)",0
+"EX_am1accs[e]","exchange reaction for AM1Ac-cyclosporine in hepatic vein","AM1Ac (cyclosporine)",0
+"EX_am1acs[e]","exchange reaction for AM1A (cyclosporine) in portal blood","AM1A (cyclosporine)",0
+"EX_am1alcs[e]","exchange reaction for AM1AL (cyclosporine) in portal blood","AM1AL (cyclosporine)",0
+"EX_am1c4n9cs[e]","exchange reaction for AM1c4N9-cyclosporine in bile","AM1c4N9 (cyclosporine)",0
+"EX_am1c9cs[e]","exchange reaction for AM1c9-cyclosporine in hepatic vein","AM1c9 (cyclosporine)",0
+"EX_am1ccs[e]","exchange reaction for AM1c-cyclosporine in hepatic vein","AM1c (cyclosporine)",0
+"EX_am1cglc[e]","exchange reaction for AM1c-glucuronide in bile","AM1c-glucuronide (cyclosporine)",0
+"EX_am1csa[e]","exchange reaction for AM1 (cyclosporine) in portal blood","AM1 (cyclosporine)",0
+"EX_am4n9cs[e]","exchange reaction for AM4N9-cyclosporine in hepatic vein","AM4N9 (cyclosporine)",0
+"EX_am4ncs[e]","exchange reaction for AM4N (cyclosporine) in portal blood","AM4N (cyclosporine)",0
+"EX_am9csa[e]","exchange reaction for AM9 (cyclosporine) in portal blood","AM9 (cyclosporine)",0
+"EX_atvacid[e]","exchange reaction for atorvastatin in intestinal lumen","atorvastatin-acid",0
+"EX_atvlac[e]","exchange reaction for atorvastatin-lactone in portal blood","atorvastatin-lactone",0
+"EX_caribup_R[e]","exchange reaction for R-carboxy ibuprofen in hepatic vein","R-carboxy ibuprofen",0
+"EX_caribup_s[e]","exchange reaction for S-carboxy ibuprofen in hepatic vein","S-carboxy ibuprofen",0
+"EX_caribupglu_S[e]","exchange reaction for S-carboxy ibuprofen glucuronide in hepatic vein","S-carboxy ibuprofen glucuronide",0
+"EX_crglz[e]","exchange reaction for carboxy-gliclazide in hepatic vein","carboxy-gliclazide",0
+"EX_crvs[e]","exchange reaction for cerivastatin in intestinal lumen","cerivastatin",0
+"EX_crvsm1[e]","exchange reaction for cerivastatin-M1 in hepatic vein","cerivastatin-M1",0
+"EX_crvsm23[e]","exchange reaction for cerivastatin-M23 in hepatic vein","cerivastatin-M23",0
+"EX_crvsm24[e]","exchange reaction for cerivastatin-M24 in hepatic vein","cerivastatin-M24",0
+"EX_csa[e]","exchange reaction for cyclosporine in intestinal lumen","cyclosporine",1
+"EX_csasulp[e]","exchange reaction for cyclosporine-sulphate in hepatic vein","cyclosporine-sulphate",0
+"EX_cysacmp[e]","exchange reaction for cysteine-conjugate-acetaminophen in hepatic vein","cysteine-conjugate-acetaminophen",0
+"EX_deoxfvs[e]","exchange reaction for deoxy-fluvastatin-dinor in hepatic vein","deoxy-fluvastatin-dinor",0
+"EX_desfvs[e]","exchange reaction for N-desisopropyl-fluvastatin in bile","N-desisopropyl-fluvastatin",0
+"EX_dhglz[e]","exchange reaction for dehydro-gliclazide in hepatic vein","dehydro-gliclazide",0
+"EX_dspvs[e]","exchange reaction of desacyl dehydro-pravastatin in hepatic vein","desacyl dehydro-pravastatin",0
+"EX_epoxtac[e]","exchange reaction for 31-O-Desmethyl,19-Hydroxy,37, 39-Epoxy-tacrolimus in hepatic vein","31-O-Desmethyl,19-Hydroxy,37, 39-Epoxy-tacrolimus",0
+"EX_fvs[e]","exchange reaction for fluvastatin in intestinal lumen","fluvastatin",1
+"EX_fvstet[e]","exchange reaction for des-isopropyl-dihydro-fluvastatin-tetranor in hepatic vein","des-isopropyl-dihydro-fluvastatin-tetranor",0
+"EX_fvstetglu[e]","exchange reaction for des-isopropyl-dihydro-fluvastatin-tetranor-glucuronide in hepatic vein","des-isopropyl-dihydro-fluvastatin-tetranor-glucuronide",0
+"EX_glc3meacp[e]","exchange reaction for glucuronide-conjugate of 3-methoxy-acetaminophen in hepatic vein","glucuronide-conjugate of 3-methoxy-acetaminophen",0
+"EX_glz[e]","exchange reaction for gliclazide in intestinal lumen","Gliclazide",1
+"EX_gtacmp[e]","exchange reaction for glucuronide-thiomethyl-acetaminophen conjugate in hepatic vein","glucuronide-thiomethyl-acetaminophen conjugate",0
+"EX_ibup_R[e]","exchange reaction for ibuprofen_R in intestinal lumen","ibuprofen-R",0
+"EX_ibup_S[e]","exchange reaction for ibuprofen_S in intestinal lumen","ibuprofen-S",0
+"EX_ibupgluc[e]","exchange reaction for ibuprofen acyl glucuronide in portal blood","ibuprofen acyl glucuronide",1
+"EX_isolvstacid[e]","exchange reaction for 3-hydroxy-iso-delta-4,5-hydroxy acid form of lovastatin in bile","3'-hydroxy-iso-delta-4',5'-hydroxy acid form of lovastatin",0
+"EX_lst4exp[e]","exchange reaction for Losartan-E3174 in portal blood","Losartan-E3174/ losartan-M6",0
+"EX_lstn[e]","exchange reaction for losartan in intestinal lumen","Losartan",1
+"EX_lstn1gluc[e]","exchange reaction for Losartan-N1-glucuronide in hepatic vein","Losartan-N1-glucuronide",0
+"EX_lstnm1[e]","exchange reaction for Losartan-M1 in hepatic vein","Losartan-M1",0
+"EX_lstnm2[e]","exchange reaction for Losartan-M2 in hepatic vein","Losartan-M2",0
+"EX_lstnm4[e]","exchange reaction for Losartan-M4 (glucuronide derivative) in hepatic vein","Losartan-M4 (glucuronide derivative)",0
+"EX_lstnm5[e]","exchange reaction for Losartan-M5 in hepatic vein","Losartan-M5",0
+"EX_lstnm7[e]","exchange reaction for Losartan-N2-glucuronide / Losartan-M7 in portal blood","Losartan-N2-glucuronide / Losartan-M7",0
+"EX_lvst[e]","exchange reaction for lovastatin in intestinal lumen","lovastatin lactone form",0
+"EX_mdz[e]","exchange reaction for midazolam in intestinal lumen","Midazolam",1
+"EX_mdzglc[e]","exchange reaction for midazolam-glucuronide in hepatic vein","Midazolam-glucuronide",0
+"EX_meracmp[e]","exchange reaction for acetaminophen-mercapturate-conjugate in portal blood","acetaminophen-mercapturate-conjugate/N-acetyl-cysteine-acetaminophen",0
+"EX_mhglz[e]","exchange reaction for Methyl-hydroxy-gliclazide in hepatic vein","Methyl-hydroxy-gliclazide",0
+"EX_ndersv[e]","exchange reaction for N-desmethyl-rosuvastatin in bile","N-desmethyl-rosuvastatin",0
+"EX_nfdac[e]","exchange reaction of acid metabolite of nifedipine in portal vein","acid metabolite of nifedipine",0
+"EX_nfdlac[e]","exchange reaction of lactone form of nifedipine in portal vein","lactone form of nifedipine",0
+"EX_nfdnpy[e]","exchange reaction of nitropyridine metabolite of nifedipine in portal vein","Nitropyridine metabolite of nifedipine",0
+"EX_nfdoh[e]","exchange reaction of hydroxy metabolite of nifedipine in portal vein","hydroxy metabolite of nifedipine",0
+"EX_oxyp[e]","exchange reaction for oxypurinol in portal blood","oxypurinol",0
+"EX_oxyp1rb[e]","exchange reaction for oxypurinol-1-riboside in hepatic vein","oxypurinol-1-riboside",0
+"EX_oxyp7rb[e]","exchange reaction for oxypurinol-7-riboside in hepatic vein","oxypurinol-7-riboside",0
+"EX_profvs[e]","exchnage reaction for des-isoproylpropionic-acid-fluvastatin in hepatic vein","des-isoproylpropionic-acid-fluvastatin",0
+"EX_ptvst[e]","exchange reaction for pitavastatin in intestinal lumen","pitavastatin",1
+"EX_ptvstlac[e]","exchange reaction for pravastatin-lactone in hepatic vein","pitavastatin-lactone",0
+"EX_ptvstm3[e]","exchange reaction for pitavastatin-M3 in bile","pitavastatin-M3",0
+"EX_pvs[e]","exchange reaction for pravastatin in intestinal lumen","pravastatin",1
+"EX_pvsgluc[e]","exchange reaction of pravastatin glucuronide in hepatic vein","pravastatin glucuronide",0
+"EX_rsv[e]","exchange reaction for rosuvastatin in intestinal lumen","rosuvastatin",1
+"EX_rsvlac[e]","exchange reaction for rosuvastatin-5S-lactone in bile","rosuvastatin-5S-lactone",0
+"EX_s3meacmp[e]","exchange reaction for sulphate-conjugate-3-methoxy-acetaminophen in hepatic vein","sulphate-conjugate-3-methoxy-acetaminophen",0
+"EX_smv[e]","exchange reaction for simvastatin in intestinal lumen","simvastatin lactone form",0
+"EX_smvacid[e]","exchange reaction for simvastatin dihydroxy acid form in hepatic vein","simvastatin dihydroxy acid form",0
+"EX_stacmp[ev]","exchange reaction for sulphate-thiomethyl-acetaminophen conjugate in hepatic vein","sulphate-conjugate of thiomethyl-acetaminophen",0
+"EX_sulpacmp[e]","exchange reaction for acetaminophen-sulphate in hepatic vein","sulphate-conjugate-acetaminophen",0
+"EX_tacr[e]","exchange reaction for tacrolimus in intestinal lumen","Tacrolimus",1
+"EX_tauribup_S[e]","exchange reaction for taurine conjugate of S-ibuprofen in hepatic vein","taurine conjugate of S-ibuprofen",0
+"EX_thrfvs[e]","exchange reaction for threo-isomer of fluvastain in hepatic vein","threo-isomer of fluvastain",0
+"EX_tlacfvs[e]","exchange reaction for trans-lactone-fluvastatin in hepatic vein","trans-lactone-fluvastatin",0
+"EX_tmd[e]","exchange reaction for torasemide in intestinal lumen","Torasemide",0
+"EX_tmdm1[e]","exchange reaction for Torasemide-M1 in hepatic vein","Torasemide-M1",0
+"EX_tmdm3[e]","exchange reaction for Torasemide-M3 in hepatic vein","Torasemide-M3",0
+"EX_tmdm5[e]","exchange reaction for Torasemide-M5 in hepatic vein","Torasemide-M5",0
+"EX_tripvs[e]","exchange reaction of triol metabolite of pravastatin in hepatic vein","triol metabolite of pravastatin",0
+"EX_tsacmgluc[e]","exchange reaction for thiomethyl-sulphoxide-acetaminophen-glucuronide in hepatic vein","thiomethyl-sulphoxide-acetaminophen-glucuronide",0
+"EX_tsacmsul[e]","exchange reaction for thiomethyl-sulphoxide-acetaminophen-sulphate in hepatic vein","thiomethyl-sulphoxide-acetaminophen-sulphate",0
+"EX_1a25dhvitd2[e]","EX_1a25dhvitd2(e)","1-alpha,25-dihydroxyvitamin D2",0
+"EX_C13856[e]","EX_C13856[e]","2-arachidonoylglycerol",1
+"EX_M02956[e]","EX_M02956[e]","TAG-chylomicron pool",0
+"EX_M00234[e]","EX_M00234[e]","1,2-diacylglycerol-chylomicron pool",0
+"EX_M01807[e]","EX_M01807[e]","fatty acid-chylomicron pool",0
+"EX_M00503[e]","EX_M00503[e]","1-acylglycerol-chylomicron pool",0
+"EX_M00241[e]","EX_M00241[e]","1,2-diacylglycerol-VLDL pool",0
+"EX_M01820[e]","EX_M01820[e]","fatty acid-VLDL pool",0
+"EX_M00510[e]","EX_M00510[e]","1-acylglycerol-VLDL pool",0
+"EX_M01819[e]","EX_M01819[e]","fatty acid-uptake pool",0
+"EX_M00003[e]","EX_M00003[e]","(10Z)-heptadecenoic acid",0
+"EX_M00008[e]","EX_M00008[e]","(11Z,14Z)-eicosadienoic acid",1
+"EX_M00010[e]","EX_M00010[e]","(11Z,14Z,17Z)-eicosatrienoic acid",0
+"EX_M00017[e]","EX_M00017[e]","(13Z)-eicosenoic acid",0
+"EX_M00019[e]","EX_M00019[e]","(13Z)-octadecenoic acid",0
+"EX_M00021[e]","EX_M00021[e]","(13Z,16Z)-docosadienoic acid",1
+"EX_M00115[e]","EX_M00115[e]","(7Z)-octadecenoic acid",0
+"EX_M00117[e]","EX_M00117[e]","(7Z)-tetradecenoic acid",1
+"EX_M00260[e]","EX_M00260[e]","10,13,16,19-docosatetraenoic acid",0
+"EX_M00265[e]","EX_M00265[e]","10,13,16-docosatriynoic acid",0
+"EX_M00315[e]","EX_M00315[e]","12,15,18,21-tetracosatetraenoic acid",0
+"EX_M00341[e]","EX_M00341[e]","13,16,19-docosatrienoic acid",1
+"EX_M01197[e]","EX_M01197[e]","7-palmitoleic acid",0
+"EX_M01207[e]","EX_M01207[e]","8,11-eicosadienoic acid",0
+"EX_M01235[e]","EX_M01235[e]","9-eicosenoic acid",0
+"EX_M01238[e]","EX_M01238[e]","9-heptadecylenic acid",0
+"EX_M01582[e]","EX_M01582[e]","cis-cetoleic acid",0
+"EX_M02053[e]","EX_M02053[e]","henicosanoic acid",1
+"EX_M02457[e]","EX_M02457[e]","mead acid",0
+"EX_M02613[e]","EX_M02613[e]","nonadecylic acid",1
+"EX_M02745[e]","EX_M02745[e]","physeteric acid",1
+"EX_M03045[e]","EX_M03045[e]","tricosanoic acid",1
+"EX_M03051[e]","EX_M03051[e]","tridecylic acid",1
+"EX_M03153[e]","EX_M03153[e]","ximenic acid",0
+"EX_M01268[e]","EX_M01268[e]","activation-ppara",0
+"EX_HC02080[e]","EX_HC02080[e]","bile-PC pool",0
+"EX_h2co3[e]","EX_h2co3[e]","carbonate",1
+"EX_M02837[e]","EX_M02837[e]","retinyl palmitate",1
+"EX_M02382[e]","EX_M02382[e]","Li+",1
+"EX_M02035[e]","EX_M02035[e]","guanidine",1
+"EX_M02467[e]","EX_M02467[e]","metformin",1
+"EX_M02821[e]","EX_M02821[e]","quinidine",1
+"EX_mg2[e]","EX_mg2[e]","Mg2+",1
+"EX_cu2[e]","EX_cu2[e]","Cu2+",1
+"EX_M01571[e]","EX_M01571[e]","cimetidine",1
+"HMR_10024",NA,"biomass",0
+"HMR_10025","Exchange of 20-hydroxy-arachidonate","20-hydroxy-arachidonate",0
+"HMR_10026","Exchange of chenodiol","chenodiol",0
+"HMR_10027","Exchange of LacCer pool","LacCer pool",0
+"HMR_10028","Exchange of Chylomicron Lipoprotein","Chylomicron Lipoprotein",0
+"HMR_10029","Exchange of steroids","steroids",1
+"HMR_10030","Exchange of xenobiotics","xenobiotics",0
+"HMR_10031","Exchange of arachidonate derivatives","arachidonate derivatives",0
+"HMR_10047","1,2-diacylglycerol-LD-PC pool exchange","1,2-diacylglycerol-LD-PC pool",0
+"HMR_10060","N-formyl-L-glutamate exchange","N-formyl-L-glutamate",0
+"HMR_10074",NA,"alpha-muricholic acid",1
+"HMR_10076",NA,"beta-muricholic acid",1
+"HMR_10077",NA,"dehydrocholic acid",1
+"HMR_10078",NA,"tauro-alpha-muricholic acid",1
+"HMR_10081",NA,"omega-muricholic acid",1
+"HMR_10083",NA,"taurohyocholic acid",0
+"HMR_10084",NA,"glycohyocholic acid",1
+"HMR_10085",NA,"glycohyodeoxycholic acid",0
+"HMR_10086",NA,"glycodehydrocholic acid",0
+"HMR_10087",NA,"hyocholic acid",1
+"HMR_10088",NA,"tauro-omega-muricholic acid",0
+"HMR_10089",NA,"tauro-beta-muricholic acid",0
+"HMR_10090",NA,"murideoxycholic acid",1
+"HMR_10091",NA,"taurodehydrocholic acid",0
+"HMR_10132",NA,"tauro-hyodeoxycholic acid",0

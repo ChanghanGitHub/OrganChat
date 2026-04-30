@@ -10,7 +10,8 @@ CA_net0_infer(
   LS = NULL,
   receptor = NULL,
   tf = NULL,
-  target = NULL
+  target = NULL,
+  hmdb_dictionary = OrganChatDB_hmdb_dictionary
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ CA_net0_infer(
 \item{tf}{the list of Signaling Effector used for inferring the pathways, the input is NULL by default, which means all will be used}
 
 \item{target}{the list of Target used for inferring the pathways, the input is NULL by default, which means all will be used}
+
+\item{hmdb_dictionary}{OrganChat-provided database matching "metabolite name" and the HMDB ID.}
 }
 \value{
 an OrganChat object

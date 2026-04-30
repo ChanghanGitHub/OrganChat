@@ -8,7 +8,7 @@ METAFlux_convert_OrganChat(
   cell.types,
   flux,
   METAFlux_lookup = METAFlux_lookup,
-  hmdb_dictionary = hmdb_dictionary
+  hmdb_dictionary = OrganChatDB_hmdb_dictionary
 )
 }
 \arguments{

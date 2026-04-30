@@ -34,6 +34,12 @@ inference module; (3) Multi-scale analysis module.
 All processed data and some saved OrganChat objects can be download
 from: <https://doi.org/10.5281/zenodo.19042679>.
 
+## Tutorials
+
+[Inferring, analyzing, and comparing the organ-organ communication (OOC)
+between different conditions using
+OrganChat.](vignettes/Comparison_Analysis_Tutorial.Rmd)
+
 ## Examples
 
 ### Benchmarking and perturbation-based validation using a spatial multi-omics human gastric cancer dataset: [link to the folder](Example/TumorMeta_Sun_2023)
