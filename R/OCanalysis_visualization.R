@@ -200,7 +200,7 @@ OC_riverplot <- function(df,
            aes(x = Role, stratum = Name, alluvium = Path, color = Expression)) +
       geom_flow(aes(fill = chatP)) +
       geom_stratum(width = width, size = size) +
-      geom_text(stat = "stratum", aes(label = after_stat(stratum))) +
+      geom_text(stat = "stratum", aes(label = after_stat(ggalluvial::stratum))) +
       scale_x_discrete(limits = c("LS", "Receptor", "TF", "Target"), expand = expand) +
       scale_fill_continuous(type = type) +
       scale_color_distiller(palette = palette) +
