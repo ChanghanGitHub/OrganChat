@@ -1,0 +1,251 @@
+---
+title: "MultiOrgan_Mouse_UCI_DataProcessingMetaboliteAnalysis"
+author: "Changhan"
+date: "2026-04-26"
+output: html_document
+---
+
+Data processing includes: (1) down sampling; (2) humen gene convertion for flux data analysis.
+
+The raw and processed liver, skin and adipose scRNA-seq data is deposited at Gene Expression Omnibus (GEO): GSE317326 (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE317326). The dataset will be publicly available upon publication.
+
+The required data to run the analysis can be downloaded from: https://doi.org/10.5281/zenodo.19042679.
+
+```{r}
+library(Seurat)
+
+library(scCustomize)
+library(sceasy)
+```
+
+
+# Preparation
+
+```{r}
+data.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Insulin_UCI_2025_mouse/"     # your path to the data
+DB.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/OrganChatDB/"                   # your path to the OrganChatDB
+Dictionary.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Metabolite_Dictionary/" # your path to the files "hmdb_dictionary" and "METAFlux_lookup"
+output.dir = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Insulin_UCI_2025_mouse/"    # your path to the ouput folder
+```
+
+
+Load and scale the Seurat objects for three organs
+```{r}
+UCI_Data_list = list()
+
+organ.list = c("Liver", "Skin", "Adipose")
+condition.list = c("old_resistant", "old_sensitive", "young")
+
+for (i in 1:length(organ.list)) {
+  UCI_Data_list[[i]] <- readRDS(paste0(data.path, "UCI_", organ.list[i], ".rds"))
+}
+
+names(UCI_Data_list) = organ.list
+```
+
+
+Construct a list of condition-specific data
+```{r}
+UCI_conditionData_list <- list()
+
+for (i in 1:length(organ.list)) {
+  df.list = list(old_resistant = list(), old_sensitive = list(), young = list())
+  
+  seurat.object = UCI_Data_list[[organ.list[i]]]
+  
+  df.list[["old_resistant"]] = subset(seurat.object, subset = condition == "old_resistant")
+  df.list[["old_sensitive"]] = subset(seurat.object, subset = condition == "old_sensitive")
+  df.list[["young"]] = subset(seurat.object, subset = condition == "young")
+  
+  UCI_conditionData_list[[i]] = df.list
+}
+names(UCI_conditionData_list) = organ.list
+```
+
+
+```{r}
+for (i in 1:length(UCI_conditionData_list)) {
+
+  print(table(UCI_conditionData_list[[i]]$old_resistant$Type))
+  print(table(UCI_conditionData_list[[i]]$old_sensitive$Type))
+  print(table(UCI_conditionData_list[[i]]$young$Type))
+}
+```
+
+
+
+For computation efficiency, we randomly selected 50% of the cells in clusters with >200 cells. 
+For quality control purpose, we dropped the clusters with <50 cells.
+```{r}
+UCI_subset_conditionData_list = UCI_conditionData_list
+
+downsample.rate = 0.5
+mincells = 200
+cutoff_population = 50
+
+for (i in 1:length(UCI_conditionData_list)) {
+  for (j in 1:length(condition.list)) {
+    # select the seurat object
+    datause <- UCI_conditionData_list[[i]][[j]]
+    metause <- UCI_conditionData_list[[i]][[j]]@meta.data
+    # select clusters with >200 cells
+    cluster = names(table(datause$Type)[table(datause$Type)>mincells])
+    # down-sampling
+    cellbarcodes = colnames(datause@assays$RNA@data)
+    rownames(metause) = cellbarcodes
+    remove_cells <- c()
+    for (k in 1:length(cluster)) {
+      # cell barcodes of the down-sampled cluster
+      metause_downsample = metause[metause$Type == cluster[k], ]
+      # cells that need to be removed
+     cellbarcodes_downsample = rownames( metause_downsample[sample( nrow(metause_downsample), floor(nrow(metause_downsample)*(1-downsample.rate)) ), ] )
+      # barcodes of the cells to be removed
+      remove_cells <- c(remove_cells, cellbarcodes_downsample)
+    }
+    cellbarcodes = cellbarcodes[!(cellbarcodes %in% remove_cells)]
+    data.output = subset(datause, cells = cellbarcodes)
+    # add cell type label
+    data.output@meta.data$Type = fct_drop(data.output@meta.data$Type)
+    # select clusters with population > cutoff value
+    cluster_cutoff = names(table(data.output$Type)[table(data.output$Type)>cutoff_population])
+    data.output = subset(data.output, Type %in% cluster_cutoff)
+    data.output@meta.data$Type = fct_drop(data.output@meta.data$Type)
+    # add condition label
+    data.output@meta.data$condition = names(UCI_conditionData_list[[i]][j])
+      
+    UCI_subset_conditionData_list[[i]][[j]] = data.output
+  }
+}
+```
+
+
+Merge and save
+```{r}
+for (i in 1:length(UCI_subset_conditionData_list)) {
+  merged_object <- Merge_Seurat_List(list_seurat = UCI_subset_conditionData_list[[i]])
+  # saveRDS(merged_object, paste0(data.path, "UCI_", names(UCI_subset_conditionData_list[i]), "_downsampled.rds"))
+}
+```
+
+
+# Convert genes to human gene symbols for flux data analysis
+
+```{r}
+library(gprofiler2)
+```
+
+
+Load the Seurat object
+```{r}
+organ.list = c("Liver", "Skin", "Adipose")
+condition.list = c("old_resistant", "old_sensitive", "young")
+
+UCI_Data_list <- list()
+
+for (i in 1:length(organ.list)) {
+  UCI_Data_list[[i]] = readRDS(paste0(data.path, "UCI_", organ.list[i], "_downsampled.rds"))
+}
+
+names(UCI_Data_list) = organ.list
+```
+
+
+```{r}
+for (i in 1:length(UCI_Data_list)) {
+  Data.input = UCI_Data_list[[i]]
+  
+  gene.input = rownames(Data.input@assays$RNA@counts)
+  counts.input = Data.input@assays$RNA@counts
+  meta.input = Data.input@meta.data
+  
+  convert.df = gorth(query = gene.input, 
+                     source_organism = "mmusculus", target_organism = "hsapiens", numeric_ns = "ENTREZGENE_ACC")
+  convert.df = data.frame(input = convert.df$input, output = convert.df$ortholog_name)
+  
+  # the count matrix
+  df = as.data.frame(counts.input)
+  # select the converted genes
+  df$input = rownames(df)
+  df = right_join(df, convert.df, join_by(input == input))
+  df = df[!duplicated(df$output) & !is.na(df$output), ]
+  rownames(df) = df$output
+  
+  # the new count matrix
+  df = df[ , 1:(ncol(df)-2)]
+  counts.new = as.matrix(df)
+  
+  # Create the new Seurat object (with converted genes)
+  options(Seurat.object.assay.version = "v5")
+  Data.output <- CreateSeuratObject(counts = counts.new, meta.data = meta.input)
+  Data.output <- NormalizeData(Data.output)
+  
+  # saveRDS(Data.output, paste0(data.path, "UCI_", names(UCI_Data_list[i]), "_downsampled_humanconverted.rds"))
+  
+  UCI_Data_list[[i]] = Data.output
+}
+```
+
+
+# Metabolite flux analysis
+
+Load the required libraries
+```{r message=FALSE,warning=FALSE}
+library(OrganChat)
+library(readr)
+library(forcats)
+library(METAFlux)
+```
+
+
+Load metabolite dictionary data
+```{r, include=FALSE}
+hmdb_dictionary <- read_csv(paste0(Dictionary.path, "hmdb_dictionary_20240129.csv"))
+METAFlux_lookup <- read_csv(paste0(Dictionary.path, "METAFlux_lookup_20240131.csv"))
+```
+
+
+Metabolite flux analysis
+
+```{r, include=FALSE}
+for (i in 1:length(UCI_Data_list)) {
+  # Prepare the input RNA data 
+  organ.select = names(UCI_Data_list)[i]
+  Data.input_condition1 <- subset(UCI_Data_list[[organ.select]], subset = condition == condition.list[1])
+  Data.input_condition2 <- subset(UCI_Data_list[[organ.select]], subset = condition == condition.list[2])
+  Data.input_condition3 <- subset(UCI_Data_list[[organ.select]], subset = condition == condition.list[3])
+  
+  Data.input_condition1$Type <- fct_drop(Data.input_condition1$Type)
+  Data.input_condition2$Type <- fct_drop(Data.input_condition2$Type)
+  Data.input_condition3$Type <- fct_drop(Data.input_condition3$Type)
+  # Update the Active Identity
+  Data.input_condition1 <- SetIdent(Data.input_condition1, value = Data.input_condition1$Type)
+  Data.input_condition2 <- SetIdent(Data.input_condition2, value = Data.input_condition2$Type)
+  Data.input_condition3 <- SetIdent(Data.input_condition3, value = Data.input_condition3$Type)
+  
+  # METAFlux analysis
+  Data.list = list(Condition1 = Data.input_condition1, Condition2 = Data.input_condition2, Condition3 = Data.input_condition3)
+  names(Data.list) = condition.list
+  
+  for (j in 1:length(Data.list)) {
+    flux = run_METAFlux(Data.input = Data.list[[j]],
+                        myident = 'Type',
+                        n_bootstrap=100, 
+                        seed=1,
+                        medium = human_blood)
+    
+    flux = METAFlux_reformat(flux = flux,
+                             cell.types = levels(Data.list[[j]]@meta.data$Type),
+                             exclude = "None",
+                             METAFlux_lookup = METAFlux_lookup,
+                             scale.byflux = TRUE)
+    
+    output = METAFlux_convert_OrganChat(cell.types = levels(Data.list[[j]]$Type),
+                                       flux = flux,
+                                       METAFlux_lookup = METAFlux_lookup,
+                                       hmdb_dictionary = hmdb_dictionary)
+    
+    # write.csv(output , file = paste0(data.path, organ.select, "_flux_", names(Data.list[j]), ".csv"), 
+    #           row.names = TRUE, col.names = TRUE)
+  }
+}
+```

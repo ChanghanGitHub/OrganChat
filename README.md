@@ -45,20 +45,33 @@ from: <https://doi.org/10.5281/zenodo.19042679>.
     exFINDER](Example/TumorMeta_Sun_2023/TumorMeta_Sun_2023_Benchmarking.Rmd)
 
 3)  [Perturbation-based
-    validation.](Example/TumorMeta_Sun_2023/HTumorMeta_Sun_2023_Perturbation_CAOC.Rmd)
+    validation.](Example/TumorMeta_Sun_2023/TumorMeta_Sun_2023_Perturbation_CAOC.Rmd)
+
+### Application to a multi-organ insulin-resistance and aging-related system: [link to the folder](Example/Insulin_UCI_2025_mouse)
+
+1)  [Data processing and metabolite flux
+    inference.](Example/Insulin_UCI_2025_mouse/MultiOrgan_Mouse_UCI_DataProcessingMetaboliteAnalysis.Rmd)
+
+2)  [Evaluating OrganChat predictions using a two-organ
+    insulin-resistance
+    system.](Example/Insulin_UCI_2025_mouse/MultiOrgan_Mouse_UCI_Validation_Liver_Adipose_OS_OR.Rmd)
+
+3)  [Further evaluation of an extended three-organ system for
+    aging-related
+    diabetes.](Example/Insulin_UCI_2025_mouse/MultiOrgan_Mouse_UCI_MOOC_T2D.Rmd)
 
 ### Application to a five-organ communication system for immune-mediated diseases: [link to the folder](Example/Sandra_CellRepMed_2023)
 
 1)  [Processing the original data and inferring metabolite
-    flux.](Example/Sandra_CellRepMed_2023/HSandra_CellRepMed_2023_DataProcessing_MetaboliteAnalysis.Rmd)
+    flux.](Example/Sandra_CellRepMed_2023/Sandra_CellRepMed_2023_DataProcessing_MetaboliteAnalysis.Rmd)
 
 2)  [Comparison analysis via OrganChat between conditions for: joint and
     muscle; joint and spleen; muscle and spleen; skin and
-    muscle.](Example/Sandra_CellRepMed_2023/HumanAtlas_Science_2022_MetaboliteAnalysis.Rmd)
+    muscle.](Example/Sandra_CellRepMed_2023/Sandra_CellRepMed_2023_CAOC.Rmd)
 
 3)  [Multi-organ OrganChat (MOOC) Analysis of OrganChat between
     conditions for: joint, muscle, lung, skin,
-    spleen.](Example/Sandra_CellRepMed_2023/HumanAtlas_Science_2022_Multi-OrganAnalysis.Rmd)
+    spleen.](Example/Sandra_CellRepMed_2023/Sandra_CellRepMed_2023_MOOC.Rmd)
 
 ### OrganChat reveals cross-organ communication for human multiple-disease systems: [link to the folder](Example/HumanAtlas_Science_2022)
 
@@ -70,7 +83,7 @@ from: <https://doi.org/10.5281/zenodo.19042679>.
 
 3)  [Multi-organ OrganChat analysis between spleen, small intestine,
     lymph node, lung, and
-    vasculature.](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_Multi-OrganAnalysis.Rmd)
+    vasculature.](Example/HumanAtlas_Science_2022/HumanAtlas_Science_2022_MultiOrganAnalysis.Rmd)
 
 4)  [Comparison analysis between two donors for: small intestine and
     vasculature, lung and vasculature, lymph node and vasculature,

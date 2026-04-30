@@ -1,0 +1,824 @@
+---
+title: "MultiOrgan_Mouse_UCI_MOOC_T2D"
+author: "Changhan"
+date: "2026-04-26"
+output: html_document
+---
+
+```{r}
+library(OrganChat)
+
+library(readr)
+library(forcats)
+```
+
+# Preparation
+
+```{r}
+data.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Insulin_UCI_2025_mouse/"     # your path to the data
+DB.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/OrganChatDB/"                   # your path to the OrganChatDB
+Dictionary.path = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Metabolite_Dictionary/" # your path to the files "hmdb_dictionary" and "METAFlux_lookup"
+output.dir = "~/Research_2025/OrganChat_v3/Nature_submission/Zenodo/Insulin_UCI_2025_mouse/"    # your path to the ouput folder
+```
+
+
+Load metabolite dictionary data
+```{r, include=FALSE}
+hmdb_dictionary <- read_csv(paste0(Dictionary.path, "hmdb_dictionary_20240129.csv"))
+METAFlux_lookup <- read_csv(paste0(Dictionary.path, "METAFlux_lookup_20240131.csv"))
+```
+
+
+Load OCDB
+```{r}
+# load database
+load(paste0(DB.path, "LSR_layer1_mouse.rda"))
+load(paste0(DB.path, "RSE_layer2_mouse.rda"))
+load(paste0(DB.path, "SET_layer3_mouse.rda"))
+
+OrganChatDB <- list()
+OrganChatDB[[1]] <- LSR_layer1_mouse
+OrganChatDB[[2]] <- RSE_layer2_mouse
+OrganChatDB[[3]] <- SET_layer3_mouse
+```
+
+
+
+Load the Seurat object
+c("Liver", "Skin", "Adipose")
+```{r}
+organ.list = c("Liver", "Skin", "Adipose")
+condition.list = c("old_resistant", "old_sensitive", "young")
+
+UCI_Data_list <- list()
+
+for (i in 1:length(organ.list)) {
+  UCI_Data_list[[i]] = readRDS(paste0(data.path, "UCI_", organ.list[i], "_downsampled.rds"))
+}
+
+names(UCI_Data_list) = organ.list
+```
+
+
+# Multi-organ OrganChat analysis
+
+
+Insulin-resistance–associated human genes from Gene Set Enrichment Analysis (GSEA)
+```{r}
+T2D.list = c("ZMPSTE24", "MICU1", "AGPAT2", "CEL", "IGF2BP2", "SDCCAG8", "ADCY3", "IFT27", "CLCNKB", "TTC8", "BBS5", "SCLT1", 
+ "CFAP418", "CYP19A1", "DBH", "BBS12", "SLC30A8", "ERCC6", "AKT2", "LEMD2", "TRIM32", "CNOT1", "PHLDB1", "FOS", 
+ "PTF1A", "APPL1", "IFT172", "GATA6", "GCK", "BSCL2", "BBS9", "GPD2", "CAVIN1", "NSMCE2", "GRB10", "HMGA1", 
+ "HNF4A", "HSD11B1", "ZFP57", "IGF1", "IGFALS", "IL6", "INS", "INSR", "PDX1", "IRF4", "IRS1", "KCNJ11", "LEP", 
+ "LEPR", "LIPC", "LIPE", "LMNA", "MTNR1B", "NEUROD1", "NPHP1", "SCAPER", "PAX4", "WDPCP", "ENPP1", "PIK3R1", 
+ "PLAGL1", "PLIN1", "PMM2", "POLD1", "LZTFL1", "PPARG", "MKS1", "PPP1R3A", "BBS7", "RETN", "HYMAI", "PTPN1", 
+ "BBS1", "BBS2", "BBS4", "CIDEC", "BLK", "BLM", "SLC2A2", "SLC5A2", "SLC12A3", "STAT3", "ABCC8", "HNF1A", 
+ "HNF1B", "TCF7L2", "WFS1", "WRN", "XRCC4", "ALMS1", "CCDC28B", "BBS10", "DCAF17", "IFT74", "CEP290", "MKKS", 
+ "ARL6", "KLF11", "LMNB2", "CEP19", "CAV1", "IRS2", "BBIP1", "EIF2AK3", "MAPK8IP1", "MFN2")
+
+T2D.list_mouse = gorth(query = T2D.list, source_organism = "hsapiens", target_organism = "mmusculus", numeric_ns = "")
+T2D.genes = unique(T2D.list_mouse$ortholog_name)
+```
+
+
+Should perform the analysis for YS vs. OS, YS vs. OR, respectively.
+You may also download the saved OrganChat objects from Zeonodo.
+
+Select target genes
+```{r}
+# conditions = c("young", "old_sensitive") # young: YS
+conditions = c("young", "old_resistant")
+organs = names(UCI_Data_list)
+
+target = T2D.genes
+```
+
+
+Create data inputs
+```{r}
+data.list = list()
+idents.list = list()
+
+for (i in 1:length(UCI_Data_list)){
+  organ.select = organs[i]
+  # select subset data of the two conditions
+  Data.input_organ <- subset(UCI_Data_list[[i]], subset = condition %in% conditions)
+  Data.input_organ@meta.data$condition <- fct_drop(Data.input_organ@meta.data$condition)
+  Data.input_organ@meta.data$Type <- fct_drop(Data.input_organ@meta.data$Type)
+  
+  data.list[[i]] = Data.input_organ@assays$RNA@data
+  
+  Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+  idents.list[[i]] = Data.input_organ@active.ident
+  
+  Idents(Data.input_organ) = Data.input_organ@meta.data$condition
+  conditions.list[[i]] = Data.input_organ@active.ident
+}
+```
+
+
+Create OC object
+```{r}
+MOOC = create_OrganChat(object = data.list, 
+                        organs = organs,
+                        idents.list = idents.list, 
+                        ComparisonAnalysis = TRUE,
+                        conditions = conditions,
+                        conditions.list = conditions.list,
+                        assay = NULL, 
+                        do.sparse = T)
+```
+
+
+Integrate the scRNA-seq data
+```{r}
+MOOC = MO_cal_scRNA.bygroup(object = MOOC,
+                            DB = OrganChatDB,
+                            mean_method = NULL,
+                            scale.max = 10)
+```
+
+
+save the objects (also available on Zenodo)
+```{r}
+# saveRDS(MOOC, file = paste0(output.dir, "Validation_MOOC_T2D_young_olds.rds"))
+saveRDS(MOOC, file = paste0(output.dir, "Validation_MOOC_T2D_young_oldr.rds"))
+```
+
+
+Prepare the metabolite flux data
+```{r, include=FALSE}
+organs = MOOC@organs
+
+metalist.1 = list()
+metalist.2 = list()
+
+for (i in 1:length(organs)) {
+  organ.select = organs[i]
+  metalist.1[[i]] = read_csv( paste0(path, organ.select, "_flux_", conditions[1],".csv") )
+  metalist.1[[i]] <- as.data.frame(metalist.1[[i]])
+  rownames(metalist.1[[i]]) <- metalist.1[[i]][, 1]
+  metalist.1[[i]] <- metalist.1[[i]][, -1]
+  
+  metalist.2[[i]] = read_csv( paste0(path, organ.select, "_flux_", conditions[2],".csv"))
+  metalist.2[[i]] <- as.data.frame(metalist.2[[i]])
+  rownames(metalist.2[[i]]) <- metalist.2[[i]][, 1]
+  metalist.2[[i]] <- metalist.2[[i]][, -1]
+}
+```
+
+Integrate the flux data
+```{r}
+MOOC <- MO_merge_metabolite.bygroup(object = MOOC,
+                                    metabolitedata.list.condition1 = metalist.1,
+                                    metabolitedata.list.condition2 = metalist.2,
+                                    type = "flux",
+                                    scale.max = 10)
+```
+
+
+Pairwise analysis with 105 targets (~8.11hours)
+You may also download the saved results from Zenodo.
+```{r}
+
+start.time <- Sys.time()
+
+MOOC.net <- MO_pairwise_analysis(object = MOOC,
+                             DB = OrganChatDB, 
+                             LS = NULL, 
+                             receptor = NULL, 
+                             tf = NULL,
+                             target = target,
+                             K = 0.1, 
+                             N = 1,
+                             R = 100,
+                             CI = 0.95,
+                             CA_cutoff_value = c(0, 0.3, 0.3, 0.3),
+                             CA_cutoff_chatP = 0.3,
+                             CA_cutoff_sd = NULL,
+                             CA_cutoff_CI = 0)
+
+end.time <- Sys.time()
+time.taken <- end.time - start.time
+time.taken
+```
+
+
+save the results (also available on Zenodo)
+```{r}
+# saveRDS(MOOC.net, file = paste0(output.dir, "Validation_MOOC_net_T2D_young_olds.rds"))
+saveRDS(MOOC.net, file = paste0(output.dir, "Validation_MOOC_net_T2D_young_oldr.rds"))
+```
+
+
+# Summarize the analysis results
+
+Load the saved MOOC results
+```{r}
+MOOC.1 = readRDS(paste0(data.path, "Validation_MOOC_T2D_young_olds.rds"))
+MOOC.2 = readRDS(paste0(data.path, "Validation_MOOC_T2D_young_oldr.rds"))
+
+MOOC.net.1 = readRDS(paste0(data.path, "Validation_MOOC_net_T2D_young_olds.rds"))
+MOOC.net.2 = readRDS(paste0(data.path, "Validation_MOOC_net_T2D_young_oldr.rds"))
+```
+
+
+## Communication to Liver
+
+```{r}
+MOOC.net.1[[4]] # stores all organ-organ pairs
+
+DE.table.list = list()
+for (k in 1:2) {
+
+  organs = MOOC.net.1[[4]][ , k]
+  conditions = c("young", "old_sensitive")
+  
+  data.list = list()
+  idents.list = list()
+  conditions.list = list()
+  
+  for (i in 1:length(organs)){
+    organ.select = organs[i]
+    # select subset data of the two conditions
+    Data.input_organ <- subset(UCI_Data_list[[organ.select]], subset = condition %in% conditions)
+    Data.input_organ@meta.data$condition <- fct_drop(Data.input_organ@meta.data$condition)
+    Data.input_organ@meta.data$Type <- fct_drop(Data.input_organ@meta.data$Type)
+    
+    data.list[[i]] = Data.input_organ@assays$RNA@data
+    
+    Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+    idents.list[[i]] = Data.input_organ@active.ident
+    
+    Idents(Data.input_organ) = Data.input_organ@meta.data$condition
+    conditions.list[[i]] = Data.input_organ@active.ident
+  }
+  
+  OC_1 = create_OrganChat(object = data.list, organs = organs, idents.list = idents.list, ComparisonAnalysis = TRUE,
+                          conditions = conditions, conditions.list = conditions.list, assay = NULL, do.sparse = T)
+  
+  ################################################################################
+  
+  organs = MOOC.net.2[[4]][ , k]
+  conditions = c("young", "old_resistant")
+  
+  data.list = list()
+  idents.list = list()
+  conditions.list = list()
+  
+  for (i in 1:length(organs)){
+    organ.select = organs[i]
+    # select subset data of the two conditions
+    Data.input_organ <- subset(UCI_Data_list[[organ.select]], subset = condition %in% conditions)
+    Data.input_organ@meta.data$condition <- fct_drop(Data.input_organ@meta.data$condition)
+    Data.input_organ@meta.data$Type <- fct_drop(Data.input_organ@meta.data$Type)
+    
+    data.list[[i]] = Data.input_organ@assays$RNA@data
+    
+    Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+    idents.list[[i]] = Data.input_organ@active.ident
+    
+    Idents(Data.input_organ) = Data.input_organ@meta.data$condition
+    conditions.list[[i]] = Data.input_organ@active.ident
+  }
+  
+  OC_2 = create_OrganChat(object = data.list, organs = organs, idents.list = idents.list, ComparisonAnalysis = TRUE,
+                          conditions = conditions, conditions.list = conditions.list, assay = NULL, do.sparse = T)
+  
+  ################################################################################
+  OC_1@net = MOOC.net.1[[k]]
+  OC_1 = DEpath_table(object = OC_1,
+                      Sender.group = NULL,
+                      Receiver.group = NULL,
+                      Direction = NULL,
+                      p_cutoff = NULL,
+                      sd_cutoff = NULL,
+                      DI_cutoff = NULL,
+                      top = NULL)
+  
+  OC_2@net = MOOC.net.2[[k]]
+  OC_2 = DEpath_table(object = OC_2,
+                      Sender.group = NULL,
+                      Receiver.group = NULL,
+                      Direction = NULL,
+                      p_cutoff = NULL,
+                      sd_cutoff = NULL,
+                      DI_cutoff = NULL,
+                      top = NULL)
+  
+  DEtable_1 = OC_1@DEpath
+  DEtable_2 = OC_2@DEpath
+  DEtable_merge = inner_join(DEtable_1, DEtable_2[ , c("Path_ID", 
+                                                       "chatP_old_resistant", "bootstrap_sd_old_resistant", 
+                                                       "log2FC", "DI")], join_by("Path_ID"))
+  DEtable_merge$Organ1 = organs[1]
+  DEtable_merge$Organ2 = organs[2]
+  
+  DE.table.list[[k]] = DEtable_merge
+  
+}
+```
+
+
+Summarize the results of Liver <- Adipose, Liver <- Skin, and Liver <- Liver
+```{r}
+df1 = DE.table.list[[1]][DE.table.list[[1]]$Direction == "backward", ]
+df2 = DE.table.list[[2]][DE.table.list[[2]]$Direction == "backward", ]
+
+df3 = rbind(DE.table.list[[1]][DE.table.list[[1]]$Direction == "self_organ1", ],
+                     DE.table.list[[2]][DE.table.list[[2]]$Direction == "self_organ1", ])
+
+x1 = aggregate(chatP_young ~ Target, df1, mean) 
+x2 = aggregate(chatP_old_sensitive ~ Target, df1, mean) 
+x3 = aggregate(chatP_old_resistant ~ Target, df1, mean) 
+
+y1 = aggregate(chatP_young ~ Target, df2, mean) 
+y2 = aggregate(chatP_old_sensitive ~ Target, df2, mean) 
+y3 = aggregate(chatP_old_resistant ~ Target, df2, mean)
+
+z1 = aggregate(chatP_young ~ Target, df3, mean) 
+z2 = aggregate(chatP_old_sensitive ~ Target, df3, mean) 
+z3 = aggregate(chatP_old_resistant ~ Target, df3, mean)
+
+x_combined = inner_join(x1, inner_join(x2, x3, join_by(Target)) , join_by(Target))
+y_combined = inner_join(y1, inner_join(y2, y3, join_by(Target)) , join_by(Target))
+z_combined = inner_join(z1, inner_join(z2, z3, join_by(Target)) , join_by(Target))
+
+xyz = rbind(x_combined, y_combined, z_combined)
+
+w1 = aggregate(chatP_young ~ Target, xyz, mean) 
+w2 = aggregate(chatP_old_sensitive ~ Target, xyz, mean) 
+w3 = aggregate(chatP_old_resistant ~ Target, xyz, mean)
+
+DE.condition_Liver = inner_join(w1, inner_join(w2, w3, join_by(Target)) , join_by(Target))
+```
+
+
+## Communication to Adipose
+
+```{r}
+DE.table.list = list()
+for (k in 2:3) {
+
+  organs = MOOC.net.1[[4]][ , k]
+  conditions = c("young", "old_sensitive")
+  
+  data.list = list()
+  idents.list = list()
+  conditions.list = list()
+  
+  for (i in 1:length(organs)){
+    organ.select = organs[i]
+    # select subset data of the two conditions
+    Data.input_organ <- subset(UCI_Data_list[[organ.select]], subset = condition %in% conditions)
+    Data.input_organ@meta.data$condition <- fct_drop(Data.input_organ@meta.data$condition)
+    Data.input_organ@meta.data$Type <- fct_drop(Data.input_organ@meta.data$Type)
+    
+    data.list[[i]] = Data.input_organ@assays$RNA@data
+    
+    Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+    idents.list[[i]] = Data.input_organ@active.ident
+    
+    Idents(Data.input_organ) = Data.input_organ@meta.data$condition
+    conditions.list[[i]] = Data.input_organ@active.ident
+  }
+  
+  OC_1 = create_OrganChat(object = data.list, organs = organs, idents.list = idents.list, ComparisonAnalysis = TRUE,
+                          conditions = conditions, conditions.list = conditions.list, assay = NULL, do.sparse = T)
+  
+  ################################################################################
+  
+  organs = MOOC.net.2[[4]][ , k]
+  conditions = c("young", "old_resistant")
+  
+  data.list = list()
+  idents.list = list()
+  conditions.list = list()
+  
+  for (i in 1:length(organs)){
+    organ.select = organs[i]
+    # select subset data of the two conditions
+    Data.input_organ <- subset(UCI_Data_list[[organ.select]], subset = condition %in% conditions)
+    Data.input_organ@meta.data$condition <- fct_drop(Data.input_organ@meta.data$condition)
+    Data.input_organ@meta.data$Type <- fct_drop(Data.input_organ@meta.data$Type)
+    
+    data.list[[i]] = Data.input_organ@assays$RNA@data
+    
+    Idents(Data.input_organ) = Data.input_organ@meta.data$Type
+    idents.list[[i]] = Data.input_organ@active.ident
+    
+    Idents(Data.input_organ) = Data.input_organ@meta.data$condition
+    conditions.list[[i]] = Data.input_organ@active.ident
+  }
+  
+  OC_2 = create_OrganChat(object = data.list, organs = organs, idents.list = idents.list, ComparisonAnalysis = TRUE,
+                          conditions = conditions, conditions.list = conditions.list, assay = NULL, do.sparse = T)
+  
+  ################################################################################
+  OC_1@net = MOOC.net.1[[k]]
+  OC_1 = DEpath_table(object = OC_1,
+                      Sender.group = NULL,
+                      Receiver.group = NULL,
+                      Direction = NULL,
+                      p_cutoff = NULL,
+                      sd_cutoff = NULL,
+                      DI_cutoff = NULL,
+                      top = NULL)
+  
+  OC_2@net = MOOC.net.2[[k]]
+  OC_2 = DEpath_table(object = OC_2,
+                      Sender.group = NULL,
+                      Receiver.group = NULL,
+                      Direction = NULL,
+                      p_cutoff = NULL,
+                      sd_cutoff = NULL,
+                      DI_cutoff = NULL,
+                      top = NULL)
+  
+  DEtable_1 = OC_1@DEpath
+  DEtable_2 = OC_2@DEpath
+  DEtable_merge = inner_join(DEtable_1, DEtable_2[ , c("Path_ID", 
+                                                       "chatP_old_resistant", "bootstrap_sd_old_resistant", 
+                                                       "log2FC", "DI")], join_by("Path_ID"))
+  DEtable_merge$Organ1 = organs[1]
+  DEtable_merge$Organ2 = organs[2]
+  
+  DE.table.list[[k-1]] = DEtable_merge
+  
+}
+```
+
+
+Summarize the results of Liver -> Adipose, Skin -> Adipose, and Adipose -> Adipose
+```{r}
+df1 = DE.table.list[[1]][DE.table.list[[1]]$Direction == "forward", ]
+df2 = DE.table.list[[2]][DE.table.list[[2]]$Direction == "forward", ]
+
+df3 = rbind(DE.table.list[[1]][DE.table.list[[1]]$Direction == "self_organ2", ],
+                     DE.table.list[[2]][DE.table.list[[2]]$Direction == "self_organ2", ])
+
+x1 = aggregate(chatP_young ~ Target, df1, mean) 
+x2 = aggregate(chatP_old_sensitive ~ Target, df1, mean) 
+x3 = aggregate(chatP_old_resistant ~ Target, df1, mean) 
+
+y1 = aggregate(chatP_young ~ Target, df2, mean) 
+y2 = aggregate(chatP_old_sensitive ~ Target, df2, mean) 
+y3 = aggregate(chatP_old_resistant ~ Target, df2, mean)
+
+z1 = aggregate(chatP_young ~ Target, df3, mean) 
+z2 = aggregate(chatP_old_sensitive ~ Target, df3, mean) 
+z3 = aggregate(chatP_old_resistant ~ Target, df3, mean)
+
+x_combined = inner_join(x1, inner_join(x2, x3, join_by(Target)) , join_by(Target))
+y_combined = inner_join(y1, inner_join(y2, y3, join_by(Target)) , join_by(Target))
+z_combined = inner_join(z1, inner_join(z2, z3, join_by(Target)) , join_by(Target))
+
+xyz = rbind(x_combined, y_combined, z_combined)
+
+w1 = aggregate(chatP_young ~ Target, xyz, mean) 
+w2 = aggregate(chatP_old_sensitive ~ Target, xyz, mean) 
+w3 = aggregate(chatP_old_resistant ~ Target, xyz, mean)
+
+DE.condition_Adipose = inner_join(w1, inner_join(w2, w3, join_by(Target)) , join_by(Target))
+```
+
+
+# Visualization
+
+## T2D genes activation plot
+
+For communications towards liver
+```{r}
+data <- as.matrix(DE.condition_Liver[ , 2:4])
+rownames(data) = DE.condition_Liver$Target
+
+pheatmap(data, scale = "row",
+         cluster_rows = FALSE, cluster_cols = FALSE, 
+         color = colorRampPalette(rev(brewer.pal(3, "Spectral")))(200),
+         legend_breaks = c(-1, 0, 1),
+         legend_labels = c("Low", "Medium", "High"),
+         cellheight = 20, cellwidth = 20)
+```
+
+
+
+Validation via the data
+```{r}
+Target.exp.1 = MOOC.1@DGdata$young$Liver[DE.condition_Liver$Target , ]
+Target.exp.2 = MOOC.1@DGdata$old_sensitive$Liver[DE.condition_Liver$Target , ]
+Target.exp.3 = MOOC.2@DGdata$old_resistant$Liver[DE.condition_Liver$Target , ]
+
+x = data.frame(Target.1 = apply(Target.exp.1, 1, mean), 
+               Target.2 = apply(Target.exp.2, 1, mean), 
+               Target.3 = apply(Target.exp.3, 1, mean))
+
+data <- as.matrix(x)
+rownames(data) = DE.condition_Liver$Target
+
+pheatmap(data, scale = "row",
+         cluster_rows = FALSE, cluster_cols = FALSE, 
+         color = colorRampPalette(rev(brewer.pal(3, "RdBu")))(200),
+         legend_breaks = c(-1, 0, 1),
+         legend_labels = c("Low", "Medium", "High"),
+         cellheight = 20, cellwidth = 20)
+```
+
+
+For communications towards adipose
+```{r}
+data <- as.matrix(DE.condition_Adipose[ , 2:4])
+rownames(data) = DE.condition_Adipose$Target
+
+pheatmap(data, scale = "row",
+         cluster_rows = FALSE, cluster_cols = FALSE, 
+         color = colorRampPalette(rev(brewer.pal(3, "Spectral")))(200),
+         legend_breaks = c(-1, 0, 1),
+         legend_labels = c("Low", "Medium", "High"),
+         cellheight = 20, cellwidth = 20)
+```
+
+
+
+Validation via the data
+```{r}
+Target.exp.1 = MOOC.1@DGdata$young$Adipose[DE.condition_Adipose$Target , ]
+Target.exp.2 = MOOC.1@DGdata$old_sensitive$Adipose[DE.condition_Adipose$Target , ]
+Target.exp.3 = MOOC.2@DGdata$old_resistant$Adipose[DE.condition_Adipose$Target , ]
+
+x = data.frame(Target.1 = apply(Target.exp.1, 1, mean), 
+               Target.2 = apply(Target.exp.2, 1, mean), 
+               Target.3 = apply(Target.exp.3, 1, mean))
+
+data <- as.matrix(x)
+rownames(data) = DE.condition_Adipose$Target
+
+pheatmap(data, scale = "row",
+         cluster_rows = FALSE, cluster_cols = FALSE, 
+         color = colorRampPalette(rev(brewer.pal(3, "RdBu")))(200),
+         legend_breaks = c(-1, 0, 1),
+         legend_labels = c("Low", "Medium", "High"),
+         cellheight = 20, cellwidth = 20)
+```
+
+
+## Visualize the MOOC analysis results
+
+Here we use peptide hormone-driven communications as an example.
+
+Circle plot showing the total number of the peptide hormone-driven communications with probability > 0.7, YS vs OS.
+```{r}
+# Construct the network
+MOOC.plot <- MO_networkconstruct(object = MOOC.1,
+                                MO.net.list = MOOC.net.1,
+                                category = "hormone_peptide",
+                                chatP_cutoff = 0.7)
+
+MO_networkplot(network.input = MOOC.plot,
+               style = "total.counts",
+               color.platte = brewer.pal(8, "Set2"),
+               scale.edge.width = 10,
+               scale.vertex.size = 30,
+               vertex.frame.color = "white",
+               vertex.label.color="black",
+               vertex.label.dist = 3,
+               edge.arrow.size = 0.6,
+               edge.curved = 0.3,
+               margin = 0.2,
+               vertex.max = "condition1",
+               edge.max = "condition1")
+```
+
+
+Circle plot showing the total number of the peptide hormone-driven communications with probability > 0.7, YS vs OR.
+```{r}
+# Construct the network
+MOOC.plot <- MO_networkconstruct(object = MOOC.2,
+                                MO.net.list = MOOC.net.2,
+                                category = "hormone_peptide",
+                                chatP_cutoff = 0.7)
+
+MO_networkplot(network.input = MOOC.plot,
+               style = "total.counts",
+               color.platte = brewer.pal(8, "Set2"),
+               scale.edge.width = 10,
+               scale.vertex.size = 30,
+               vertex.frame.color = "white",
+               vertex.label.color="black",
+               vertex.label.dist = 3,
+               edge.arrow.size = 0.6,
+               edge.curved = 0.3,
+               margin = 0.2,
+               vertex.max = "condition1",
+               edge.max = "condition1")
+```
+
+
+Circle plot showing the total strength (total communication probability) of the peptide hormone-driven communications with probability > 0.7, YS vs OS.
+```{r}
+# Construct the network
+MOOC.plot <- MO_networkconstruct(object = MOOC.1,
+                                MO.net.list = MOOC.net.1,
+                                category = "hormone_peptide",
+                                chatP_cutoff = 0.7)
+
+MO_networkplot(network.input = MOOC.plot,
+               style = "total.chatP",
+               color.platte = brewer.pal(8, "Set2"),
+               scale.edge.width = 10,
+               scale.vertex.size = 30,
+               vertex.frame.color = "white",
+               vertex.label.color="black",
+               vertex.label.dist = 3,
+               edge.arrow.size = 0.6,
+               edge.curved = 0.3,
+               margin = 0.2,
+               vertex.max = "condition1",
+               edge.max = "condition1")
+```
+
+Circle plot showing the total strength (total communication probability) of the peptide hormone-driven communications with probability > 0.7, YS vs OR.
+```{r}
+# Construct the network
+MOOC.plot <- MO_networkconstruct(object = MOOC.2,
+                                MO.net.list = MOOC.net.2,
+                                category = "hormone_peptide",
+                                chatP_cutoff = 0.7)
+
+MO_networkplot(network.input = MOOC.plot,
+               style = "total.chatP",
+               color.platte = brewer.pal(8, "Set2"),
+               scale.edge.width = 10,
+               scale.vertex.size = 30,
+               vertex.frame.color = "white",
+               vertex.label.color="black",
+               vertex.label.dist = 3,
+               edge.arrow.size = 0.6,
+               edge.curved = 0.3,
+               margin = 0.2,
+               vertex.max = "condition1",
+               edge.max = "condition1")
+```
+
+
+
+## Pathway plot
+
+### For communication between Liver & Adipose (YS vs. OR)
+
+Built the OC object
+```{r}
+organs = c("Liver", "Adipose")
+OC.2 = MOOC.2
+OC.2@organs = OC.2@organs[c(1,3)]
+
+OC.2@data.list = OC.2@data.list[organs]
+OC.2@idents.list = OC.2@idents.list[organs]
+OC.2@conditions.list = OC.2@conditions.list[organs]
+
+OC.2@idents.list$Liver = fct_drop(OC.2@idents.list$Liver)
+
+OC.2@LSdata$young = OC.2@LSdata$young[organs]
+OC.2@LSdata$old_resistant = OC.2@LSdata$old_resistant[organs]
+OC.2@DGdata$young = OC.2@DGdata$young[organs]
+OC.2@DGdata$old_resistant = OC.2@DGdata$old_resistant[organs]
+
+OC.2@net = MOOC.net.2[[2]]
+```
+
+
+Here we use metabolite-driven communications as an example.
+
+Chor diagram: Liver <- Adipose
+```{r}
+OC_chorddiagram(object = OC.2,
+                net = OC.2@net$old_resistant$backward, # a list of sig network of one direction
+                dir = "backward",
+                category = "metabolite",
+                style = "total.chatP",)
+```
+
+
+River plot: Liver (zone 3) <- Adipose (Mesenchymal progenitors), OR condition
+```{r}
+df.plot = OC.2@net$old_resistant$backward$`Mesenchymal progenitors_to_zone 3`
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "metabolite",
+             n.path = 10,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+
+### For communication between Skin & Adipose (YS vs. OS)
+
+Built the OC object
+```{r}
+organs = c("Skin", "Adipose")
+OC.1 = MOOC.1
+OC.1@organs = OC.1@organs[c(2,3)]
+
+OC.1@data.list = OC.1@data.list[organs]
+OC.1@idents.list = OC.1@idents.list[organs]
+OC.1@conditions.list = OC.1@conditions.list[organs]
+
+OC.1@idents.list$Skin = fct_drop(OC.1@idents.list$Skin)
+OC.1@idents.list$Adipose = fct_drop(OC.1@idents.list$Adipose)
+
+OC.1@LSdata$young = OC.1@LSdata$young[organs]
+OC.1@LSdata$old_resistant = OC.1@LSdata$old_resistant[organs]
+OC.1@DGdata$young = OC.1@DGdata$young[organs]
+OC.1@DGdata$old_resistant = OC.1@DGdata$old_resistant[organs]
+
+OC.1@net = MOOC.net.1[[3]]
+```
+
+
+Here we use peptide hormone-driven communications as an example.
+
+Chord diagram: Skin -> Adipose
+```{r}
+OC_chorddiagram(object = OC.1,
+                net = OC.1@net$young$forward, # a list of sig network of one direction
+                dir = "forward",
+                category = "hormone_peptide",
+                style = "total.chatP")
+```
+
+
+
+River plot: Skin (Sebaceous gland) -> Adipose (Mesenchymal progenitors), YS condition
+```{r}
+df.plot = OC.1@net$young$forward$`Sebaceous gland_to_Mesenchymal progenitors`
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "hormone_peptide",
+             n.path = 10,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+## Extended analysis figures
+
+```{r}
+OC_chorddiagram(object = OC.2,
+                net = OC.2@net$old_resistant$backward, # a list of sig network of one direction
+                dir = "backward",
+                category = "metabolite",
+                style = "total.chatP")
+```
+
+
+```{r}
+df.plot = OC.2@net$old_resistant$backward$`T cells_to_zone 3`
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "metabolite",
+             n.path = 10,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+
+```{r}
+OC_chorddiagram(object = OC.2,
+                net = OC.2@net$old_resistant$backward, # a list of sig network of one direction
+                dir = "backward",
+                category = "hormone_peptide",
+                style = "total.chatP")
+```
+
+
+
+```{r}
+df.plot = OC.2@net$old_resistant$backward$`Mesenchymal progenitors_to_zone 3`
+
+OC_riverplot(df = df.plot,
+             pref = "LS",
+             category = "metabolite",
+             n.path = 10,
+             text.color = FALSE,
+             LS_name = TRUE)
+```
+
+
+
+
+
+```{r}
+df.plot = Vali.Data@DEpath[Vali.Data@DEpath$Direction == "forward" &
+                            Vali.Data@DEpath$Sender.group == "zone 3" &
+                             Vali.Data@DEpath$Receiver.group == "Endothelial cells" &
+                             Vali.Data@DEpath$Path %in% p@data$Path, ]
+
+df.plot = df.plot[abs(df.plot$DI) > 0.05, ]
+
+CAOC_RI_barplot(df = df.plot,
+                n = 10,
+                axis.text.size = 50)
+```
