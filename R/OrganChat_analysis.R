@@ -330,7 +330,7 @@ OCnet0_infer <- function(object,
                          tf = NULL,
                          target = NULL,
                          single.condition = TRUE,
-                         hmdb_dictionary = hmdb_dictionary){
+                         hmdb_dictionary = OrganChatDB_hmdb_dictionary){
 
   # "FALSE" is designed mainly for the CAOC
   if( isTRUE(single.condition) ){

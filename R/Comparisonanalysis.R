@@ -231,7 +231,7 @@ CA_net0_infer <- function(object,
                           receptor = NULL,
                           tf = NULL,
                           target = NULL,
-                          hmdb_dictionary = hmdb_dictionary){
+                          hmdb_dictionary = OrganChatDB_hmdb_dictionary){
 
   net0.list = list()
   # for each condition

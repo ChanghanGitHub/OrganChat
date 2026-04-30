@@ -305,7 +305,7 @@ METAFlux_reformat <- function(flux,
 METAFlux_convert_OrganChat <- function(cell.types,
                                        flux,
                                        METAFlux_lookup = METAFlux_lookup,
-                                       hmdb_dictionary = hmdb_dictionary){
+                                       hmdb_dictionary = OrganChatDB_hmdb_dictionary){
 
   if(is.null(cell.types)){ stop("The file 'cell.types' is missing.") }
   if(is.null(METAFlux_lookup)){ stop("The file 'METAFlux_lookup' is missing.") }
