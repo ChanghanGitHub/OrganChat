@@ -38,7 +38,7 @@ from: <https://doi.org/10.5281/zenodo.19042679>.
 
 [Inferring, analyzing, and comparing the organ-organ communication (OOC)
 between different conditions using
-OrganChat.](vignettes/Comparison_Analysis_Tutorial.html)
+OrganChat.](file:////private/var/folders/98/q9zhvs0x79l8y_j11k1p78g952x7y3/T/Rtmp2A745G/temp_libpath38237755fbb/OrganChat/vignettes/Comparison_Analysis_Tutorial.html)
 
 ## Examples
 
