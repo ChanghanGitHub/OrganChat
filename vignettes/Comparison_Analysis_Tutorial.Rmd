@@ -1,6 +1,10 @@
 ---
 title: "Comparison analysis of the OOC between conditions via OrganChat"
-output: rmarkdown::html_vignette
+output: 
+  html_document:
+    toc: true
+    theme: united
+mainfont: Arial
 vignette: >
   %\VignetteIndexEntry{Comparison_Analysis_Tutorial}
   %\VignetteEngine{knitr::rmarkdown}
@@ -245,7 +249,7 @@ CAOC_chorddiagram(object = CAOC,
 
 
 Bubble heat map comparing the cluster-level joint-to-muscle communication between sick and healthy conditions. The dot size indecates the total number of LS-T pathways; the color represents the average commnuication probability.
-```{r}
+```{r, fig.align='center'}
 CAOC_bubbleheatmap(object = CAOC,
                   dir = "forward",
                   category = "All",
@@ -262,7 +266,7 @@ CAOC_bubbleheatmap(object = CAOC,
 River plot showing the top 20 LS-T pathways (under the selected preference) in communications from joint (Fibroblasts) to muscle (Neutrophils) under the sick condition.
 
 `pref`: a char indicating the preference when selecting the pathways, the input should be one of the following: "chatP", "LS", "Receptor", "TF", "Target" The default value is "LS", meaning OrganChat will try to cover as many LS as possible, by selecting one LS-T pathway of each LS (ranked by the communication probability) until reaching the limit n.path. If the input is "chatP", then OrganChat will select the top n.path LS-T pathways based on the communication probability.
-```{r}
+```{r, fig.align='center'}
 df.plot = CAOC@net$Sick$forward$Fibroblasts_to_Neutrophils
 
 OC_riverplot(df = df.plot,
@@ -279,7 +283,7 @@ OC_riverplot(df = df.plot,
 Rose diagram showing the components in communications from joint (Fibroblasts) to muscle (Neutrophils) under the sick condition with the highest signaling inflow and outflow, respectively.
 
 Noting that receptors and signaling effectors will have both inflow and outflow calculated, while LS and targets only have outflow and inflow, respectively. 
-```{r}
+```{r, fig.align='center'}
 components_rosediagram(df = df.plot, 
                        category = "All",
                        n = 5)
@@ -288,7 +292,7 @@ components_rosediagram(df = df.plot,
 ## Identify the LS-T pathways with drastic change between conditions
 
 Bar plot of the top 5 LS-T pathways with the highest differential index (DI), from joint (Neutrophils) to muscle, driven by Adenine.
-```{r}
+```{r, fig.align='center'}
 df.plot = CAOC@DEpath[CAOC@DEpath$Direction == "forward" & 
                         CAOC@DEpath$Receiver.group == "Neutrophils" & 
                         CAOC@DEpath$LS_name %in% c("Adenine"), ]
@@ -304,7 +308,7 @@ CAOC_DI_barplot(df = df.plot,
 GO enrichment analysis of the targets in joint (Fibroblasts) to muscle (Neutrophils) communication under the sick condition.
 
 `layer`: specify which of these will be included: "Receptor", "TF", or "Target". The default value is NULL, meaning all will be used.
-```{r}
+```{r, fig.align='center'}
 x = OC_GOanalysis(df = CAOC@net$Sick$forward$Fibroblasts_to_Neutrophils,
                   LS = NULL,
                   layer = "Target")
@@ -319,7 +323,7 @@ GOanalysis_scatterplot(df = x$result,
 ## Construction of the regulatory network connecting user-selected LS and targets.
 
 Construct the regulatory network connecting Lgals1 to all inferred targets within the joint (Fibroblasts) to muscle (Neutrophils) communication under the sick condition.
-```{r}
+```{r, fig.align='center'}
 df.plot = CAOC@net$Sick$forward$Fibroblasts_to_Neutrophils
 
 x = construct_Network_df(df = df.plot,
