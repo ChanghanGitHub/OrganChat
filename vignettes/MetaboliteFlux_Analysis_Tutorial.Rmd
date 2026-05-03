@@ -1,0 +1,120 @@
+---
+title: "Inference of the metabolite flux level via integrated METAFlux module"
+output: 
+  html_document:
+    toc: true
+    theme: united
+mainfont: Arial
+vignette: >
+  %\VignetteIndexEntry{MetaboliteFlux_Analysis_Tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Overview
+
+OrganChat integrates a metabolite flux inference module from METAFlux (Huang, Yuefan et al., Nature communications, 2023), which estimates the release and uptake rates of each metabolite in different cell groups based on chemical reactions using scRNA-seq data.
+
+Here we use a subset of the mouse collagen-induced arthritis (CIA) data (Lilja, Sandra et al., Cell reports. Medicine, 2023) for one organ, as an example.
+
+Current version of METAFlux is inferring the metabolite flux data based on human genes, thus we used the converted single-cell transcriptomics data of each condition (with human genes). OrganChat follows the default METAFlux analysis workflow, with `n_bootstrap=5` and `medium = human_blood`, to infer the flux score of the metabolites in different cell groups, where a positive/negative score means the metabolite is being released/uptake, respectively.
+
+Main modifications of this OrganChat module (comparing to METAFlux) are: (1) updating METAFlux functions including `generate_boots`, `get_ave_exp`, and `calculate_ave_exp` to be better compatible with Seurat V5; (2) calculating the mean and the standard deviation of the flux scores cross all bootstrap tests and scales the average scores of all releasing and uptaking metabolites for a more robust cluster-level estimation; (3) reformatting the output tables for futher OrganChat analysis.
+
+
+```{r message=FALSE,warning=FALSE}
+library(OrganChat)
+
+library(Seurat)
+library(forcats)
+library(readr)
+library(METAFlux)
+```
+
+
+# Prepare the input data
+
+Users may set their own paths to the data, OrganChatDB, and outputs.
+```{r}
+data.path = "~/Documents/OrganChat/Tutorial_data/"     # your path to the data
+DB.path = "~/Documents/OrganChat/Tutorial_data/"                   # your path to the OrganChatDB
+output.dir = "~/Documents/OrganChat/Tutorial_data/"    # your path to the ouput folder
+```
+
+
+Load the single-cell data and required files
+```{r, warning=FALSE}
+Sandra_2023_RNA <- readRDS(paste0(data.path, "Sandra_2023_converted.rds")) # human-converted data
+
+hmdb_dictionary <- read_csv(paste0(DB.path, "hmdb_dictionary_20240129.csv")) # OeganChat-provided “metabolite synonymous - HMDB ID” table
+METAFlux_lookup <- read_csv(paste0(DB.path, "METAFlux_lookup_20240131.csv")) # METAFlux-provided table for metabolite-associated chemical reactions
+```
+
+Users may further process the data before performing the METAFlux analysis, such as filtering out small clusters, selecting organs of interests. Here, we used three cluster of joint, and picked 50 cells for each cluster of two conditions as an example.
+```{r}
+conditions = c("Sick", "Healthy")
+organ.select = "joint"
+cluster.use = c("Endothelial cells", "Fibroblasts", "Macrophages")
+
+Data.input_condition1 <- subset(Sandra_2023_RNA, subset = organ == organ.select &
+                                  Type %in% cluster.use &
+                                  condition == conditions[1])
+
+Data.input_condition2 <- subset(Sandra_2023_RNA, subset = organ == organ.select &
+                                  Type %in% cluster.use &
+                                  condition == conditions[2])
+
+Data.input_condition1$Type <- fct_drop(Data.input_condition1$Type)
+Data.input_condition2$Type <- fct_drop(Data.input_condition2$Type)
+
+# Update the Active Identity
+Data.input_condition1 <- SetIdent(Data.input_condition1, value = Data.input_condition1$Type)
+Data.input_condition2 <- SetIdent(Data.input_condition2, value = Data.input_condition2$Type)
+
+# downsample 100 cells of each cluster
+Data.input_condition1 = subset(x = Data.input_condition1, downsample = 50)
+Data.input_condition2 = subset(x = Data.input_condition2, downsample = 50)
+```
+
+
+# Metabolite flux inference
+
+The data of two conditions was input as a list.
+```{r, warning=FALSE}
+Data.list = list(Condition1 = Data.input_condition1, Condition2 = Data.input_condition2)
+names(Data.list) = conditions
+
+for (j in 1:length(Data.list)) {
+  flux = run_METAFlux(Data.input = Data.list[[j]],
+                      myident = 'Type',
+                      n_bootstrap=5, # only 5 bootstrap tests were performed inthis example
+                      seed=1,
+                      medium = human_blood)
+  
+  flux = METAFlux_reformat(flux = flux,
+                           cell.types = levels(Data.list[[j]]@meta.data$Type),
+                           exclude = "None",
+                           METAFlux_lookup = METAFlux_lookup,
+                           scale.byflux = TRUE)
+  
+  output = METAFlux_convert_OrganChat(cell.types = levels(Data.list[[j]]$Type),
+                                      flux = flux,
+                                      METAFlux_lookup = METAFlux_lookup,
+                                      hmdb_dictionary = hmdb_dictionary)
+  
+  #  write.csv(output , file = paste0(organ.select, "_flux_", names(Data.list[j]), ".csv"), 
+  #            row.names = TRUE, col.names = TRUE)
+}
+```
+
+
+
+```{r}
+head(output)
+```
+
+
+```{r}
+library(devtools)
+session_info()
+```

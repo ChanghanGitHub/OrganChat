@@ -50,7 +50,7 @@ output.dir = "~/Documents/OrganChat/Tutorial_data/"    # your path to the ouput 
 ## Load OrganChatDB
 
 OrganChatDB is a curated, literature-supported database that serves as prior knowledge for inferring organ-organ communication mediated by LSs on both human and mouse. The required files to run the analysis includes (1) a newly constructed LS-receptor signaling database; (2) a downstream gene interactions database of receptor-SE, SE-target interactions integrated from our published work; (3) a comprehensive “metabolite synonymous - HMDB ID” dictionary comprising 1,412,559 metabolite synonyms and 217,920 HMDB IDs from the Human Metabolome Database.
-```{r, include=FALSE}
+```{r, warning=FALSE}
 # load database
 load(paste0(DB.path, "LSR_layer1_mouse.rda"))
 load(paste0(DB.path, "RSE_layer2_mouse.rda"))
@@ -76,7 +76,7 @@ Sandra_2023_RNA <- readRDS(paste0(data.path, "Sandra_2023_mouse_filtered.rds") )
 It is highly recommended to have a small number of user-selected targets ready for OrganChat analysis. Since the inference process is finding all possible LS-R-SE-T pathways from the database, not selecting the targets or having a large number of targets may lead to an extensive run time. It is reasonable to use no more than 50 targets for each analysis, yet a powerful device may handle more targets.
 
 The target genes can be: biomarkers for the cell type, disease-related genes, or any gene of the user's interest. Here, we used the pro- and anti-inflammatory upstream regulators (URs), provided by the original study, which are also highly expressed (>1) in at least one cell type.
-```{r, include=FALSE}
+```{r, warning=FALSE}
 targets <- read_csv(paste0(data.path, "targets_highexpression.csv") )
 ```
 
@@ -115,7 +115,7 @@ for (i in 1:length(organs)) {
 
 
 Metabolite flux data can be input as CSV files -- for each condition & organ, respectively, with minor formatting modifications.
-```{r, include=FALSE}
+```{r, warning=FALSE}
 metalist.1 = list()
 metalist.2 = list()
 
