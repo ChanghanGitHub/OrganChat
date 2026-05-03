@@ -38,10 +38,10 @@ from: <https://doi.org/10.5281/zenodo.19042679>.
 
 [Inferring, analyzing, and comparing the organ-organ communication (OOC)
 between different conditions using
-OrganChat.](vignettes/Comparison_Analysis_Tutorial.html)
+OrganChat.](https://htmlpreview.github.io/?https://github.com/ChanghanGitHub/OrganChat/blob/master/vignettes/Comparison_Analysis_Tutorial.html)
 
 [Inference of the metabolite flux level via the integrated METAFlux
-module.](vignettes/MetaboliteFlux_Analysis_Tutorial.html)
+module.](https://htmlpreview.github.io/?https://github.com/ChanghanGitHub/OrganChat/blob/master/vignettes/MetaboliteFlux_Analysis_Tutorial.html)
 
 ## Examples
 
