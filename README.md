@@ -18,6 +18,8 @@ You can install the development version of OrganChat from
 devtools::install_github("ChanghanGitHub/OrganChat")
 ```
 
+The installation process should take less than 5 minutes.
+
 ## Overview
 
 <img width="536" alt="image" src="man/figures/github_Overview.png"/>
@@ -38,10 +40,10 @@ from: <https://doi.org/10.5281/zenodo.19042679>.
 
 [Inferring, analyzing, and comparing the organ-organ communication (OOC)
 between different conditions using
-OrganChat.](https://htmlpreview.github.io/?https://github.com/ChanghanGitHub/OrganChat/blob/master/vignettes/Comparison_Analysis_Tutorial.html)
+OrganChat.](https://htmlpreview.github.io/?https://github.com/ChanghanGitHub/OrganChat/blob/master/vignettes/Comparison_Analysis_Tutorial.html) (The total running time on the test data should take 5-10 minutes.)
 
 [Inference of the metabolite flux level via the integrated METAFlux
-module.](https://htmlpreview.github.io/?https://github.com/ChanghanGitHub/OrganChat/blob/master/vignettes/MetaboliteFlux_Analysis_Tutorial.html)
+module.](https://htmlpreview.github.io/?https://github.com/ChanghanGitHub/OrganChat/blob/master/vignettes/MetaboliteFlux_Analysis_Tutorial.html) (The total running time on the test data should take 10-15 minutes.)
 
 ## Examples
 
